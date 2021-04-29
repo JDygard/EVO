@@ -84,7 +84,3 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 1. [Rex's virtual joystick plugin](https://codepen.io/rexrainbow/pen/oyqvQY)
 
     Rex's virtual joystick plugin provides the code for a sleek, easy to use joystick for use on mobile devices. We elected to use this for mobile accessibility because of our plans for a wide range of control types for the playable character.
-
-2. [Michael Hadley's matterCollision plugin](https://github.com/mikewesthad/phaser-matter-collision-plugin#usage)
-
-    Michael Hadley's matterCollision plugin takes the standard MatterJS collision detection system and make it modular and user-friendly. As we are using some of his examples to work from, this will be essential as well as useful.
