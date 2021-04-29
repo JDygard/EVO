@@ -32,8 +32,8 @@ class Gameplay extends Phaser.Scene {
 //================================== Building the play area ===============================================
 
         this.add.background(400, 300);                 //===== Set scene background                   = 
-        //player = this.matter.add.sprite(400, 300, "amoeba");
         player = new Player(this, 400,300,'amoeba')
+        player.setScale(2);
 
 
 //================================== Setting scene physics variables ======================================
@@ -47,34 +47,28 @@ class Gameplay extends Phaser.Scene {
         this.cameras.main.startFollow(player, true, 0.1, 0.1, 0, 0);//===== Set camera to follow player
         cursors = this.input.keyboard.createCursorKeys();           //===== Declare keyboard controls variable
 
- /*       this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
-                x: 400,
-                y: 300,
-                radius: 100,
-                base: this.add.circle(0, 0, 100, 0x888888),
-                thumb: this.add.circle(0, 0, 50, 0xcccccc),
-                // dir: '8dir',   // 'up&down'|0|'left&right'|1|'4dir'|2|'8dir'|3
-                // forceMin: 16,
-                // enable: true
-            })
-            .on('update', this.dumpJoyStickState, this);
-            this.text = this.add.text(0, 0);
 
-            }    
-            dumpJoyStickState() {
-                var cursorKeys = this.joyStick.createCursorKeys();
-                var s = 'Key down: ';
-                for (var name in cursorKeys) {
-                    if (cursorKeys[name].isDown) {
-                        s += name + ' ';
-                    }
-                }
-                s += '\n';
-                s += ('Force: ' + Math.floor(this.joyStick.force * 100) / 100 + '\n');
-                s += ('Angle: ' + Math.floor(this.joyStick.angle * 100) / 100 + '\n');
-                this.text.setText(s);
-
-*/
+        
+        joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
+            x: viewX -200,
+            y: viewY -200,
+            radius: 100,
+            base: this.add.circle(0, 0, 100, 0x888888),
+            thumb: this.add.circle(0, 0, 50, 0xcccccc),
+            dir: '8dir'
+        })
+        .on('update', this.dumpJoyStickState, this);
+        if (touch !== true) {
+            joyStick.visible = false
+        }
+    }    
+    
+    dumpJoyStickState() {
+        joystickControls = joyStick.createCursorKeys();
+        leftKeyDown = joystickControls.left.isDown;
+        rightKeyDown = joystickControls.right.isDown;
+        upKeyDown = joystickControls.up.isDown;
+        downKeyDown = joystickControls.down.isDown;
     }
 
     update(){
