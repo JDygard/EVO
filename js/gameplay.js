@@ -48,15 +48,65 @@ class Gameplay extends Phaser.Scene {
             repeat: -1                                    // -1 for infinite repitition
         })
         foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
+        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
+        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
+        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
+        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
+        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
+        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
+        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
 
 
 //================================== Setting scene physics variables ======================================
 
+//========================== Setting up pair interactions with sensors ====================================
+//======= Thanks to https://labs.phaser.io/edit.html?src=src/physics\matterjs\compound%20sensors.js =======
+//=======                     for the code adapted into this section                                =======
+this.matter.world.on('collisionstart', function (event) {
+    var pairs = event.pairs;
+
+        for (var i = 0; i < pairs.length; i++)
+        {
+            var bodyA = pairs[i].bodyA;
+            var bodyB = pairs[i].bodyB;
+
+            //  We only want sensor collisions
+            if (pairs[i].isSensor)
+            {
+                var foodBody;
+                var playerBody;
+
+                if (bodyA.isSensor)
+                {
+                    foodBody = bodyB;
+                    playerBody = bodyA;
+                }
+                else if (bodyB.isSensor)
+                {
+                    foodBody = bodyA;
+                    playerBody = bodyB;
+                }
+
+                //  You can get to the Sprite via `gameObject` property
+                var playerSprite = playerBody.gameObject;
+                var foodSprite = foodBody.gameObject;
+
+                if (playerBody.label == 'mouth'){
+                    foodSprite.destroy()
+                    evoPoints += 1;
+                    console.log(evoPoints)
+                }
+            }
+        }
+    });
+
+
 //================================== Setting up the controls =============================================
 
+        this.matter.world.setBounds(-4400, -2400, 9600, 5400);
+        this.cameras.main.setBounds(-4400, -2400, 9600, 5400);
         this.cameras.main.startFollow(player, true, 0.1, 0.1, 0, 0);//===== Set camera to follow player
         cursors = this.input.keyboard.createCursorKeys();           //===== Declare keyboard controls variable
-
 
         
         joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {

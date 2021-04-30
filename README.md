@@ -84,3 +84,11 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 1. [Rex's virtual joystick plugin](https://codepen.io/rexrainbow/pen/oyqvQY)
 
     Rex's virtual joystick plugin provides the code for a sleek, easy to use joystick for use on mobile devices. We elected to use this for mobile accessibility because of our plans for a wide range of control types for the playable character.
+
+2. [Michael Hadley's code example](https://codesandbox.io/s/5vlzl8j9vp?file=/js/player.js)
+
+    This example was coded with a deprecated code simplifying library, and for an older version of the Phaser engine. However, much of the structure and entity interactions are carefully commented and helped immensely in learning about those systems.
+
+## Acknowledgements
+
+1. Richard Davey, aka Photonstorm, creator of the Phaser 3 library used extensively in this project. He, personally, tirelessly fielded my questions as an active member of his Discord community, and deserves much more than my humble thanks for all of his help.
