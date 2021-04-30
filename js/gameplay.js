@@ -91,7 +91,7 @@ this.matter.world.on('collisionstart', function (event) {
                 var playerSprite = playerBody.gameObject;
                 var foodSprite = foodBody.gameObject;
 
-                if (playerBody.label == 'mouth'){
+                if (playerBody.label == 'mouth' && foodSprite !== null){
                     foodSprite.destroy()
                     evoPoints += 1;
                     console.log(evoPoints)
@@ -148,7 +148,7 @@ this.matter.world.on('collisionstart', function (event) {
 
         if (cursors.up.isDown || upKeyDown)
         {
-            player.thrust(baseSpeed);
+            player.thrust(1);
         }
     
     }
