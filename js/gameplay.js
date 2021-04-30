@@ -47,13 +47,10 @@ class Gameplay extends Phaser.Scene {
             key: "player-idle",
             repeat: -1
         })
+        foodBit = new Food(this, 400,400, 'food');
 
 
 //================================== Setting scene physics variables ======================================
-
-        player.setFrictionAir(baseFriction);//===== Set values for physics engine
-        player.setMass(baseMass);           //===== Set values for physics engine
-        player.setFixedRotation();          //===== Set values for physics engine
 
 //================================== Setting up the controls =============================================
 

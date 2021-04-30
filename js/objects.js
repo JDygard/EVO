@@ -1,7 +1,7 @@
 class Background extends Phaser.GameObjects.Image {
   constructor (scene, x, y){
     super (scene, x, y, 'background');
-    this.setScale(6);
+    this.setScale(5);
   }
 }
 class BackgroundPlugin extends Phaser.Plugins.BasePlugin {
@@ -21,18 +21,29 @@ class Player extends Phaser.Physics.Matter.Sprite {
     super(scene.matter.world, x, y, texture)
     scene.sys.displayList.add(this);
     scene.sys.updateList.add(this);
-    this.sprite = Player
     const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
-    const { width: w, height: h } = this.sprite;
-    const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 10 } });
+    const { width: w, height: h } = this;
+    const mainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { chamfer: { radius: 10 } });
     this.sensors = {
-      top: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
-      bottom: Bodies.rectangle(0, h * 0.5, w * 0.25, 2, { isSensor: true }),
-      left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
-      right: Bodies.rectangle(w * 0.35, 0, 2, h * 0.5, { isSensor: true })
+      //top: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
+      //bottom: Bodies.rectangle(0, h * 0.5, w * 0.25, 2, { isSensor: true }),
+      //left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
+      //right: Bodies.rectangle(w * 0.35, 0, 2, h * 0.5, { isSensor: true })
+      //mouth: Bodies.rectangle(w * 0.32, h * .16, 0.25, h * 0.33, { isSensor: true })
+      mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'mouth' })
     };
-	}
+    const compoundBody = Body.create({
+     parts: [mainBody, this.sensors.mouth/*this.sensors.bottom, this.sensors.left, this.sensors.right, this.sensors.top*/],
+    });
+    this
+      .setExistingBody(compoundBody)
+      .setFixedRotation() // Sets inertia to infinity so the player can't rotate
+      .setFrictionAir(baseFriction)//===== Set values for physics engine
+      .setMass(baseMass)           //===== Set values for physics engine
+      .setFixedRotation()          //===== Set values for physics engine
+  };
 }
+
 
 class Food extends Phaser.Physics.Matter.Sprite {
   constructor(scene, x, y, texture) {
