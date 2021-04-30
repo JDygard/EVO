@@ -15,32 +15,28 @@ class BackgroundPlugin extends Phaser.Plugins.BasePlugin {
 }
 
 
-
-class Player extends Phaser.Physics.Matter.Sprite {
-	constructor(scene,x,y,texture) {
-    super(scene.matter.world, x, y, texture)
-    scene.sys.displayList.add(this);
-    scene.sys.updateList.add(this);
+//================================== Physics enabled sprite classes ==================================
+//========= Player sprite ( Adapted from Michael Hadleys example: https://codesandbox.io/s/5vlzl8j9vp?file=/js/player.js )
+class Player extends Phaser.Physics.Matter.Sprite {        // Declare player sprite class as child of sprite class
+	constructor(scene,x,y,texture) {                         // Call the constructor
+    super(scene.matter.world, x, y, texture)               // Call the super with physics engine
+    scene.sys.displayList.add(this);                       // Automatically add the sprite to the display list
+    scene.sys.updateList.add(this);                        // Automatically add the sprite to the update list
     const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
-    const { width: w, height: h } = this;
-    const mainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { chamfer: { radius: 10 } });
-    this.sensors = {
-      //top: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
-      //bottom: Bodies.rectangle(0, h * 0.5, w * 0.25, 2, { isSensor: true }),
-      //left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
-      //right: Bodies.rectangle(w * 0.35, 0, 2, h * 0.5, { isSensor: true })
-      //mouth: Bodies.rectangle(w * 0.32, h * .16, 0.25, h * 0.33, { isSensor: true })
-      mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'mouth' })
+    const { width: w, height: h } = this;                  // Declare some useful constants for dimensions
+    const mainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { chamfer: { radius: 10 } }); // Create a constant for the main body hitbox
+    this.sensors = {                                       // Declaring all of the sensors used on this sprite
+      mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'mouth' }) // The mouth, used for eating and eventually biting
     };
-    const compoundBody = Body.create({
-     parts: [mainBody, this.sensors.mouth/*this.sensors.bottom, this.sensors.left, this.sensors.right, this.sensors.top*/],
+    const compoundBody = Body.create({                     // Declaring the compoundBody containing all of the components of the Player sprite
+     parts: [mainBody, this.sensors.mouth],                // The components.
     });
     this
-      .setExistingBody(compoundBody)
-      .setFixedRotation() // Sets inertia to infinity so the player can't rotate
-      .setFrictionAir(baseFriction)//===== Set values for physics engine
-      .setMass(baseMass)           //===== Set values for physics engine
-      .setFixedRotation()          //===== Set values for physics engine
+      .setExistingBody(compoundBody)//===== Applies the compoundBody defined above to the sprite
+      .setFixedRotation()           //===== Sets inertia to infinity so the player can't rotate
+      .setFrictionAir(baseFriction) //===== Set values for physics engine
+      .setMass(baseMass)            //===== Set values for physics engine
+      .setFixedRotation()           //===== Set values for physics engine
   };
 }
 

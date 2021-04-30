@@ -41,13 +41,13 @@ class Gameplay extends Phaser.Scene {
 
 //================================== Building the play area ===============================================
 
-        this.add.background(400, 300);                 //===== Set scene background                   = 
-        player = new Player(this, 400,300,'player-idle');
-        player.anims.play({
-            key: "player-idle",
-            repeat: -1
+        this.add.background(400, 300);                    //===== Set scene background                   = 
+        player = new Player(this, 400,300,'player-idle'); // Calling the Player class to create the player object
+        player.anims.play({                               // Activating the idle animation of the player object
+            key: "player-idle",                           // Key for the idle animation
+            repeat: -1                                    // -1 for infinite repitition
         })
-        foodBit = new Food(this, 400,400, 'food');
+        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
 
 
 //================================== Setting scene physics variables ======================================
@@ -99,7 +99,6 @@ class Gameplay extends Phaser.Scene {
         if (cursors.up.isDown || upKeyDown)
         {
             player.thrust(baseSpeed);
-            
         }
     
     }
