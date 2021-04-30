@@ -21,6 +21,16 @@ class Player extends Phaser.Physics.Matter.Sprite {
     super(scene.matter.world, x, y, texture)
     scene.sys.displayList.add(this);
     scene.sys.updateList.add(this);
+    this.sprite = Player
+    const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+    const { width: w, height: h } = this.sprite;
+    const mainBody = Bodies.rectangle(0, 0, w * 0.6, h, { chamfer: { radius: 10 } });
+    this.sensors = {
+      top: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
+      bottom: Bodies.rectangle(0, h * 0.5, w * 0.25, 2, { isSensor: true }),
+      left: Bodies.rectangle(-w * 0.35, 0, 2, h * 0.5, { isSensor: true }),
+      right: Bodies.rectangle(w * 0.35, 0, 2, h * 0.5, { isSensor: true })
+    };
 	}
 }
 
@@ -32,6 +42,21 @@ class Food extends Phaser.Physics.Matter.Sprite {
   }
 }
 
+class Enemy extends Phaser.Physics.Matter.Sprite {
+  constructor(scene, x, y, texture) {
+    super(scene.matter.world, x, y, texture)
+    scene.sys.displayList.add(this);
+    scene.sys.displayList.add(this);
+  }
+}
+
+class Debris extends Phaser.Physics.Matter.Sprite {
+  constructor(scene, x, y, texture) {
+    super(scene.matter.world, x, y, texture)
+    scene.sys.displayList.add(this);
+    scene.sys.displayList.add(this);
+  }
+}
 
       
       

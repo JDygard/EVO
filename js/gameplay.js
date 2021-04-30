@@ -6,16 +6,17 @@ class Gameplay extends Phaser.Scene {
     
     preload() {
         // Preload virtual joystick plugin assets
-        //var matterCollisionURL; matterCollisionURL = "//cdn.jsdelivr.net/npm/phaser-matter-collision-plugin";
-        //this.load.plugin('matterCollision', matterCollisionURL, true)
         var rexURL;rexURL = '/js/rexvirtualjoystickplugin.min.js';
         this.load.plugin('rexvirtualjoystickplugin', rexURL, true);
         // Preload image assets
         console.log("gameplay preload");
+
     }
 
     create(){
         console.log("gameplay create")
+
+
 //================================== Declaring methods for later definition ==============================
 
 /*      this.createPlayer();            //===== Method for making the player object                      =
@@ -29,11 +30,23 @@ class Gameplay extends Phaser.Scene {
         this.enemies = this.add.group()
         this.food = this.add.group()
 */
+//================================== Declaring animations =================================================
+
+// Player idle animation
+        const idleAnimation = this.anims.create({
+            key: "player-idle",
+            frames: this.anims.generateFrameNumbers("player-idle", { start: 0, end: 3 }),
+            frameRate: 3,
+        });
+
 //================================== Building the play area ===============================================
 
         this.add.background(400, 300);                 //===== Set scene background                   = 
-        player = new Player(this, 400,300,'amoeba')
-        player.setScale(2);
+        player = new Player(this, 400,300,'player-idle');
+        player.anims.play({
+            key: "player-idle",
+            repeat: -1
+        })
 
 
 //================================== Setting scene physics variables ======================================
@@ -89,6 +102,7 @@ class Gameplay extends Phaser.Scene {
         if (cursors.up.isDown || upKeyDown)
         {
             player.thrust(baseSpeed);
+            
         }
     
     }
