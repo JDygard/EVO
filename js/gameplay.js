@@ -34,17 +34,21 @@ class Gameplay extends Phaser.Scene {
 
 // Player idle animation
         const idleAnimation = this.anims.create({
-            key: "player-idle",
-            frames: this.anims.generateFrameNumbers("player-idle", { start: 0, end: 3 }),
+            key: "base-player-idle",
+            frames: this.anims.generateFrameNumbers("base-player-idle", { start: 0, end: 3 }),
             frameRate: 3,
         });
+        const movingAnimation = this.anims.create({
+            key: "base-player-move",
+            frames: this.anims.generateFrameNumbers("base-player-moving", { start: 0, end: 3 }),
+            frameRate: 4,
+        })
 
 //================================== Building the play area ===============================================
-
         this.add.background(400, 300);                    //===== Set scene background                   = 
-        player = new Player(this, 400,300,'player-idle'); // Calling the Player class to create the player object
+        player = new Creature(this, 400, 300, 'base-player-idle'); // Calling the Player class to create the player object
         player.anims.play({                               // Activating the idle animation of the player object
-            key: "player-idle",                           // Key for the idle animation
+            key: "base-player-idle",                           // Key for the idle animation
             repeat: -1                                    // -1 for infinite repitition
         })
         foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
@@ -55,72 +59,74 @@ class Gameplay extends Phaser.Scene {
         foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
         foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
         foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
-
+        for (let i = 0; i < 16; i++){
+            new Debris(this, 0,0, 'debris' + i)
+            new Debris(this, 0,0, 'debris' + i)
+            new Debris(this, 0,0, 'debris' + i)
+        }
 
 //================================== Setting scene physics variables ======================================
 
 //========================== Setting up pair interactions with sensors ====================================
 //======= Thanks to https://labs.phaser.io/edit.html?src=src/physics\matterjs\compound%20sensors.js =======
 //=======                     for the code adapted into this section                                =======
-this.matter.world.on('collisionstart', function (event) {
-    var pairs = event.pairs;
+        this.matter.world.on('collisionstart', function (event) { // Whenever two things collide,
+            var pairs = event.pairs;                              // give them a useful nickname
 
-        for (var i = 0; i < pairs.length; i++)
-        {
-            var bodyA = pairs[i].bodyA;
-            var bodyB = pairs[i].bodyB;
-
-            //  We only want sensor collisions
-            if (pairs[i].isSensor)
-            {
-                var foodBody;
-                var playerBody;
-
-                if (bodyA.isSensor)
+                for (var i = 0; i < pairs.length; i++)            // Then check them all out
                 {
-                    foodBody = bodyB;
-                    playerBody = bodyA;
-                }
-                else if (bodyB.isSensor)
-                {
-                    foodBody = bodyA;
-                    playerBody = bodyB;
-                }
+                    var bodyA = pairs[i].bodyA;                   // To see if one of them
+                    var bodyB = pairs[i].bodyB;                   // is one of our sensors
 
-                //  You can get to the Sprite via `gameObject` property
-                var playerSprite = playerBody.gameObject;
-                var foodSprite = foodBody.gameObject;
+                    if (pairs[i].isSensor)                        // If there is a sensor
+                    {
+                        var foodBody;                             // Label for the non-sensor
+                        var playerBody;                           // and for the sensor
 
-                if (playerBody.label == 'mouth' && foodSprite !== null){
-                    foodSprite.destroy()
-                    evoPoints += 1;
-                    console.log(evoPoints)
+                        if (bodyA.isSensor)                       // Then work out which one
+                        {
+                            foodBody = bodyB;                     // ISN'T the sensor
+                            playerBody = bodyA;                   // and which one is
+                        }
+                        else if (bodyB.isSensor)
+                        {
+                            foodBody = bodyA;
+                            playerBody = bodyB;
+                        }
+
+                        var playerSprite = playerBody.gameObject; // Now grab the game object
+                        var foodSprite = foodBody.gameObject;     // for each of the colliders
+
+                        if (playerBody.label == 'mouth' && foodSprite.label == 'food'){ // If it's a mouth colliding with food (and not null)
+                            foodSprite.destroy()                  // Destroy the food
+                            evoPoints += 1;                       // Add an evoPoint
+                            console.log(evoPoints)                // And tell the console
+                        }
+                    }
                 }
-            }
-        }
-    });
-
+            });
 
 //================================== Setting up the controls =============================================
 
-        this.matter.world.setBounds(-4400, -2400, 9600, 5400);
-        this.cameras.main.setBounds(-4400, -2400, 9600, 5400);
+        this.matter.world.setBounds(-4400, -2400, 9600, 5400);      //===== Don't let the player go out of bounds
+        this.cameras.main.setBounds(-4400, -2400, 9600, 5400);      //===== Don't let the camera show out of bounds
         this.cameras.main.startFollow(player, true, 0.1, 0.1, 0, 0);//===== Set camera to follow player
         cursors = this.input.keyboard.createCursorKeys();           //===== Declare keyboard controls variable
 
         
-        joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
-            x: viewX -200,
-            y: viewY -200,
-            radius: 100,
-            base: this.add.circle(0, 0, 100, 0x888888),
-            thumb: this.add.circle(0, 0, 50, 0xcccccc),
-            dir: '8dir'
+        joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, { //== Add the contents of our joystick plugin
+            x: viewX -200,                                          //== Put it in the bottom-right
+            y: viewY -200,                                          //== corner for the thumb
+            radius: 100,                                            //== and set the size
+            base: this.add.circle(0, 0, 100, 0x888888),             //== Draw the outer circle
+            thumb: this.add.circle(0, 0, 50, 0xcccccc),             //== and the inner one
+            dir: '8dir'                                             //== Set it to collect 8 directions of info
         })
-        .on('update', this.dumpJoyStickState, this);
-        if (touch !== true) {
+        .on('update', this.dumpJoyStickState, this);                //== Deliver the information to the controls
+        if (touch !== true) {                                       //== Hide the joystick if the player is using keyboard controls
             joyStick.visible = false
         }
+
     }    
     
     dumpJoyStickState() {
@@ -136,8 +142,19 @@ this.matter.world.on('collisionstart', function (event) {
 //================================= Listen for control inputs and execute movements ======================
 //=====    Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors    =====
 //=====                           for the example code used here.                                    =====
-
-        if (cursors.left.isDown || leftKeyDown)
+        this.input.keyboard.on("keydown-UP", function(){
+            player.anims.play({
+                key: 'base-player-move',
+                repeat: -1,
+            })
+        })  
+            this.input.keyboard.on("keyup-UP", function() {
+            player.anims.play({
+                key: 'base-player-idle',
+                repeat: -1,
+            })
+        })
+            if (cursors.left.isDown || leftKeyDown)
         {
             player.setAngularVelocity(-baseRotation);
         }
@@ -148,7 +165,7 @@ this.matter.world.on('collisionstart', function (event) {
 
         if (cursors.up.isDown || upKeyDown)
         {
-            player.thrust(1);
+            player.thrust(baseSpeed);
         }
     
     }

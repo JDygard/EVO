@@ -3,7 +3,7 @@ const config = {
     width: (this.window.devicePixelRatio * this.window.innerWidth) * 0.99, // Fits the game viewport width to the size of the device screen/browser window
     height: (this.window.devicePixelRatio * this.window.innerHeight) * 0.99, // Fits the game viewport height to the size of the device screen/browser window
     backgroundColor: 'black', // Sets the color of the background
-    pixelArt: true, // Tell the graphics engine not to blur or anti-alias, in order to preserve the pixel art effect
+    pixelArt: false, // Tell the graphics engine not to blur or anti-alias, in order to preserve the pixel art effect
     plugins: {      //Declare plugins
         global: [
             { key: 'BackgroundPlugin', plugin: BackgroundPlugin, start: true },
@@ -12,7 +12,8 @@ const config = {
     physics: { // Selects a physics engine
         default: 'matter', // A physics engine with collisions and complex material interaction
         matter: { 
-           /* debug: {
+            /*
+            debug: {
 
                 showAxes: false,
                 showAngleIndicator: true,
@@ -77,7 +78,8 @@ const config = {
     
                 showConvexHulls: true,
                 hullColor: 0xd703d0
-            },*/
+            },
+            */
             gravity: {
                 x: 0,
                 y: 0
@@ -102,10 +104,14 @@ var debugMode = true
 // ==Rotation speed
 // Unupgraded speed
 var baseRotation = 0.065
+var tailRotation = 0.069
+var flagellumRotation = 0.06
 
 // ==Acceleration
 // Unupgraded speed
 var baseSpeed = 0.03
+var tailSpeed = 0.04
+var flagellumSpeed = 0.06
 
 // ==Fluid friction
 // Probably a constant
@@ -127,6 +133,9 @@ var background;
 var pointer;
 var touchX;
 var touchY;
+var spike = false; // Variable for testing whether the player has the spike part
+var playerCompoundBody; //Object holding static body parts for the player
+var debris = []; //Empty array for holding all the background debris
 
 // Variables with useful screen size values
 var viewX = this.window.devicePixelRatio * this.window.innerWidth * .99;

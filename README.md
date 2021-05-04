@@ -77,7 +77,9 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
         e. Slime (Leaves a path of reduced movement speed behind, requires cytoplasmic flow or cilia)
 
     iv. Size upgrade
-
+## Bugs
+### Mouth sensor contact with world boundary causes crash
+When the mouth sensor on the Player object makes contact with the world boundary, it assigns assigns a null value to one of the temporary variables within the querying function associated with the sensor. This crashes the game.
 
 ## Code credits
 

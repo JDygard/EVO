@@ -2,6 +2,7 @@ class Background extends Phaser.GameObjects.Image {
   constructor (scene, x, y){
     super (scene, x, y, 'background');
     this.setScale(5);
+    this.setDepth(-5);
   }
 }
 class BackgroundPlugin extends Phaser.Plugins.BasePlugin {
@@ -17,7 +18,7 @@ class BackgroundPlugin extends Phaser.Plugins.BasePlugin {
 
 //================================== Physics enabled sprite classes ==================================
 //========= Player sprite ( Adapted from Michael Hadleys example: https://codesandbox.io/s/5vlzl8j9vp?file=/js/player.js )
-class Player extends Phaser.Physics.Matter.Sprite {        // Declare player sprite class as child of sprite class
+class Creature extends Phaser.Physics.Matter.Sprite {        // Declare player sprite class as child of sprite class
 	constructor(scene,x,y,texture) {                         // Call the constructor
     super(scene.matter.world, x, y, texture)               // Call the super with physics engine
     scene.sys.displayList.add(this);                       // Automatically add the sprite to the display list
@@ -28,17 +29,18 @@ class Player extends Phaser.Physics.Matter.Sprite {        // Declare player spr
     this.sensors = {                                       // Declaring all of the sensors used on this sprite
       mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'mouth' }) // The mouth, used for eating and eventually biting
     };
-    const compoundBody = Body.create({                     // Declaring the compoundBody containing all of the components of the Player sprite
+    playerCompoundBody = Body.create({                     // Declaring the compoundBody containing all of the components of the Player sprite
      parts: [mainBody, this.sensors.mouth],                // The components.
     });
     this
-      .setExistingBody(compoundBody)//===== Applies the compoundBody defined above to the sprite
+      .setExistingBody(playerCompoundBody)//===== Applies the compoundBody defined above to the sprite
       .setFixedRotation()           //===== Sets inertia to infinity so the player can't rotate
       .setFrictionAir(baseFriction) //===== Set values for physics engine
       .setMass(baseMass)            //===== Set values for physics engine
-      .setFixedRotation()           //===== Set values for physics engine
   };
 }
+
+
 
 
 class Food extends Phaser.Physics.Matter.Sprite {
@@ -46,6 +48,8 @@ class Food extends Phaser.Physics.Matter.Sprite {
     super(scene.matter.world, x, y, texture)
     scene.sys.displayList.add(this);
     scene.sys.displayList.add(this);
+    this.label = 'food'
+    //this.setRandomPosition(-4400, -2400, 9600, 5400);
   }
 }
 
@@ -62,6 +66,14 @@ class Debris extends Phaser.Physics.Matter.Sprite {
     super(scene.matter.world, x, y, texture)
     scene.sys.displayList.add(this);
     scene.sys.displayList.add(this);
+    let tempNum = Math.random()
+    this
+      .removeInteractive()
+      .setFrictionAir(0.005)
+      .setMass(tempNum * 50)
+      .setScale(tempNum * 3)
+      .setAlpha(.4)
+      .setRandomPosition(-4400, -2400, 9600, 5400);
   }
 }
 
