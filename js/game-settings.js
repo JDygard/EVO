@@ -126,13 +126,16 @@ var baseMass = 30
 
 // General variables
 var player;
-var foodBit;
+var foodBit = 0;
+var foodRemaining;
 var evoPoints = 0;
 var cursors;
 var background;
 var pointer;
 var touchX;
 var touchY;
+var currentIdleAnimation = 'base-player-idle';
+var currentMoveAnimation = 'base-player-move';
 var spike = false; // Variable for testing whether the player has the spike part
 var playerCompoundBody; //Object holding static body parts for the player
 var debris = []; //Empty array for holding all the background debris

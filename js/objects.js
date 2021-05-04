@@ -49,7 +49,7 @@ class Food extends Phaser.Physics.Matter.Sprite {
     scene.sys.displayList.add(this);
     scene.sys.displayList.add(this);
     this.label = 'food'
-    //this.setRandomPosition(-4400, -2400, 9600, 5400);
+    this.setRandomPosition(-4400, -2400, 9600, 5400);
   }
 }
 
@@ -68,12 +68,34 @@ class Debris extends Phaser.Physics.Matter.Sprite {
     scene.sys.displayList.add(this);
     let tempNum = Math.random()
     this
-      .removeInteractive()
       .setFrictionAir(0.005)
-      .setMass(tempNum * 50)
-      .setScale(tempNum * 3)
-      .setAlpha(.4)
-      .setRandomPosition(-4400, -2400, 9600, 5400);
+      .setMass(tempNum * 30)
+      .setScale(tempNum * 2)
+      .setAlpha(.5)
+      .setAngle(tempNum * 360)
+      .setRandomPosition(-4400, -2400, 9600, 5400)
+      .scene.tweens.add({
+        targets     : this ,
+        scale       : tempNum * 2.15,
+        repeat: -1,
+        yoyo: true,
+        duration    : 2000,
+      })
+  }
+}
+
+class BGDebris extends Phaser.GameObjects.Image {
+  constructor(scene, x, y, texture) {
+    super(scene, x, y, texture)
+    scene.sys.displayList.add(this);
+    scene.sys.displayList.add(this);
+    let tempNum = Math.random()
+    this
+      .setScale(tempNum * 2)
+      .setAlpha(.2)
+      .setRandomPosition(-4400, -2400, 9600, 5400)
+      .setDepth(-4)
+      .setAngle(tempNum * 360);
   }
 }
 

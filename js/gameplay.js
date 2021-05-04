@@ -11,8 +11,18 @@ class Gameplay extends Phaser.Scene {
         // Preload image assets
         console.log("gameplay preload");
 
-    }
 
+    }
+    makeFood() {
+        for (let i = 0; i < 30; i++){
+            new Food(this, 0, 0, 'food')
+        }
+        foodRemaining = 30;
+    }
+    makePlayer() {
+        player = new Creature(this, 400, 300, 'base-player-idle');
+    
+    }
     create(){
         console.log("gameplay create")
 
@@ -46,23 +56,26 @@ class Gameplay extends Phaser.Scene {
 
 //================================== Building the play area ===============================================
         this.add.background(400, 300);                    //===== Set scene background                   = 
-        player = new Creature(this, 400, 300, 'base-player-idle'); // Calling the Player class to create the player object
+        this.makePlayer()                                 // Calling the Player method to create the player object
         player.anims.play({                               // Activating the idle animation of the player object
-            key: "base-player-idle",                           // Key for the idle animation
+            key: "base-player-idle",                      // Key for the idle animation
             repeat: -1                                    // -1 for infinite repitition
         })
-        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
-        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
-        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
-        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
-        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
-        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
-        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
-        foodBit = new Food(this, 400,400, 'food');        // Summoning delicious food to eat
+
+        this.makeFood()
+
         for (let i = 0; i < 16; i++){
             new Debris(this, 0,0, 'debris' + i)
             new Debris(this, 0,0, 'debris' + i)
             new Debris(this, 0,0, 'debris' + i)
+            new Debris(this, 0,0, 'debris' + i)
+        }
+        
+        for (let i = 0; i < 16; i++){
+            new BGDebris(this, 0,0, 'debris' + i)
+            new BGDebris(this, 0,0, 'debris' + i)
+            new BGDebris(this, 0,0, 'debris' + i)
+            new BGDebris(this, 0,0, 'debris' + i)
         }
 
 //================================== Setting scene physics variables ======================================
@@ -97,7 +110,7 @@ class Gameplay extends Phaser.Scene {
                         var playerSprite = playerBody.gameObject; // Now grab the game object
                         var foodSprite = foodBody.gameObject;     // for each of the colliders
 
-                        if (playerBody.label == 'mouth' && foodSprite.label == 'food'){ // If it's a mouth colliding with food (and not null)
+                        if (playerBody.label == 'mouth' && foodSprite.label == 'food'){ // If it's a mouth colliding with food
                             foodSprite.destroy()                  // Destroy the food
                             evoPoints += 1;                       // Add an evoPoint
                             console.log(evoPoints)                // And tell the console
@@ -138,19 +151,18 @@ class Gameplay extends Phaser.Scene {
     }
 
     update(){
-
 //================================= Listen for control inputs and execute movements ======================
 //=====    Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors    =====
 //=====                           for the example code used here.                                    =====
         this.input.keyboard.on("keydown-UP", function(){
             player.anims.play({
-                key: 'base-player-move',
+                key: currentMoveAnimation,
                 repeat: -1,
             })
         })  
             this.input.keyboard.on("keyup-UP", function() {
             player.anims.play({
-                key: 'base-player-idle',
+                key: currentIdleAnimation,
                 repeat: -1,
             })
         })
