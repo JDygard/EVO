@@ -12,7 +12,7 @@ const config = {
     physics: { // Selects a physics engine
         default: 'matter', // A physics engine with collisions and complex material interaction
         matter: { 
-            /*
+            
             debug: {
 
                 showAxes: false,
@@ -79,7 +79,7 @@ const config = {
                 showConvexHulls: true,
                 hullColor: 0xd703d0
             },
-            */
+            
             gravity: {
                 x: 0,
                 y: 0
@@ -134,6 +134,10 @@ var background;
 var pointer;
 var touchX;
 var touchY;
+var healthBar;
+var healthBarScale = ((this.window.devicePixelRatio * this.window.innerWidth) / 1500) + 1;
+var pointText;
+var moving = false;//Variable for testing if the player is in motion
 var currentIdleAnimation = 'base-player-idle';
 var currentMoveAnimation = 'base-player-move';
 var spike = false; // Variable for testing whether the player has the spike part

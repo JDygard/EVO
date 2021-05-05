@@ -74,13 +74,13 @@ class Debris extends Phaser.Physics.Matter.Sprite {
       .setAlpha(.5)
       .setAngle(tempNum * 360)
       .setRandomPosition(-4400, -2400, 9600, 5400)
-      .scene.tweens.add({
+      /*.scene.tweens.add({
         targets     : this ,
         scale       : tempNum * 2.15,
         repeat: -1,
         yoyo: true,
         duration    : 2000,
-      })
+      })*/
   }
 }
 

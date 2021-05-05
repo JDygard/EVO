@@ -13,6 +13,19 @@ class Gameplay extends Phaser.Scene {
 
 
     }
+
+//================================== Declaring general use methods ================================
+    makeBar(){
+        healthBar = this.add.sprite(0, 0, 'healthbar').setScrollFactor(0).setDepth(5);
+        healthBar.setDataEnabled();
+        healthBar.data.set('evoPoints', 0)
+        pointText = this.add.text(-56, -20, 'blah blah blah', {fontFamily: '"Roboto Mono", sans serif'});
+        pointText.setText(evoPoints).setScrollFactor(0).setColor('#264653').setDepth(6).setFontSize(36);
+        var healthContainer = this.add.container(230, 100);
+        healthContainer.add(pointText)
+        healthContainer.add(healthBar)
+        healthContainer.setScale(healthBarScale)
+    }
     makeFood() {
         for (let i = 0; i < 30; i++){
             new Food(this, 0, 0, 'food')
@@ -21,7 +34,6 @@ class Gameplay extends Phaser.Scene {
     }
     makePlayer() {
         player = new Creature(this, 400, 300, 'base-player-idle');
-    
     }
     create(){
         console.log("gameplay create")
@@ -62,9 +74,17 @@ class Gameplay extends Phaser.Scene {
             repeat: -1                                    // -1 for infinite repitition
         })
 
-        this.makeFood()
+        this.makeFood()                                   // Initial food generation
+        if (debugMode == true){
+            for (let i = 0; i < 30; i++){
+                new Food(this, 0, 0, 'food')
+            }
+            for (let i = 0; i < 30; i++){
+                new Food(this, 0, 0, 'food')
+            }
+        }
 
-        for (let i = 0; i < 16; i++){
+        for (let i = 0; i < 16; i++){                     // A pair of loops to produce copies of the debris decoration
             new Debris(this, 0,0, 'debris' + i)
             new Debris(this, 0,0, 'debris' + i)
             new Debris(this, 0,0, 'debris' + i)
@@ -78,7 +98,14 @@ class Gameplay extends Phaser.Scene {
             new BGDebris(this, 0,0, 'debris' + i)
         }
 
-//================================== Setting scene physics variables ======================================
+//================================== Building the Evo bar ======================================
+        this.makeBar()
+        healthBar.on('changedata-evoPoints', function (gameObject, value){
+            if (evoPoints > 9){
+                pointText.setFontSize(18)
+            }
+            pointText.setText(healthBar.data.get('evoPoints'));
+        })
 
 //========================== Setting up pair interactions with sensors ====================================
 //======= Thanks to https://labs.phaser.io/edit.html?src=src/physics\matterjs\compound%20sensors.js =======
@@ -109,11 +136,12 @@ class Gameplay extends Phaser.Scene {
 
                         var playerSprite = playerBody.gameObject; // Now grab the game object
                         var foodSprite = foodBody.gameObject;     // for each of the colliders
-
-                        if (playerBody.label == 'mouth' && foodSprite.label == 'food'){ // If it's a mouth colliding with food
-                            foodSprite.destroy()                  // Destroy the food
-                            evoPoints += 1;                       // Add an evoPoint
-                            console.log(evoPoints)                // And tell the console
+                        if (foodSprite != null){
+                            if (playerBody.label == 'mouth' && foodSprite.label == 'food'){ // If it's a mouth colliding with food
+                                foodSprite.destroy()                  // Destroy the food
+                                healthBar.data.values.evoPoints += 1;                       // Add an evoPoint
+                                console.log(healthBar.data.values.evoPoints)                // And tell the console
+                            }
                         }
                     }
                 }
@@ -142,8 +170,8 @@ class Gameplay extends Phaser.Scene {
 
     }    
     
-    dumpJoyStickState() {
-        joystickControls = joyStick.createCursorKeys();
+    dumpJoyStickState() {                                           //== Method to handle the output from the joystick
+        joystickControls = joyStick.createCursorKeys();             //== plugin
         leftKeyDown = joystickControls.left.isDown;
         rightKeyDown = joystickControls.right.isDown;
         upKeyDown = joystickControls.up.isDown;
@@ -154,8 +182,10 @@ class Gameplay extends Phaser.Scene {
 //================================= Listen for control inputs and execute movements ======================
 //=====    Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors    =====
 //=====                           for the example code used here.                                    =====
-        this.input.keyboard.on("keydown-UP", function(){
-            player.anims.play({
+
+
+        this.input.keyboard.on("keydown-UP", function(){      //== Start playing the movement animation ==
+            player.anims.play({                               //== when the player is moving forward    ==
                 key: currentMoveAnimation,
                 repeat: -1,
             })

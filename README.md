@@ -80,6 +80,8 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 ## Bugs
 ### Mouth sensor contact with world boundary causes crash
 When the mouth sensor on the Player object makes contact with the world boundary, it assigns assigns a null value to one of the temporary variables within the querying function associated with the sensor. This crashes the game.
+This bug has been tenacious as the sensor functions become more complex. We've had to implement a test before each if statement involving encountered variables. Another option would have been to give a value to the world boundary to eliminate
+the problem of null values clogging up functions.
 
 ## Code credits
 
