@@ -103,7 +103,7 @@ var debugMode = true
 
 // ==Rotation speed
 // Unupgraded speed
-var baseRotation = 0.065
+var baseRotation = 0.055
 var tailRotation = 0.069
 var flagellumRotation = 0.06
 
@@ -136,6 +136,7 @@ var touchX;
 var touchY;
 var healthBar;
 var healthBarScale = ((this.window.devicePixelRatio * this.window.innerWidth) / 1500) + 1;
+var healthContainer
 var pointText;
 var moving = false;//Variable for testing if the player is in motion
 var currentIdleAnimation = 'base-player-idle';

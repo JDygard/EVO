@@ -19,9 +19,12 @@ class Gameplay extends Phaser.Scene {
         healthBar = this.add.sprite(0, 0, 'healthbar').setScrollFactor(0).setDepth(5);
         healthBar.setDataEnabled();
         healthBar.data.set('evoPoints', 0)
-        pointText = this.add.text(-56, -20, 'blah blah blah', {fontFamily: '"Roboto Mono", sans serif'});
-        pointText.setText(evoPoints).setScrollFactor(0).setColor('#264653').setDepth(6).setFontSize(36);
-        var healthContainer = this.add.container(230, 100);
+        if (debugMode == true){
+            healthBar.data.set('evoPoints', 9)
+        }
+        pointText = this.add.text(-45, 0, 'blah blah blah', {fontFamily: '"Roboto Mono", sans serif'});
+        pointText.setText(evoPoints).setScrollFactor(0).setColor('#264653').setDepth(6).setFontSize(36).setOrigin(.5);
+        healthContainer = this.add.container(230, 100);
         healthContainer.add(pointText)
         healthContainer.add(healthBar)
         healthContainer.setScale(healthBarScale)
@@ -75,7 +78,7 @@ class Gameplay extends Phaser.Scene {
         })
 
         this.makeFood()                                   // Initial food generation
-        if (debugMode == true){
+        if (debugMode == true){                           // triple food during debug mode
             for (let i = 0; i < 30; i++){
                 new Food(this, 0, 0, 'food')
             }
@@ -101,10 +104,12 @@ class Gameplay extends Phaser.Scene {
 //================================== Building the Evo bar ======================================
         this.makeBar()
         healthBar.on('changedata-evoPoints', function (gameObject, value){
-            if (evoPoints > 9){
-                pointText.setFontSize(18)
+            evoPoints = healthBar.data.get('evoPoints')
+            if (evoPoints == 10){
+                pointText.setFontSize(22)
+                console.log("health bar reduce size")
             }
-            pointText.setText(healthBar.data.get('evoPoints'));
+            pointText.setText(evoPoints);
         })
 
 //========================== Setting up pair interactions with sensors ====================================
@@ -140,6 +145,7 @@ class Gameplay extends Phaser.Scene {
                             if (playerBody.label == 'mouth' && foodSprite.label == 'food'){ // If it's a mouth colliding with food
                                 foodSprite.destroy()                  // Destroy the food
                                 healthBar.data.values.evoPoints += 1;                       // Add an evoPoint
+                                evoPoints += 1;
                                 console.log(healthBar.data.values.evoPoints)                // And tell the console
                             }
                         }
@@ -189,6 +195,13 @@ class Gameplay extends Phaser.Scene {
                 key: currentMoveAnimation,
                 repeat: -1,
             })
+        })         
+        this.input.on("dragstart", function(){      //== Start playing the movement animation ==
+            player.anims.play({                               //== when the player is moving forward    ==
+                key: currentMoveAnimation,
+                repeat: -1,
+            })
+            console.log("dragstart")
         })  
             this.input.keyboard.on("keyup-UP", function() {
             player.anims.play({
