@@ -3,15 +3,12 @@ class Gameplay extends Phaser.Scene {
         super({ key: "Gameplay" });
     }
 
-    
     preload() {
         // Preload virtual joystick plugin assets
         var rexURL;rexURL = 'js/rexvirtualjoystickplugin.min.js';
         this.load.plugin('rexvirtualjoystickplugin', rexURL, true);
         // Preload image assets
         console.log("gameplay preload");
-
-
     }
 
 //================================== Declaring general use methods ================================
@@ -150,7 +147,7 @@ class Gameplay extends Phaser.Scene {
         this.cameras.main.startFollow(player, true, 0.1, 0.1, 0, 0);//===== Set camera to follow player
         cursors = this.input.keyboard.createCursorKeys();           //===== Declare keyboard controls variable
 
-        
+        // ================================== Joystick plugin =========================================
         joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, { //== Add the contents of our joystick plugin
             x: viewX -200,                                          //== Put it in the bottom-right
             y: viewY -200,                                          //== corner for the thumb
@@ -175,7 +172,6 @@ class Gameplay extends Phaser.Scene {
     }
 
     update(){  // Update method, executed every frame
-
 //======================================= Calculate speed and activate the right animations ======================================
 //=====                  Thanks to me for this kickass piece of code. No credit to anyone, I'm pretty                        =====
 //=====                                                  proud of this bit.                                                  =====
