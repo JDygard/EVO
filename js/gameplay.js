@@ -37,6 +37,8 @@ class Gameplay extends Phaser.Scene {
     }
     makePlayer() {
         player = new Creature(this, 400, 300, 'base-player-idle');
+        player.setDataEnabled();
+        player.data.set('inMotion', false)
     }
     create(){
         console.log("gameplay create")
@@ -66,14 +68,14 @@ class Gameplay extends Phaser.Scene {
         const movingAnimation = this.anims.create({
             key: "base-player-move",
             frames: this.anims.generateFrameNumbers("base-player-moving", { start: 0, end: 3 }),
-            frameRate: 4,
+            frameRate: 5,
         })
 
 //================================== Building the play area ===============================================
         this.add.background(400, 300);                    //===== Set scene background                   = 
         this.makePlayer()                                 // Calling the Player method to create the player object
         player.anims.play({                               // Activating the idle animation of the player object
-            key: "base-player-idle",                      // Key for the idle animation
+            key: currentIdleAnimation,                      // Key for the idle animation
             repeat: -1                                    // -1 for infinite repitition
         })
 
@@ -189,8 +191,34 @@ class Gameplay extends Phaser.Scene {
 //=====    Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors    =====
 //=====                           for the example code used here.                                    =====
 
+        posX.unshift(player.x)
+        posY.unshift(player.y)
+        let oldPosX = posX.pop()
+        let oldPosY = posY.pop()
+        var speed = Math.round(Math.abs(posX[0] - oldPosX) + Math.abs(posY[0] - oldPosY));
+        if (speed >= 1 && player.data.values.inMotion === false){
+            player.data.values.inMotion = true;
+        }
+        
+        if (speed < 1 && player.data.values.inMotion === true){
+            player.data.values.inMotion = false;
+        }
+        player.on('changedata-inMotion', function(){
+            if (player.data.values.inMotion === true){
+                player.anims.play
+                ({                               //== when the player is moving forward    ==
+                    key: currentMoveAnimation,
+                    repeat: -1,
+                })
+                } else {
+                    player.anims.play({
+                        key: currentIdleAnimation,
+                        repeat: -1,
+                })
+            }
+        })
 
-        this.input.keyboard.on("keydown-UP", function(){      //== Start playing the movement animation ==
+        /*this.input.keyboard.on("keydown-UP", function(){      //== Start playing the movement animation ==
             player.anims.play({                               //== when the player is moving forward    ==
                 key: currentMoveAnimation,
                 repeat: -1,
@@ -208,7 +236,7 @@ class Gameplay extends Phaser.Scene {
                 key: currentIdleAnimation,
                 repeat: -1,
             })
-        })
+        })*/
             if (cursors.left.isDown || leftKeyDown)
         {
             player.setAngularVelocity(-baseRotation);

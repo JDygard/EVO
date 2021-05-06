@@ -138,6 +138,8 @@ var healthBar;
 var healthBarScale = ((this.window.devicePixelRatio * this.window.innerWidth) / 1500) + 1;
 var healthContainer
 var pointText;
+var posX = [0,0];
+var posY = [0,0];
 var moving = false;//Variable for testing if the player is in motion
 var currentIdleAnimation = 'base-player-idle';
 var currentMoveAnimation = 'base-player-move';
