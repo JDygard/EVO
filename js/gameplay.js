@@ -43,36 +43,24 @@ class Gameplay extends Phaser.Scene {
     create(){
         console.log("gameplay create")
 
-
-//================================== Declaring methods for later definition ==============================
-
-/*      this.createPlayer();            //===== Method for making the player object                      =
-        this.createFood();              //===== Method for generating edible plant matter                =
-        this.createRock();              //===== Method for generating obstacles                          =
-        this.enemyBehavior();           //===== Method for managing enemy behavior decisions             =
-
-//================================== Creating class groups for easier management =========================
-
-        this.rock = this.add.group()
-        this.enemies = this.add.group()
-        this.food = this.add.group()
-*/
-//================================== Declaring animations =================================================
-
-// Player idle animation
-        const idleAnimation = this.anims.create({
+//================================== Player animation definitions ========================================
+        this.anims.create({
             key: "base-player-idle",
             frames: this.anims.generateFrameNumbers("base-player-idle", { start: 0, end: 3 }),
             frameRate: 3,
         });
-        const movingAnimation = this.anims.create({
+        this.anims.create({
             key: "base-player-move",
             frames: this.anims.generateFrameNumbers("base-player-moving", { start: 0, end: 3 }),
             frameRate: 5,
         })
+        this.anims.create({
+            key: "spike-player-move",
+            frames: this.anims.generateFrameNumbers("spike-player-move", { start: 0, end: 3})
+        })
 
 //================================== Building the play area ===============================================
-        this.add.background(400, 300);                    //===== Set scene background                   = 
+        this.add.background(400, 300);                    // Set scene background                    
         this.makePlayer()                                 // Calling the Player method to create the player object
         player.anims.play({                               // Activating the idle animation of the player object
             key: currentIdleAnimation,                      // Key for the idle animation
@@ -80,6 +68,7 @@ class Gameplay extends Phaser.Scene {
         })
 
         this.makeFood()                                   // Initial food generation
+
         if (debugMode == true){                           // triple food during debug mode
             for (let i = 0; i < 30; i++){
                 new Food(this, 0, 0, 'food')
@@ -109,7 +98,6 @@ class Gameplay extends Phaser.Scene {
             evoPoints = healthBar.data.get('evoPoints')
             if (evoPoints == 10){
                 pointText.setFontSize(22)
-                console.log("health bar reduce size")
             }
             pointText.setText(evoPoints);
         })
@@ -145,7 +133,7 @@ class Gameplay extends Phaser.Scene {
                         var foodSprite = foodBody.gameObject;     // for each of the colliders
                         if (foodSprite != null){
                             if (playerBody.label == 'mouth' && foodSprite.label == 'food'){ // If it's a mouth colliding with food
-                                foodSprite.destroy()                  // Destroy the food
+                                foodSprite.destroy()                                        // Destroy the food
                                 healthBar.data.values.evoPoints += 1;                       // Add an evoPoint
                                 evoPoints += 1;
                                 console.log(healthBar.data.values.evoPoints)                // And tell the console
@@ -186,58 +174,43 @@ class Gameplay extends Phaser.Scene {
         downKeyDown = joystickControls.down.isDown;
     }
 
-    update(){
-//================================= Listen for control inputs and execute movements ======================
-//=====    Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors    =====
-//=====                           for the example code used here.                                    =====
+    update(){  // Update method, executed every frame
 
-        posX.unshift(player.x)
-        posY.unshift(player.y)
-        let oldPosX = posX.pop()
-        let oldPosY = posY.pop()
-        var speed = Math.round(Math.abs(posX[0] - oldPosX) + Math.abs(posY[0] - oldPosY));
-        if (speed >= 1 && player.data.values.inMotion === false){
-            player.data.values.inMotion = true;
+//======================================= Calculate speed and activate the right animations ======================================
+//=====                  Thanks to me for this kickass piece of code. No credit to anyone, I'm pretty                        =====
+//=====                                                  proud of this bit.                                                  =====
+
+        posX.unshift(player.x)                                                             // Put the current position of the
+        posY.unshift(player.y)                                                             // player in the front of the array
+        let oldPosX = posX.pop()                                                           // Save and pop off the last frame's
+        let oldPosY = posY.pop()                                                           // position from the array.
+        var speed = Math.round(Math.abs(posX[0] - oldPosX) + Math.abs(posY[0] - oldPosY)); // Compare the values to get the speed
+        if (speed >= 1 && player.data.values.inMotion === false){ // If the player is in motion, and the tag isn't already true
+            player.data.values.inMotion = true;                   // Set the tag to true
         }
-        
-        if (speed < 1 && player.data.values.inMotion === true){
-            player.data.values.inMotion = false;
-        }
-        player.on('changedata-inMotion', function(){
-            if (player.data.values.inMotion === true){
-                player.anims.play
-                ({                               //== when the player is moving forward    ==
-                    key: currentMoveAnimation,
-                    repeat: -1,
+        if (speed < 1 && player.data.values.inMotion === true){   // If the player is stopped, and the tag isn't already false
+            player.data.values.inMotion = false;                  // set the tag to false
+        }                                                       
+        player.on('changedata-inMotion', function(){              // All so that this bit only triggers when the state changes
+            if (player.data.values.inMotion === true){            // If the tag just flipped to true,
+                player.anims.play                                 // Play
+                ({                                                // 
+                    key: currentMoveAnimation,                    // the current move animation
+                    repeat: -1,                                   // forever.
                 })
-                } else {
-                    player.anims.play({
-                        key: currentIdleAnimation,
-                        repeat: -1,
+                } else {                                          // Otherwise,
+                    player.anims.play({                           // go back to
+                        key: currentIdleAnimation,                // the current idle animation
+                        repeat: -1,                               // forever.
                 })
             }
         })
 
-        /*this.input.keyboard.on("keydown-UP", function(){      //== Start playing the movement animation ==
-            player.anims.play({                               //== when the player is moving forward    ==
-                key: currentMoveAnimation,
-                repeat: -1,
-            })
-        })         
-        this.input.on("dragstart", function(){      //== Start playing the movement animation ==
-            player.anims.play({                               //== when the player is moving forward    ==
-                key: currentMoveAnimation,
-                repeat: -1,
-            })
-            console.log("dragstart")
-        })  
-            this.input.keyboard.on("keyup-UP", function() {
-            player.anims.play({
-                key: currentIdleAnimation,
-                repeat: -1,
-            })
-        })*/
-            if (cursors.left.isDown || leftKeyDown)
+//============================== Listen for control inputs and execute movements ======================
+//=====  Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors   =====
+//=====                     for the modified example code used here.                              =====
+
+        if (cursors.left.isDown || leftKeyDown)
         {
             player.setAngularVelocity(-baseRotation);
         }
@@ -245,11 +218,9 @@ class Gameplay extends Phaser.Scene {
         {
             player.setAngularVelocity(baseRotation);
         }
-
         if (cursors.up.isDown || upKeyDown)
         {
             player.thrust(baseSpeed);
-        }
-    
+        }   
     }
 }
