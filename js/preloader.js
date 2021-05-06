@@ -18,7 +18,7 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         // Player animation
         this.load.spritesheet(
             "base-player-idle",
-            "../assets/images/sprites/player_spritemap_idle.png",
+            "assets/images/sprites/player_spritemap_idle.png",
             {
                 frameWidth: 126,
                 frameHeight: 126
@@ -26,7 +26,7 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         );
         this.load.spritesheet(
             "base-player-moving",
-            "../assets/images/sprites/player_spritemap_moving.png",
+            "assets/images/sprites/player_spritemap_moving.png",
             {
                 frameWidth: 126,
                 frameWidth: 126
