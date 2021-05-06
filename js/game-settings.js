@@ -1,7 +1,7 @@
 const config = {
     type: Phaser.AUTO, // Lets the game select the graphics engine based on the device automatically
-    width: (this.window.devicePixelRatio * this.window.innerWidth) * 0.99, // Fits the game viewport width to the size of the device screen/browser window
-    height: (this.window.devicePixelRatio * this.window.innerHeight) * 0.99, // Fits the game viewport height to the size of the device screen/browser window
+    width: (/*this.window.devicePixelRatio * */this.window.innerWidth) * 0.99, // Fits the game viewport width to the size of the device screen/browser window
+    height: (/*this.window.devicePixelRatio * */this.window.innerHeight) * 0.99, // Fits the game viewport height to the size of the device screen/browser window
     backgroundColor: 'black', // Sets the color of the background
     pixelArt: false, // Tell the graphics engine not to blur or anti-alias, in order to preserve the pixel art effect
     plugins: {      //Declare plugins
