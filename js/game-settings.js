@@ -13,7 +13,7 @@ const config = {
         default: 'matter', // A physics engine with collisions and complex material interaction
         matter: { 
             
-            debug: {
+            /*debug: {
 
                 showAxes: false,
                 showAngleIndicator: true,
@@ -78,7 +78,7 @@ const config = {
     
                 showConvexHulls: true,
                 hullColor: 0xd703d0
-            },
+            },*/
             
             gravity: {
                 x: 0,
@@ -99,7 +99,7 @@ const config = {
 // ===This is where all of the constants for game elements can be adjusted in one place.===
 
 // ==Debug mode : Turns off touch controls and menu scene for rapid testing
-var debugMode = true
+var debugMode = false
 
 // ==Rotation speed
 // Unupgraded speed
