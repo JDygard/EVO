@@ -8,7 +8,6 @@ class Gameplay extends Phaser.Scene {
         var rexURL;rexURL = 'js/rexvirtualjoystickplugin.min.js';
         this.load.plugin('rexvirtualjoystickplugin', rexURL, true);
         // Preload image assets
-        console.log("gameplay preload");
     }
 
 //================================== Declaring general use methods ================================

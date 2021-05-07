@@ -46,6 +46,14 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
                 frameHeight: 126
             }
         )
+        this.load.spritesheet(
+            "animatedWater",
+            "assets/images/menuscreen/animated-water.png",
+            {
+                frameWidth: 1600,
+                frameHeight: 630
+            }
+        )
     }                                                                   
 
     create(){
