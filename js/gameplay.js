@@ -19,7 +19,7 @@ class Gameplay extends Phaser.Scene {
         if (debugMode == true){
             healthBar.data.set('evoPoints', 9)
         }
-        pointText = this.add.text(-45, 0, 'blah blah blah', {fontFamily: '"Roboto Mono", sans serif'});
+        pointText = this.add.text(-45, 0, '', {fontFamily: '"Roboto Mono", sans serif'});
         pointText.setText(evoPoints).setScrollFactor(0).setColor('#264653').setDepth(6).setFontSize(36).setOrigin(.5);
         healthContainer = this.add.container(230, 100);
         healthContainer.add(pointText)
@@ -149,8 +149,8 @@ class Gameplay extends Phaser.Scene {
 
         // ================================== Joystick plugin =========================================
         joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, { //== Add the contents of our joystick plugin
-            x: viewX -200,                                          //== Put it in the bottom-right
-            y: viewY -200,                                          //== corner for the thumb
+            x: 1400,                                          //== Put it in the bottom-right
+            y: 700,                                          //== corner for the thumb
             radius: 100,                                            //== and set the size
             base: this.add.circle(0, 0, 100, 0x888888),             //== Draw the outer circle
             thumb: this.add.circle(0, 0, 50, 0xcccccc),             //== and the inner one
@@ -188,7 +188,7 @@ class Gameplay extends Phaser.Scene {
             player.data.values.inMotion = false;                  // set the tag to false
         }                                                       
         player.on('changedata-inMotion', function(){              // All so that this bit only triggers when the state changes
-            if (player.data.values.inMotion === true){            // If the tag just flipped to true,
+            if (player.data.values.inMotion === true){            // And if the tag just flipped to true,
                 player.anims.play                                 // Play
                 ({                                                // 
                     key: currentMoveAnimation,                    // the current move animation

@@ -5,9 +5,16 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
 
     preload(){                                                                  // The preload method is used by the library once at the loading of the scene.                                                                                
         this.load.image('background', 'assets/images/BG.jpg');                  // We are loading our sprites and images here. Since images are handled by the
-        this.load.image('menuscreen', 'assets/images/menuscreen/temporary.png') // textureManager, they can be loaded anywhere within Phaser.Scene
-        this.load.image('food', 'assets/images/sprites/food_green.png')         // and still be useful elsewhere.
+        this.load.image('menu-sky', 'assets/images/menuscreen/menu-sky.png')    // textureManager, they can be loaded anywhere within Phaser.Scene
+        this.load.image('menu-underwater', 'assets/images/menuscreen/menu-underwater.png')         // and still be useful elsewhere.
+        this.load.image('menu-water', 'assets/images/menuscreen/menu-water.png')
+        this.load.image('food', 'assets/images/sprites/food_green.png')
         this.load.image('healthbar', 'assets/images/sprites/healthbar.png')
+        this.load.image('menu-title', 'assets/images/menuscreen/menu-title.png')
+        this.load.image('menu-consume', 'assets/images/menuscreen/menu-consume.png')
+        this.load.image('menu-evolve', 'assets/images/menuscreen/menu-evolve.png')
+        this.load.image('menu-survive', 'assets/images/menuscreen/menu-survive.png')
+        this.load.image('menu-press', 'assets/images/menuscreen/menu-press-any-key.png')
         for (let i = 0; i < 16; i++){                                                       // A loop to load all 16 debris graphics
             this.load.image('debris' + i, 'assets/images/bg_debris/debris' + i + '.png');   // because doing it one-by-one is so pedestrian
             debris[i] = 'debris' + i;

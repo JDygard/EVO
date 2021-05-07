@@ -1,9 +1,15 @@
 const config = {
     type: Phaser.AUTO, // Lets the game select the graphics engine based on the device automatically
-    width: (/*this.window.devicePixelRatio * */this.window.innerWidth) * 0.99, // Fits the game viewport width to the size of the device screen/browser window
-    height: (/*this.window.devicePixelRatio * */this.window.innerHeight) * 0.99, // Fits the game viewport height to the size of the device screen/browser window
-    backgroundColor: 'black', // Sets the color of the background
+    width: 1600,
+    height: 900,
+    //    width: (/*this.window.devicePixelRatio * */this.window.innerWidth) * 0.99, // Fits the game viewport width to the size of the device screen/browser window
+    //    height: (/*this.window.devicePixelRatio * */this.window.innerHeight) * 0.99, // Fits the game viewport height to the size of the device screen/browser window
+    backgroundColor: '#00676C', // Sets the color of the background
     pixelArt: false, // Tell the graphics engine not to blur or anti-alias, in order to preserve the pixel art effect
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     plugins: {      //Declare plugins
         global: [
             { key: 'BackgroundPlugin', plugin: BackgroundPlugin, start: true },
@@ -135,7 +141,7 @@ var pointer;
 var touchX;
 var touchY;
 var healthBar;
-var healthBarScale = ((this.window.devicePixelRatio * this.window.innerWidth) / 1500) + 1;
+var healthBarScale = 1.5;
 var healthContainer
 var pointText;
 var posX = [0,0];
