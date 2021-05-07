@@ -21,7 +21,7 @@ class Gameplay extends Phaser.Scene {
         }
         pointText = this.add.text(-45, 0, '', {fontFamily: '"Roboto Mono", sans serif'});
         pointText.setText(evoPoints).setScrollFactor(0).setColor('#264653').setDepth(6).setFontSize(36).setOrigin(.5);
-        healthContainer = this.add.container(230, 100);
+        healthContainer = this.add.container(175, 100);
         healthContainer.add(pointText)
         healthContainer.add(healthBar)
         healthContainer.setScale(healthBarScale)

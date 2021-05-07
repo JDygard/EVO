@@ -88,29 +88,22 @@ class MenuScreen extends Phaser.Scene {
         })
         /*
         
-        listen for keyboard input
-        button to listen for tap
         button to show instructions scene
         ? button to show story screen
-        text "Press any key to start
-            or tap for touch controls"
 
-
-        //==================== OLD CODE ===================
-       
     */    
-        spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
     update(){
         if (this.input.activePointer.isDown){
             touch = true;
             this.scene.start('Gameplay')
-            console.log(touch)
         }
-        if (spaceKey.isDown){
+        this.input.keyboard.on('keydown', function(event){
             touch = false;
+            startGame = true;
+        })
+        if (startGame == true){
             this.scene.start('Gameplay')
-            console.log(touch)
         }
     }
 }

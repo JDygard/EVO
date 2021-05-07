@@ -141,7 +141,8 @@ var pointer;
 var touchX;
 var touchY;
 var healthBar;
-var healthBarScale = 1.5;
+var healthBarScale = 1.5
+var startGame = false
 var healthContainer
 var pointText;
 var posX = [0,0];
