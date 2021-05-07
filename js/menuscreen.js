@@ -3,26 +3,28 @@ class MenuScreen extends Phaser.Scene {
         super('MenuScreen')
     }
     create(){
-//=============================== Adding images ============================
-        let sky = this.add.image(800, 160, "menu-sky")
-        let water = this.add.image(800, 435, "menu-water")
-        let underwater = this.add.sprite(800, 970, "menu-underwater")
-        let blah = this.anims.create({
-            key: "animated-water",
-            frames: this.anims.generateFrameNumbers("animatedWater", { start: 0, end: 5 }),
-            frameRate: 3,
+//======================================= Adding images ======================================
+//===== There's a lot of moving pieces in this animation. We are adding them all in a    =====
+//=====                                   big chunk here.                                =====
+
+        let sky = this.add.image(800, 160, "menu-sky")                      // Sky image
+        let water = this.add.image(800, 435, "menu-water")                  // Water surface
+        let underwater = this.add.sprite(800, 970, "menu-underwater")       // Underwater
+        let title = this.add.image(800, 300, "menu-title").setAlpha(0)      // Title text, alpha set to 0 to make it invisible
+        let evolve = this.add.image(1240, 550, "menu-evolve").setAlpha(0);  // Evolve text, alpha set to 0 to make it invisible
+        let consume = this.add.image(350, 550, "menu-consume").setAlpha(0); // Consume text, alpha set to 0 to make it invisible
+        let survive = this.add.image(800, 650, "menu-survive").setAlpha(0); // Survive text, alpha set to 0 to make it invisible
+        let pressKey = this.add.image(800, 750, "menu-press").setAlpha(0);  // Press any key text, alpha set to 0 to make it invisible
+        this.anims.create({                                                 // Creating our water animation
+            key: "animated-water",                                          // Declaring the key to which it will be referred
+            frames: this.anims.generateFrameNumbers("animatedWater", { start: 0, end: 5 }), // Getting the spritesheet and numbering the frames for the array
+            frameRate: 3,                                                   // Speed at which the frames are cycled
         })
-        let title = this.add.image(800, 300, "menu-title").setAlpha(0)
-        let evolve = this.add.image(1240, 550, "menu-evolve").setAlpha(0);
-        let consume = this.add.image(350, 550, "menu-consume").setAlpha(0);
-        let survive = this.add.image(800, 650, "menu-survive").setAlpha(0);
-        let pressKey = this.add.image(800, 750, "menu-press").setAlpha(0);
-        let durationSky = 2000;
+        let durationSky = 2000;                                             // A useful variable for adjusting the duration of the initial "dive" animation in one place
 //=============================== Menu intro ==============================
-        console.log(blah)
-        underwater.anims.play({
-            key: "animated-water",
-            repeat: -1,
+        underwater.anims.play({         // Start playing the underwater animation
+            key: "animated-water",      // Call on the key declared above in the this.anims.create() method
+            repeat: -1,                 // "repeat: -1" means to repeat it ad infinitum
         })
         this.cameras.main.fadeIn(300);  // A short fade into the background
         this.tweens.add({               // Start a tween
@@ -59,49 +61,49 @@ class MenuScreen extends Phaser.Scene {
             delay: 1000,                // 1000ms
         })
         this.tweens.add({               // Start a tween
-            targets: underwater,
-            scaleY: {
-                value: .8,
-                duration: durationSky,
+            targets: underwater,        // Targeting the underwater animation
+            scaleY: {                   // Set the Y scale 
+                value: .8,              // Go from 1 to 0.8
+                duration: durationSky,  // over 2000ms
             },
-            y: {
-                value:800,
-                duration: durationSky,
+            y: {                        // Move in the y axis
+                value:800,              // to 800 pixels
+                duration: durationSky,  // over 2000ms
             },
-            ease: "Sine.easeInOut",
-            delay: 1000,
+            ease: "Sine.easeInOut",     // Do it dramatically
+            delay: 1000,                // 2000ms after scene load
         })
         this.tweens.add({               // Start a tween
-            targets: consume,
-            alpha: 1,
-            delay: 1700,
-            duration: 600
+            targets: consume,           // Target the consume image
+            alpha: 1,                   // Go from 0 to 1 alpha
+            delay: 1700,                // 1.7 seconds after scene load
+            duration: 600               // Over 600ms
         })
         this.tweens.add({               // Start a tween
-            targets: evolve,
-            alpha: 1,
-            delay: 2200,
-            duration: 600
+            targets: evolve,            // Targeting the evolve image
+            alpha: 1,                   // Go from 0 to 1 alpha
+            delay: 2200,                // 2.2 seconds after scene load
+            duration: 600               // Over 600ms
         })
         this.tweens.add({               // Start a tween
-            targets: survive,
-            alpha: 1,
-            delay: 2700,
-            duration: 1000
+            targets: survive,           // Targeting the survive image
+            alpha: 1,                   // Go from 0 to 1 alpha
+            delay: 2700,                // 2.7 seconds after scene load
+            duration: 1000              // over 1 second
         })
         this.tweens.add({               // Start a tween
-            targets: pressKey,
-            alpha: 1,
-            delay: 3500,
-            duration: 500,
-            y: 765
+            targets: pressKey,          // Targeting the pressKey text
+            alpha: 1,                   // From 0 to 1 alpha
+            delay: 3500,                // 3.5 seconds after scene load
+            duration: 500,              // Lasts .5 seconds
+            y: 765                      // Transition to 765 (just 15 pixels)
         })
         /*
         
         button to show instructions scene
         ? button to show story screen
 
-    */    
+        */    
     }
     update(){
 //================= Conditions for starting the game with/without touch controls ================
