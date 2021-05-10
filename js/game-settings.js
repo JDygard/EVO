@@ -103,7 +103,7 @@ const config = {
 // ===This is where all of the constants for game elements can be adjusted in one place.===
 
 // ==Debug mode : Turns off touch controls and menu scene for rapid testing
-var debugMode = false
+var debugMode = true
 
 // ==Rotation speed
 // Unupgraded speed
@@ -130,7 +130,9 @@ var baseMass = 30
 
 // General variables
 var player;
+var enemy1;
 var foodBit = 0;
+var food = [];
 var foodRemaining;
 var evoPoints = 0;
 var cursors;

@@ -20,9 +20,9 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         this.load.image('menu-press', 'assets/images/menuscreen/menu-press-any-key.png')    // Menu "Press any key" text
 
         for (let i = 0; i < 16; i++){                                                       // A loop to load all 16 debris images
-            this.load.image('debris' + i, 'assets/images/bg_debris/debris' + i + '.png');   // because doing it one-by-one is so pedestrian.
-            debris[i] = 'debris' + i;                                                       // And pop them into an array because why not?
+            debris[i] = this.load.image('debris' + i, 'assets/images/bg_debris/debris' + i + '.png');   // because doing it one-by-one is so pedestrian.
         }
+        
 
 //========================================== Animations spritesheet generation ==========================================//
 //============= Player animations =================
@@ -59,6 +59,10 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
                 frameHeight: 630                            // Size of the frames' height in the sheet in pixels
             }
         )
+        // Preload virtual joystick plugin assets
+        var rexURL;rexURL = 'js/rexvirtualjoystickplugin.min.js';
+        this.load.plugin('rexvirtualjoystickplugin', rexURL, true);
+
     }                                                                   
 
     create(){   // Create method is run after the scene and preloader loads. We're just using it here to launch the game.

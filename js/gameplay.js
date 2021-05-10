@@ -4,9 +4,6 @@ class Gameplay extends Phaser.Scene {
     }
 
     preload() {
-        // Preload virtual joystick plugin assets
-        var rexURL;rexURL = 'js/rexvirtualjoystickplugin.min.js';
-        this.load.plugin('rexvirtualjoystickplugin', rexURL, true);
         // Preload image assets
     }
 
@@ -27,14 +24,52 @@ class Gameplay extends Phaser.Scene {
     }
     makeFood() {
         for (let i = 0; i < 30; i++){
-            new Food(this, 0, 0, 'food')
+            food[i] = new Food(this, 0, 0, 'food')
         }
         foodRemaining = 30;
+    }
+    findFood() {
+        let distanceDecision = []
+        let boof;
+        let indexNumber;
+        let nearestFood;
+        let thisPos = {
+            x: enemy1.x, 
+            y: enemy1.y
+            };
+        for (let i = 0; i < food.length; i++){
+            let foodPos = {
+                x: food[i].x,
+                y: food[i].y,
+            }
+            distanceDecision.push(Math.abs(thisPos.x - foodPos.x) + Math.abs(thisPos.y - foodPos.y))
+        }
+        for (let i = 0; i < distanceDecision.length; i++){
+            if (boof == undefined){
+                boof = distanceDecision[i]
+            }
+            if (distanceDecision[i] <= boof){
+                boof = distanceDecision[i]
+                indexNumber = distanceDecision.indexOf(boof)
+                nearestFood = food[indexNumber]
+                console.log(i + ': ' + indexNumber + ' at value ' + boof)
+            }
+        }
+        enemy1.data.set('target', nearestFood)
     }
     makePlayer() {
         player = new Creature(this, 400, 300, 'base-player-idle');
         player.setDataEnabled();
         player.data.set('inMotion', false)
+    }
+    makeEnemy() {
+        enemy1 = new Creature(this, 400, 400, 'base-player-moving')
+        enemy1.anims.play({
+            key: 'base-player-move',
+            repeat: -1
+        })
+        enemy1.setDataEnabled();
+        enemy1.data.set('target', 0)
     }
     create(){
         console.log("gameplay create")
@@ -64,16 +99,12 @@ class Gameplay extends Phaser.Scene {
         })
 
         this.makeFood()                                   // Initial food generation
-
-        if (debugMode == true){                           // triple food during debug mode
-            for (let i = 0; i < 30; i++){
-                new Food(this, 0, 0, 'food')
-            }
-            for (let i = 0; i < 30; i++){
-                new Food(this, 0, 0, 'food')
-            }
-        }
-
+        this.makeEnemy()
+        this.findFood()
+        var rotateTo = this.plugins.get('rexRotateTo').add(enemy1, {
+            speed: 10
+        });
+        console.log(enemy1.data.get('target'))
         for (let i = 0; i < 16; i++){                     // A pair of loops to produce copies of the debris decoration
             new Debris(this, 0,0, 'debris' + i)
             new Debris(this, 0,0, 'debris' + i)
@@ -129,16 +160,21 @@ class Gameplay extends Phaser.Scene {
                         var foodSprite = foodBody.gameObject;     // for each of the colliders
                         if (foodSprite != null){
                             if (playerBody.label == 'mouth' && foodSprite.label == 'food'){ // If it's a mouth colliding with food
+                                foodSprite.label = 'eatenFood'              // Label the food in the mouth
+                                for (let i = 0; i < food.length; i++){      // So that it can be found in the food array
+                                    if (foodSprite.label == food[i].label){ // Compare the mouth food with the array 
+                                        food.splice(i, 1)                   // Cut out the eaten food
+                                        break                               // We're done here.
+                                    }
+                                }
                                 foodSprite.destroy()                                        // Destroy the food
                                 healthBar.data.values.evoPoints += 1;                       // Add an evoPoint
                                 evoPoints += 1;
-                                console.log(healthBar.data.values.evoPoints)                // And tell the console
                             }
                         }
                     }
                 }
             });
-
 //================================== Setting up the controls =============================================
 
         this.matter.world.setBounds(-4400, -2400, 9600, 5400);      //===== Don't let the player go out of bounds
@@ -171,6 +207,7 @@ class Gameplay extends Phaser.Scene {
     }
 
     update(){  // Update method, executed every frame
+
 //======================================= Calculate speed and activate the right animations ======================================
 //=====                  Thanks to me for this kickass piece of code. No credit to anyone, I'm pretty                        =====
 //=====                                                  proud of this bit.                                                  =====
@@ -217,5 +254,9 @@ class Gameplay extends Phaser.Scene {
         {
             player.thrust(baseSpeed);
         }   
+//============================== Enemy target acquisition, calculation and movement ===================
+//=====
+        enemy1.rotateTo.rotateTowardsPosition(nearestFood.x, nearestFood.y)
+
     }
 }
