@@ -39,6 +39,28 @@ class Creature extends Phaser.Physics.Matter.Sprite {        // Declare player s
   };
 }
 
+class Enemy extends Phaser.Physics.Matter.Sprite {
+  constructor(scene, x, y, texture) {
+    super(scene.matter.world, x, y, texture)
+    scene.sys.displayList.add(this);
+    scene.sys.displayList.add(this);    
+    const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
+    const { width: w, height: h } = this;                  // Declare some useful constants for dimensions
+    const enemyMainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { chamfer: { radius: 10 } }); // Create a constant for the main body hitbox
+    this.sensors = {                                       // Declaring all of the sensors used on this sprite
+      mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'enemyMouth' }) // The mouth, used for eating and eventually biting
+    };
+    enemyCompoundBody = Body.create({                     // Declaring the compoundBody containing all of the components of the Player sprite
+     parts: [enemyMainBody, this.sensors.mouth],                // The components.
+    });
+    this
+      .setExistingBody(enemyCompoundBody)//===== Applies the compoundBody defined above to the sprite
+      .setFixedRotation()           //===== Sets inertia to infinity so the player can't rotate
+      .setFrictionAir(baseFriction) //===== Set values for physics engine
+      .setMass(baseMass)            //===== Set values for physics engine
+  }
+}
+
 class Food extends Phaser.Physics.Matter.Sprite {
   constructor(scene, x, y, texture) {
     super(scene.matter.world, x, y, texture)
@@ -49,13 +71,7 @@ class Food extends Phaser.Physics.Matter.Sprite {
   }
 }
 
-class Enemy extends Phaser.Physics.Matter.Sprite {
-  constructor(scene, x, y, texture) {
-    super(scene.matter.world, x, y, texture)
-    scene.sys.displayList.add(this);
-    scene.sys.displayList.add(this);
-  }
-}
+
 
 class Debris extends Phaser.Physics.Matter.Sprite {
   constructor(scene, x, y, texture) {

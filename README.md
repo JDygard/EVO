@@ -83,6 +83,17 @@ When the mouth sensor on the Player object makes contact with the world boundary
 This bug has been tenacious as the sensor functions become more complex. We've had to implement a test before each if statement involving encountered variables. Another option would have been to give a value to the world boundary to eliminate
 the problem of null values clogging up functions.
 
+### Food target .destroy() bug crashes game.
+This one was a doozy! After adding an enemy and giving them the ability to seek out food, I started getting a repetitive crash from the phaser library. I was destroying something the game was using. I assumed it had to do with the
+code I had just added (the pairs loop .on('collisionstart' ) and had a difficult time figuring it out. I tried:
+- Moving the foodSprite.destroy() function to the end of, and out of the for loop.
+- Updating the entire Enemy class to differentiate it from the player
+- Resetting the isSensor objects to differentiate them
+
+It was only when I noticed that it was only the food being TARGETED by the enemy sprite that I realized the issue. When the targeted sprite was destroyed, the data object on the enemy became null. The game crashed because the control mechanism for the Enemy couldn't target null.
+
+This was fixed by separating the destruction of the sprite into the update method, and forcing all enemy sprites to decide on a new target each time the garbage would empty. This is effective because the eaten food is removed from the targeting array as part of the collision process and thus cannot be retargeted.
+
 ## Code credits
 
 1. [Rex's virtual joystick plugin](https://codepen.io/rexrainbow/pen/oyqvQY)
