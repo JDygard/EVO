@@ -3,6 +3,7 @@ class MenuScreen extends Phaser.Scene {
         super('MenuScreen')
     }
     create(){
+        
 //======================================= Adding images ======================================
 //===== There's a lot of moving pieces in this animation. We are adding them all in a    =====
 //=====                                   big chunk here.                                =====
@@ -21,6 +22,7 @@ class MenuScreen extends Phaser.Scene {
             frameRate: 3,                                                   // Speed at which the frames are cycled
         })
         let durationSky = 2000;                                             // A useful variable for adjusting the duration of the initial "dive" animation in one place
+
 //=============================== Menu intro ==============================
         underwater.anims.play({         // Start playing the underwater animation
             key: "animated-water",      // Call on the key declared above in the this.anims.create() method

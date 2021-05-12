@@ -50,6 +50,48 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
                 frameHeight: 126                                // Size of the frames' height in the sheet in pixels
             }
         )
+        this.load.spritesheet(                                          // Method to load spritesheets
+            "spike-player-idle",                                        // "Key" to refer to this sheet later
+            "assets/images/sprites/player_spritemap_spike_idle.png",  // Path to the spritesheet
+            {
+                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
+                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
+            }
+        )
+        this.load.spritesheet(                                          // Method to load spritesheets
+            "flagellum-player-idle",                                        // "Key" to refer to this sheet later
+            "assets/images/sprites/player_spritemap_flagellum_idle.png",  // Path to the spritesheet
+            {
+                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
+                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
+            }
+        )
+        this.load.spritesheet(                                          // Method to load spritesheets
+            "flagellum-player-moving",                                        // "Key" to refer to this sheet later
+            "assets/images/sprites/player_spritemap_flagellum_moving.png",  // Path to the spritesheet
+            {
+                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
+                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
+            }
+        )
+//=========== Enemy animations ======================
+
+        this.load.spritesheet(                                          // Method to load spritesheets
+            "base-enemy-move",                                        // "Key" to refer to this sheet later
+            "assets/images/sprites/enemy_spritemap_moving.png",  // Path to the spritesheet
+            {
+                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
+                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
+            }
+        )
+        this.load.spritesheet(                                          // Method to load spritesheets
+            "spike-enemy-move",                                        // "Key" to refer to this sheet later
+            "assets/images/sprites/enemy_spritemap_spike_moving.png",  // Path to the spritesheet
+            {
+                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
+                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
+            }
+        )
 //============ Menu water animation =============
         this.load.spritesheet(                              // Method to load spritesheets
             "animatedWater",                                // "Key" to refer to this sheet later

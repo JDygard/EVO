@@ -33,14 +33,14 @@ class Gameplay extends Phaser.Scene {
     }
 
 //===== How do enemies find food?
-    findFood() {  // Let's make a method to detect the nearest food bit
-        let distanceDecision = [] // An array to contain the distance to each food instance from the enemy
-        let boof;   // A throwaway variable to temporarily hold the distance for comparison
-        let indexNumber;    // A variable to hold the index number of the lowest distance
-        let nearestFood;    // A variable to hold the food instance nearest to the enemy
-        let thisPos = {     // A small object to hold the coordinates of the enemy
-            x: enemy1.x,    // X coord
-            y: enemy1.y     // Y coord
+    findFood() {                    // Let's make a method to detect the nearest food bit
+        let distanceDecision = []   // An array to contain the distance to each food instance from the enemy
+        let boof;                   // A throwaway variable to temporarily hold the distance for comparison
+        let indexNumber;            // A variable to hold the index number of the lowest distance
+        let nearestFood;            // A variable to hold the food instance nearest to the enemy
+        let thisPos = {             // A small object to hold the coordinates of the enemy
+            x: enemy1.x,            // X coord
+            y: enemy1.y             // Y coord
             };
         for (let i = 0; i < food.length; i++){ // for loop to iterate through the food array
             let foodPos = { // Create an object to hold the results
@@ -92,7 +92,7 @@ class Gameplay extends Phaser.Scene {
         } else if (angle < .1){
             enemy1.setAngularVelocity(-baseRotation / 1.5)
         }
-        if (Math.abs(angle) < 90){
+        if (Math.abs(angle) < Math.abs(4)){
             enemy1.thrust(baseSpeed)
         }
     }
@@ -112,7 +112,23 @@ class Gameplay extends Phaser.Scene {
         })
         this.anims.create({
             key: "spike-player-move",
-            frames: this.anims.generateFrameNumbers("spike-player-move", { start: 0, end: 3})
+            frames: this.anims.generateFrameNumbers("spike-player-move", { start: 0, end: 3}),
+            frameRate: 5
+        });
+        this.anims.create({
+            key: "spike-player-idle",
+            frames: this.anims.generateFrameNumbers("spike-player-idle", { start: 0, end: 3 }),
+            frameRate: 5,
+        });
+        this.anims.create({
+            key: "flagellum-player-move",
+            frames: this.anims.generateFrameNumbers("flagellum-player-moving", { start: 0, end: 3 }),
+            frameRate: 5,
+        });
+        this.anims.create({
+            key: "flagellum-player-idle",
+            frames: this.anims.generateFrameNumbers("flagellum-player-idle", { start: 0, end: 3 }),
+            frameRate: 5,
         })
 
 //================================== Building the play area ===============================================
