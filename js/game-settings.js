@@ -136,16 +136,19 @@ var food = [];
 var foodRemaining;
 var evoPoints = 0;
 var cursors;
-var background;
-var pointer;
-var touchX;
-var touchY;
-var healthBar;
-var healthBarScale = 1.5
-var startGame = false
-var healthContainer
-var pointText;
-var garbage
+var healthBar; // The gameObject that displays the UI for the healthbar, evo points and dropdown evolution menu. Also stores most game values.
+var healthBarScale = 1.5 //
+var startGame = false // Keeps the listener for any key presses in the menu screen separate from the function that starts the game
+var healthContainer; // A container that holds all of the graphics for the UI
+var pointText; // The text displaying the current points value
+var garbage; // A variable for temporarily storing gameObjects queued for deletion to avoid removing them from the game in the middle of functions
+var enemyGroup = []  // An array for storing the actual instance of each enemy gameObject
+var enemies = [   // An array for storing the current evolution stage of each enemy. The value of each being the name of the relevant animation for that stage
+    "base-enemy-move",
+    "base-enemy-move",
+    "base-enemy-move",
+];
+console.log(enemies)
 var posX = [0,0];
 var posY = [0,0];
 var moving = false;//Variable for testing if the player is in motion

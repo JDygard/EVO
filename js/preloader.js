@@ -1,7 +1,7 @@
 class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extension of the scene.
     constructor() {                   // Calling the constructor to build it.  
         super('Preloader');           // And the super to call functions from the parent class. 
-    }                                 
+    }                 
 
 //======================== The preload method is used by the library once at the loading of the scene. ==================
 //===== We are loading our sprites and images here. Since images are handled by the textureManager, they            =====
@@ -115,4 +115,5 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
             this.scene.start('MenuScreen')                              // Launch the game.
         }
     }
+    
 }

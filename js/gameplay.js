@@ -34,66 +34,74 @@ class Gameplay extends Phaser.Scene {
 
 //===== How do enemies find food?
     findFood() {                    // Let's make a method to detect the nearest food bit
-        let distanceDecision = []   // An array to contain the distance to each food instance from the enemy
-        let boof;                   // A throwaway variable to temporarily hold the distance for comparison
-        let indexNumber;            // A variable to hold the index number of the lowest distance
-        let nearestFood;            // A variable to hold the food instance nearest to the enemy
-        let thisPos = {             // A small object to hold the coordinates of the enemy
-            x: enemy1.x,            // X coord
-            y: enemy1.y             // Y coord
-            };
-        for (let i = 0; i < food.length; i++){ // for loop to iterate through the food array
-            let foodPos = { // Create an object to hold the results
-                x: food[i].x,   // Store the X coordinate of each food bit
-                y: food[i].y,   // Store the Y coordinate of each food bit
+        for (let i = 0; i < enemyGroup.length; i++){
+            let distanceDecision = []   // An array to contain the distance to each food instance from the enemy
+            let testNumber;                   // A throwaway variable to temporarily hold the distance for comparison
+            let indexNumber;            // A variable to hold the index number of the lowest distance
+            let nearestFood;            // A variable to hold the food instance nearest to the enemy
+            let thisPos = {             // A small object to hold the coordinates of the enemy
+                x: enemyGroup[i].x,            // X coord
+                y: enemyGroup[i].y             // Y coord
+                };
+            for (let i = 0; i < food.length; i++){ // for loop to iterate through the food array
+                let foodPos = { // Create an object to hold the results
+                    x: food[i].x,   // Store the X coordinate of each food bit
+                    y: food[i].y,   // Store the Y coordinate of each food bit
+                }
+                distanceDecision.push(Math.abs(thisPos.x - foodPos.x) + Math.abs(thisPos.y - foodPos.y)) // Push the distances into an array
             }
-            distanceDecision.push(Math.abs(thisPos.x - foodPos.x) + Math.abs(thisPos.y - foodPos.y)) // Push the distances into an array
-        }
-        for (let i = 0; i < distanceDecision.length; i++){ //Iterate through the distance array
-            if (boof == undefined){             // If there is no definiton for the variable
-                boof = distanceDecision[i]      // Set it to the first index
-            }                                   // Then compare the variable to each index in the array. 
-            if (distanceDecision[i] <= boof){   // If we find a lower distance value
-                boof = distanceDecision[i]      // Set the variable to the lower value
-                indexNumber = distanceDecision.indexOf(boof)    //Collect the index of that value  
-                nearestFood = food[indexNumber] // And since the index for the distance array matches that of the food bit array, we can simply take the
-                                                // same index from the food array and get the corresponding food bit, which is closest to the enemy.
+            for (let i = 0; i < distanceDecision.length; i++){ //Iterate through the distance array
+                if (testNumber == undefined){             // If there is no definiton for the variable
+                    testNumber = distanceDecision[i]      // Set it to the 0 index
+                }                                   // Then compare the variable to each index in the array. 
+                if (distanceDecision[i] <= testNumber){   // If we find a lower distance value
+                    testNumber = distanceDecision[i]      // Set the variable to the lower value
+                    indexNumber = distanceDecision.indexOf(testNumber)    //Collect the index of that value  
+                    nearestFood = food[indexNumber] // And since the index for the distance array matches that of the food bit array, we can simply take the
+                                                    // same index from the food array and get the corresponding food bit, which is closest to the enemy.
+                }
             }
+            enemyGroup[i].data.set('target', nearestFood)  // Now hand it off to the enemy gameobject
         }
-        enemy1.data.set('target', nearestFood)  // Now hand it off to the enemy gameobject
     }
     makePlayer() {
         player = new Creature(this, 400, 300, 'base-player-idle');
         player.setDataEnabled();
         player.data.set('inMotion', false)
     }
-    makeEnemy() {
-        enemy1 = new Enemy(this, 400, 400, 'base-player-moving')
-        enemy1.anims.play({
-            key: 'base-player-move',
-            repeat: -1
-        })
-        enemy1.setDataEnabled();
-        enemy1.data.set('target', 0)
+    makeEnemies() {
+        for (let i = 0; i < enemies.length; i++){
+            let currentMove = enemies[i]
+            enemyGroup[i] = new Enemy(this, 400, 400, enemies[i])
+            enemyGroup[i].anims.play({
+                key: currentMove,
+                repeat: -1,
+            })
+            enemyGroup[i].setDataEnabled();
+            enemyGroup[i].data.set('target', 0);
+        }
     }
 
     moveToTarget() {
-        let target = enemy1.data.get('target');
-        let angle1 = Phaser.Math.Angle.BetweenPoints(enemy1, target);
-        let angle2 = enemy1.rotation
-        let angle = angle1 - angle2
-        if (angle > .4){
-            enemy1.setAngularVelocity(baseRotation)
-        } else if (angle > .1){
-            enemy1.setAngularVelocity(baseRotation / 1.5)
-        }
-        if (angle < .4){
-            enemy1.setAngularVelocity(-baseRotation)
-        } else if (angle < .1){
-            enemy1.setAngularVelocity(-baseRotation / 1.5)
-        }
-        if (Math.abs(angle) < Math.abs(4)){
-            enemy1.thrust(baseSpeed)
+        for (let i = 0; i < enemyGroup.length; i++){
+            let enemy = enemyGroup[i]
+            let target = enemy.data.get('target');
+            let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
+            let angle2 = enemy.rotation
+            let angle = angle1 - angle2
+            if (angle > .4){
+                enemy.setAngularVelocity(baseRotation)
+            } else if (angle > .1){
+                enemy.setAngularVelocity(baseRotation / 1.5)
+            }
+            if (angle < .4){
+                enemy.setAngularVelocity(-baseRotation)
+            } else if (angle < .1){
+                enemy.setAngularVelocity(-baseRotation / 1.5)
+            }
+            if (Math.abs(angle) < Math.abs(6)){
+                enemy.thrust(baseSpeed)
+            }
         }
     }
     create(){
@@ -131,6 +139,18 @@ class Gameplay extends Phaser.Scene {
             frameRate: 5,
         })
 
+//=============================== Enemy animation definitions =======================================
+        this.anims.create({
+            key: "base-enemy-move",
+            frames: this.anims.generateFrameNumbers("base-enemy-move", { start: 0, end: 3 }),
+            frameRate: 5,
+        });
+        this.anims.create({
+            key: "spike-enemy-move",
+            frames: this.anims.generateFrameNumbers("spike-enemy-move", { start: 0, end: 3 }),
+            frameRate: 5,
+        });
+
 //================================== Building the play area ===============================================
         this.add.background(400, 300);                    // Set scene background                    
         this.makePlayer()                                 // Calling the Player method to create the player object
@@ -140,7 +160,7 @@ class Gameplay extends Phaser.Scene {
         })
 
         this.makeFood()                                   // Initial food generation
-        this.makeEnemy()
+        this.makeEnemies()
         this.findFood()
         for (let i = 0; i < 16; i++){                     // A pair of loops to produce copies of the debris decoration
             new Debris(this, 0,0, 'debris' + i)
