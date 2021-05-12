@@ -225,8 +225,9 @@ class Gameplay extends Phaser.Scene {
                         var otherSprite = otherBody.gameObject;     // for each of the colliders
                         if (otherSprite != null){
                             console.log(otherBody.label + '::' + sensorBody.label)
-                            if (sensorBody.label === 'spike' && otherSprite.label == 'enemyBody'){
-                            }
+                            if (sensorBody.label === 'spike' && otherBody.label == 'enemyBody'){
+                                                                          
+                                }
                             if (sensorBody.label === 'enemyMouth' && otherSprite.label == 'food'){ // If it's an enemy's mouth colliding with food
                                 otherSprite.label = 'eatenFood'              // Label the food in the mouth
                                 for (let i = 0; i < food.length; i++){      // So that it can be found in the food array
