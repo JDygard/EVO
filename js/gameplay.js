@@ -34,38 +34,42 @@ class Gameplay extends Phaser.Scene {
 
 //===== How do enemies find food?
     findFood() {                    // Let's make a method to detect the nearest food bit
-        for (let i = 0; i < enemyGroup.length; i++){
-            let distanceDecision = []   // An array to contain the distance to each food instance from the enemy
-            let testNumber;                   // A throwaway variable to temporarily hold the distance for comparison
-            let indexNumber;            // A variable to hold the index number of the lowest distance
-            let nearestFood;            // A variable to hold the food instance nearest to the enemy
-            let thisPos = {             // A small object to hold the coordinates of the enemy
-                x: enemyGroup[i].x,            // X coord
-                y: enemyGroup[i].y             // Y coord
-                };
-            for (let i = 0; i < food.length; i++){ // for loop to iterate through the food array
-                let foodPos = { // Create an object to hold the results
-                    x: food[i].x,   // Store the X coordinate of each food bit
-                    y: food[i].y,   // Store the Y coordinate of each food bit
+        if (food.length > 0){       // First we make sure there's some food to find
+            for (let i = 0; i < enemyGroup.length; i++){
+                let distanceDecision = []   // An array to contain the distance to each food instance from the enemy
+                let testNumber;                   // A throwaway variable to temporarily hold the distance for comparison
+                let indexNumber;            // A variable to hold the index number of the lowest distance
+                let nearestFood;            // A variable to hold the food instance nearest to the enemy
+                let thisPos = {             // A small object to hold the coordinates of the enemy
+                    x: enemyGroup[i].x,            // X coord
+                    y: enemyGroup[i].y             // Y coord
+                    };
+                for (let i = 0; i < food.length; i++){ // for loop to iterate through the food array
+                    let foodPos = { // Create an object to hold the results
+                        x: food[i].x,   // Store the X coordinate of each food bit
+                        y: food[i].y,   // Store the Y coordinate of each food bit
+                    }
+                    distanceDecision.push(Math.abs(thisPos.x - foodPos.x) + Math.abs(thisPos.y - foodPos.y)) // Push the distances into an array
                 }
-                distanceDecision.push(Math.abs(thisPos.x - foodPos.x) + Math.abs(thisPos.y - foodPos.y)) // Push the distances into an array
-            }
-            for (let i = 0; i < distanceDecision.length; i++){ //Iterate through the distance array
-                if (testNumber == undefined){             // If there is no definiton for the variable
-                    testNumber = distanceDecision[i]      // Set it to the 0 index
-                }                                   // Then compare the variable to each index in the array. 
-                if (distanceDecision[i] <= testNumber){   // If we find a lower distance value
-                    testNumber = distanceDecision[i]      // Set the variable to the lower value
-                    indexNumber = distanceDecision.indexOf(testNumber)    //Collect the index of that value  
-                    nearestFood = food[indexNumber] // And since the index for the distance array matches that of the food bit array, we can simply take the
-                                                    // same index from the food array and get the corresponding food bit, which is closest to the enemy.
+                for (let i = 0; i < distanceDecision.length; i++){ //Iterate through the distance array
+                    if (testNumber == undefined){             // If there is no definiton for the variable
+                        testNumber = distanceDecision[i]      // Set it to the 0 index
+                    }                                   // Then compare the variable to each index in the array. 
+                    if (distanceDecision[i] <= testNumber){   // If we find a lower distance value
+                        testNumber = distanceDecision[i]      // Set the variable to the lower value
+                        indexNumber = distanceDecision.indexOf(testNumber)    //Collect the index of that value  
+                        nearestFood = food[indexNumber] // And since the index for the distance array matches that of the food bit array, we can simply take the
+                                                        // same index from the food array and get the corresponding food bit, which is closest to the enemy.
+                    }
                 }
+                enemyGroup[i].data.set('target', nearestFood)  // Now hand it off to the enemy gameobject
             }
-            enemyGroup[i].data.set('target', nearestFood)  // Now hand it off to the enemy gameobject
+        } else {
+            newRound()
         }
     }
     makePlayer() {
-        player = new Creature(this, 400, 300, 'base-player-idle');
+        player = new Player(this, 400, 300, 'base-player-idle');
         player.setDataEnabled();
         player.data.set('inMotion', false)
     }
@@ -79,6 +83,7 @@ class Gameplay extends Phaser.Scene {
             })
             enemyGroup[i].setDataEnabled();
             enemyGroup[i].data.set('target', 0);
+            enemyGroup[i].data.set('hp', 10)
         }
     }
 
@@ -103,6 +108,10 @@ class Gameplay extends Phaser.Scene {
                 enemy.thrust(baseSpeed)
             }
         }
+    }
+
+    newRound() {
+        scene.start("Gameplay")
     }
     create(){
         console.log("gameplay create")
@@ -198,43 +207,46 @@ class Gameplay extends Phaser.Scene {
 
                     if (pairs[i].isSensor)                        // If there is a sensor
                     {
-                        var foodBody;                             // Label for the non-sensor
-                        var playerBody;                           // and for the sensor
+                        var otherBody;                             // Label for the non-sensor
+                        var sensorBody;                           // and for the sensor
 
                         if (bodyA.isSensor)                       // Then work out which one
                         {
-                            foodBody = bodyB;                     // ISN'T the sensor
-                            playerBody = bodyA;                   // and which one is
+                            otherBody = bodyB;                     // ISN'T the sensor
+                            sensorBody = bodyA;                   // and which one is
                         }
                         else if (bodyB.isSensor)
                         {
-                            foodBody = bodyA;
-                            playerBody = bodyB;
+                            otherBody = bodyA;
+                            sensorBody = bodyB;
                         }
 
-                        var playerSprite = playerBody.gameObject; // Now grab the game object
-                        var foodSprite = foodBody.gameObject;     // for each of the colliders
-                        if (foodSprite != null){
-                            if (playerBody.label === 'enemyMouth' && foodSprite.label == 'food'){ // If it's an enemy's mouth colliding with food
-                                foodSprite.label = 'eatenFood'              // Label the food in the mouth
+                        var sensorSprite = sensorBody.gameObject; // Now grab the game object
+                        var otherSprite = otherBody.gameObject;     // for each of the colliders
+                        if (otherSprite != null){
+                            console.log(otherBody.label + '::' + sensorBody.label)
+                            if (sensorBody.label === 'spike' && otherSprite.label == 'enemyBody'){
+                            }
+                            if (sensorBody.label === 'enemyMouth' && otherSprite.label == 'food'){ // If it's an enemy's mouth colliding with food
+                                otherSprite.label = 'eatenFood'              // Label the food in the mouth
                                 for (let i = 0; i < food.length; i++){      // So that it can be found in the food array
-                                    if (foodSprite.label == food[i].label){ // Compare the mouth food with the array 
+                                    if (otherSprite.label == food[i].label){ // Compare the mouth food with the array 
                                         food.splice(i, 1)                   // Cut out the eaten food out of the array
                                         break                               // We're done here.
                                     }
                                 }
-                                garbage = foodSprite;                   // Flag the food for cleanup
+                                garbage = otherSprite;                   // Flag the food for cleanup
                                 break
                             }
-                            if (playerBody.label === 'mouth' && foodSprite.label == 'food'){ // If it's a mouth colliding with food
-                                foodSprite.label = 'eatenFood'              // Label the food in the mouth
+                            if (sensorBody.label === 'mouth' && otherSprite.label == 'food'){ // If it's a mouth colliding with food
+                                otherSprite.label = 'eatenFood'              // Label the food in the mouth
                                 for (let i = 0; i < food.length; i++){      // So that it can be found in the food array
-                                    if (foodSprite.label == food[i].label){ // Compare the mouth food with the array 
+                                    if (otherSprite.label == food[i].label){ // Compare the mouth food with the array 
                                         food.splice(i, 1)                   // Cut out the eaten food out of the array
                                         break                               // We're done here.
                                     }
                                 }
-                                garbage = foodSprite;                                  // Flag the food for cleanup
+                                garbage = otherSprite;                                  // Flag the food for cleanup
                                 healthBar.data.values.evoPoints += 1;                       // Add an evoPoint
                                 evoPoints += 1;
                             }
@@ -242,6 +254,7 @@ class Gameplay extends Phaser.Scene {
                     }
                 }
             });
+            
 //================================== Setting up the controls =============================================
 
         this.matter.world.setBounds(-4400, -2400, 9600, 5400);      //===== Don't let the player go out of bounds
@@ -274,6 +287,18 @@ class Gameplay extends Phaser.Scene {
     }
 
     update(){  // Update method, executed every frame
+
+// ======================== Controlling for dead enemies =====================
+
+        for (let i = 0; i < enemyGroup.length; i++){
+            let hp = enemyGroup[i].data.get('hp')
+            if (hp <= 0){
+                garbage = enemyGroup[i]
+            }
+        }                  
+
+// =============== Statement for destroying flagged gameObjects ================
+
         if (garbage != undefined){                      // If there's food to be destroyed
             this.findFood()                             // Make all the enemies reset their food target
             garbage.destroy()                           // And destroy the marked food objects

@@ -17,7 +17,7 @@ const config = {
         default: 'matter', // A physics engine with collisions and complex material interaction
         matter: { 
             
-            /*debug: {
+            debug: {
 
                 showAxes: false,
                 showAngleIndicator: true,
@@ -82,7 +82,7 @@ const config = {
     
                 showConvexHulls: true,
                 hullColor: 0xd703d0
-            },*/
+            },
             
             gravity: {
                 x: 0,

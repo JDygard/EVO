@@ -17,19 +17,21 @@ class BackgroundPlugin extends Phaser.Plugins.BasePlugin {
 
 //================================== Physics enabled sprite classes ==================================
 //========= Player sprite ( Adapted from Michael Hadleys example: https://codesandbox.io/s/5vlzl8j9vp?file=/js/player.js )
-class Creature extends Phaser.Physics.Matter.Sprite {        // Declare player sprite class as child of sprite class
+class Player extends Phaser.Physics.Matter.Sprite {        // Declare player sprite class as child of sprite class
 	constructor(scene,x,y,texture) {                         // Call the constructor
     super(scene.matter.world, x, y, texture)               // Call the super with physics engine
     scene.sys.displayList.add(this);                       // Automatically add the sprite to the display list
     scene.sys.updateList.add(this);                        // Automatically add the sprite to the update list
     const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
     const { width: w, height: h } = this;                  // Declare some useful constants for dimensions
-    const mainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { chamfer: { radius: 10 } }); // Create a constant for the main body hitbox
+    const mainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { chamfer: { radius: 10 }, label: 'playerBody' }); // Create a constant for the main body hitbox
     this.sensors = {                                       // Declaring all of the sensors used on this sprite
-      mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'mouth' }) // The mouth, used for eating and eventually biting
+      mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'mouth' }), // The mouth, used for eating and eventually biting
+      spike: Bodies.trapezoid((w * 0.5) + 40, h * 0.5 -3, 12, 32, 1, { angle: 1.57 }),
+      spike2: Bodies.trapezoid((w * 0.5) + 50, h * 0.5 -3, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'spike'})
     };
     playerCompoundBody = Body.create({                     // Declaring the compoundBody containing all of the components of the Player sprite
-     parts: [mainBody, this.sensors.mouth],                // The components.
+     parts: [mainBody, this.sensors.mouth, this.sensors.spike, this.sensors.spike2],                // The components.
     });
     this
       .setExistingBody(playerCompoundBody)//===== Applies the compoundBody defined above to the sprite
@@ -46,7 +48,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite {
     scene.sys.displayList.add(this);    
     const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
     const { width: w, height: h } = this;                  // Declare some useful constants for dimensions
-    const enemyMainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { chamfer: { radius: 10 } }); // Create a constant for the main body hitbox
+    const enemyMainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { label: 'enemyBody', chamfer: { radius: 10 } }); // Create a constant for the main body hitbox
     this.sensors = {                                       // Declaring all of the sensors used on this sprite
       mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'enemyMouth' }) // The mouth, used for eating and eventually biting
     };
