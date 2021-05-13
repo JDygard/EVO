@@ -129,6 +129,7 @@ var baseMass = 30
 // =========This is where the global variables for the game are being declared ===========
 
 // General variables
+var newRound = false;
 var player;
 var enemy1;
 var foodBit = 0;

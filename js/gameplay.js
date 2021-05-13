@@ -4,7 +4,6 @@ class Gameplay extends Phaser.Scene {
     }
 
     preload() {
-        // Preload image assets
     }
 
 //================================== Declaring general use methods ================================
@@ -65,7 +64,7 @@ class Gameplay extends Phaser.Scene {
                 enemyGroup[i].data.set('target', nearestFood)  // Now hand it off to the enemy gameobject
             }
         } else {
-            newRound()
+            this.newRound()
         }
     }
     makePlayer() {
@@ -87,31 +86,40 @@ class Gameplay extends Phaser.Scene {
         }
     }
 
+    knockBack(vector, object){
+        this.tweens.add({
+            target: object,
+        })
+
+    }
+
     moveToTarget() {
         for (let i = 0; i < enemyGroup.length; i++){
             let enemy = enemyGroup[i]
-            let target = enemy.data.get('target');
-            let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
-            let angle2 = enemy.rotation
-            let angle = angle1 - angle2
-            if (angle > .4){
-                enemy.setAngularVelocity(baseRotation)
-            } else if (angle > .1){
-                enemy.setAngularVelocity(baseRotation / 1.5)
-            }
-            if (angle < .4){
-                enemy.setAngularVelocity(-baseRotation)
-            } else if (angle < .1){
-                enemy.setAngularVelocity(-baseRotation / 1.5)
-            }
-            if (Math.abs(angle) < Math.abs(6)){
-                enemy.thrust(baseSpeed)
+            if (enemy.data !== undefined){
+                let target = enemy.data.get('target');
+                let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
+                let angle2 = enemy.rotation
+                let angle = angle1 - angle2
+                if (angle > .4){
+                    enemy.setAngularVelocity(baseRotation)
+                } else if (angle > .1){
+                    enemy.setAngularVelocity(baseRotation / 1.5)
+                }
+                if (angle < .4){
+                    enemy.setAngularVelocity(-baseRotation)
+                } else if (angle < .1){
+                    enemy.setAngularVelocity(-baseRotation / 1.5)
+                }
+                if (Math.abs(angle) < Math.abs(6)){
+                    enemy.thrust(baseSpeed)
+                }
             }
         }
     }
 
     newRound() {
-        scene.start("Gameplay")
+        this.scene.start("Gameplay")
     }
     create(){
         console.log("gameplay create")
@@ -224,9 +232,34 @@ class Gameplay extends Phaser.Scene {
                         var sensorSprite = sensorBody.gameObject; // Now grab the game object
                         var otherSprite = otherBody.gameObject;     // for each of the colliders
                         if (otherSprite != null){
-                            console.log(otherBody.label + '::' + sensorBody.label)
-                            if (sensorBody.label === 'spike' && otherBody.label == 'enemyBody'){
-                                                                          
+                            if (sensorBody.label === 'spike' && otherBody.label == 'enemyBody'){ 
+                                    for (let i = 0; i < enemyGroup.length; i++){
+                                        let targetPos = {
+                                            x: otherSprite.x,
+                                            y: otherSprite.y,
+                                        }
+                                        let enemyPos = {
+                                            x: enemyGroup[i].x,
+                                            y: enemyGroup[i].y,
+                                        }
+                                        let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y)
+                                        if (result > -1 && result < 1 ){
+                                            let bounceAngle = Phaser.Math.Angle.BetweenPoints(player, enemyGroup[i])
+                                            console.log(bounceAngle)
+                                            let enemy = enemyGroup[i];
+                                            let vec = new Phaser.Math.Vector2()
+                                                .setToPolar(bounceAngle)
+                                                .setLength(100)
+                                            enemy.setTint("0xff4646")
+                                            setTimeout(function(){
+                                                enemy.clearTint()
+                                            }, 75)
+                                            console.log(vec)
+                                            let hp = enemy.data.get("hp");
+                                            hp -= 3;
+                                            enemy.data.set("hp", hp)
+                                        }
+                                    }
                                 }
                             if (sensorBody.label === 'enemyMouth' && otherSprite.label == 'food'){ // If it's an enemy's mouth colliding with food
                                 otherSprite.label = 'eatenFood'              // Label the food in the mouth
@@ -288,27 +321,30 @@ class Gameplay extends Phaser.Scene {
     }
 
     update(){  // Update method, executed every frame
-
 // ======================== Controlling for dead enemies =====================
-
         for (let i = 0; i < enemyGroup.length; i++){
-            let hp = enemyGroup[i].data.get('hp')
-            if (hp <= 0){
-                garbage = enemyGroup[i]
+            if (enemyGroup[i].data !== undefined){
+                let hp = enemyGroup[i].data.get('hp')
+                if (hp <= 0){
+                    garbage = enemyGroup[i];
+                    enemyGroup.splice(i, 1)
+                }
             }
         }                  
 
 // =============== Statement for destroying flagged gameObjects ================
 
         if (garbage != undefined){                      // If there's food to be destroyed
-            this.findFood()                             // Make all the enemies reset their food target
-            garbage.destroy()                           // And destroy the marked food objects
+            if (garbage.label = 'eatenFood'){           // If it's food disappearing
+                this.findFood()                            // Make all the enemies reset their food target
+            }
+            garbage.destroy()                           // And destroy the marked objects
+            garbage = undefined;
         }
 
 //======================================= Calculate speed and activate the right animations ======================================
 //=====                  Thanks to me for this kickass piece of code. No credit to anyone, I'm pretty                        =====
 //=====                                                  proud of this bit.                                                  =====
-
         posX.unshift(player.x)                                                             // Put the current position of the
         posY.unshift(player.y)                                                             // player in the front of the array
         let oldPosX = posX.pop()                                                           // Save and pop off the last frame's
@@ -326,7 +362,7 @@ class Gameplay extends Phaser.Scene {
                 ({                                                // 
                     key: currentMoveAnimation,                    // the current move animation
                     repeat: -1,                                   // forever.
-                })
+                });
                 } else {                                          // Otherwise,
                     player.anims.play({                           // go back to
                         key: currentIdleAnimation,                // the current idle animation
@@ -334,7 +370,6 @@ class Gameplay extends Phaser.Scene {
                 })
             }
         })
-
 //============================== Listen for control inputs and execute movements ======================
 //=====  Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors   =====
 //=====                     for the modified example code used here.                              =====
