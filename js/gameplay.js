@@ -4,23 +4,45 @@ class Gameplay extends Phaser.Scene {
     }
 
     preload() {
+        this.load.scenePlugin({
+            key: 'rexuiplugin',
+            url: 'js/rexuiplugin.min.js',
+            sceneKey: 'rexUI'
+        });
     }
 
 //================================== Declaring general use methods ================================
     makeBar(){
-        healthBar = this.add.sprite(0, 0, 'healthbar').setScrollFactor(0).setDepth(5);
+        var hitBox = new Phaser.Geom.Rectangle(175, 100, 225, 75)
+        healthBar = this.add.sprite(0, 0, 'healthbar').setScrollFactor(0).setDepth(5).setInteractive();
         healthBar.setDataEnabled();
-        healthBar.data.set('evoPoints', 0)
+        healthBar.data.set('evoPoints', 0);
         if (debugMode == true){
             healthBar.data.set('evoPoints', 9)
-        }
+        };
         pointText = this.add.text(-45, 0, '', {fontFamily: '"Roboto Mono", sans serif'});
         pointText.setText(evoPoints).setScrollFactor(0).setColor('#264653').setDepth(6).setFontSize(36).setOrigin(.5);
         healthContainer = this.add.container(175, 100);
-        healthContainer.add(pointText)
-        healthContainer.add(healthBar)
-        healthContainer.setScale(healthBarScale)
+        healthContainer.add(pointText);
+        healthContainer.add(healthBar);
+        healthContainer.setScale(healthBarScale); 
+        var scene = this,
+        menu = undefined;
+        this.print = this.add.text(0, 0, '');
+        healthBar.on('pointerdown', function (pointer) {
+            if (menu === undefined) {
+                menu = createMenu(scene, healthContainer.x - 35, healthContainer.y + 35, items, function (button) {
+                    scene.print.text += 'Click ' + button.text + '\n';
+                });
+            } else if (!menu.isInTouching(pointer)) {
+                menu.collapse();
+                menu = undefined;
+                scene.print.text = '';
+            }
+        }, this);
     }
+
+    
 
 // =============================== Food related methods ================================
 // ===== Generate food and commit them to an array
@@ -84,13 +106,6 @@ class Gameplay extends Phaser.Scene {
             enemyGroup[i].data.set('target', 0);
             enemyGroup[i].data.set('hp', 10)
         }
-    }
-
-    knockBack(vector, object){
-        this.tweens.add({
-            target: object,
-        })
-
     }
 
     moveToTarget() {
@@ -309,7 +324,10 @@ class Gameplay extends Phaser.Scene {
         if (touch !== true) {                                       //== Hide the joystick if the player is using keyboard controls
             joyStick.visible = false
         }
+//===================================================================================================================
 
+
+//===================================================================================================================
     }    
     
     dumpJoyStickState() {                                           //== Method to handle the output from the joystick

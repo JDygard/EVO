@@ -18,6 +18,7 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         this.load.image('menu-evolve', 'assets/images/menuscreen/menu-evolve.png')          // Menu evolve text
         this.load.image('menu-survive', 'assets/images/menuscreen/menu-survive.png')        // Menu survive text
         this.load.image('menu-press', 'assets/images/menuscreen/menu-press-any-key.png')    // Menu "Press any key" text
+        this.load.image('evo-menu-bg', 'assets/images/evolvemenu/evo-menu-background.png')   // Evo menu scene background
 
         for (let i = 0; i < 16; i++){                                                       // A loop to load all 16 debris images
             debris[i] = this.load.image('debris' + i, 'assets/images/bg_debris/debris' + i + '.png');   // because doing it one-by-one is so pedestrian.
@@ -104,7 +105,6 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         // Preload virtual joystick plugin assets
         var rexURL;rexURL = 'js/rexvirtualjoystickplugin.min.js';
         this.load.plugin('rexvirtualjoystickplugin', rexURL, true);
-
     }                                                                   
 
     create(){   // Create method is run after the scene and preloader loads. We're just using it here to launch the game.
