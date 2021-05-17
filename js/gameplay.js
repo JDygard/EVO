@@ -206,6 +206,8 @@ class Gameplay extends Phaser.Scene {
 //========================== Setting up pair interactions with sensors ====================================
 //======= Thanks to https://labs.phaser.io/edit.html?src=src/physics\matterjs\compound%20sensors.js =======
 //=======                     for the code adapted into this section                                =======
+//======= This is all of the compound body sensor interactions in the game. Dealing damage, eating  =======
+//=======                      food, flagging for destruction is all here.                          =======
         this.matter.world.on('collisionstart', function (event) { // Whenever two things collide,
             var pairs = event.pairs;                              // give them a useful nickname
                 for (var i = 0; i < pairs.length; i++)            // Then check them all out
@@ -231,33 +233,31 @@ class Gameplay extends Phaser.Scene {
 
                         var sensorSprite = sensorBody.gameObject; // Now grab the game object
                         var otherSprite = otherBody.gameObject;     // for each of the colliders
-                        if (otherSprite != null){
-                            if (sensorBody.label === 'spike' && otherBody.label == 'enemyBody'){ 
-                                    for (let i = 0; i < enemyGroup.length; i++){
-                                        let targetPos = {
-                                            x: otherSprite.x,
-                                            y: otherSprite.y,
+                        if (otherSprite != null){                 // Test to make sure the collision isn't with the game border, which causes a crash
+                            if (sensorBody.label === 'spike' && otherBody.label == 'enemyBody'){    // If the collision is between the player's spike and the enemy's body
+                                    for (let i = 0; i < enemyGroup.length; i++){    // Iterate through the existing enemies
+                                        let targetPos = {                           // Store the position of the non-sensor body
+                                            x: otherSprite.x,                       // in the x dimension
+                                            y: otherSprite.y,                       // and in the y dimension
                                         }
-                                        let enemyPos = {
-                                            x: enemyGroup[i].x,
-                                            y: enemyGroup[i].y,
+                                        let enemyPos = {                            // Store the position of each enemy for comparison
+                                            x: enemyGroup[i].x,                     // In the x
+                                            y: enemyGroup[i].y,                     // and y
                                         }
-                                        let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y)
-                                        if (result > -1 && result < 1 ){
-                                            let bounceAngle = Phaser.Math.Angle.BetweenPoints(player, enemyGroup[i])
-                                            console.log(bounceAngle)
-                                            let enemy = enemyGroup[i];
-                                            let vec = new Phaser.Math.Vector2()
-                                                .setToPolar(bounceAngle)
-                                                .setLength(100)
-                                            enemy.setTint("0xff4646")
-                                            setTimeout(function(){
-                                                enemy.clearTint()
-                                            }, 75)
-                                            console.log(vec)
-                                            let hp = enemy.data.get("hp");
-                                            hp -= 3;
-                                            enemy.data.set("hp", hp)
+                                        let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y)  // See how large the difference between the coordinates are
+                                        if (result > -1 && result < 1 ){                                                    // See if the result is roughly 0
+                                            let enemy = enemyGroup[i];                                                      // Variable for readability
+                                            let bounceAngle = Phaser.Math.Angle.BetweenPoints(player, enemy)                // Find the angle between the player and the target 
+                                            let vec = new Phaser.Math.Vector2()                                             // Create a Vector2 vector in a variable
+                                                .setToPolar(bounceAngle)                                                    // Store the angle in degrees
+                                                .setLength(100)                                                             // Give the vector some more length
+                                            enemy.setTint("0xff4646")                                                       // Make the enemy turn red
+                                            setTimeout(function(){                                                          // Wait for a moment
+                                                enemy.clearTint()                                                           // before removing the tint
+                                            }, 75)                                                                          // 75ms
+                                            let hp = enemy.data.get("hp");                                                  // Collect the current HP (hit point) value of the target
+                                            hp -= 3;                                                                        // Knock 3 hp off
+                                            enemy.data.set("hp", hp)                                                        // and set the enemy hp to the new value
                                         }
                                     }
                                 }
