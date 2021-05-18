@@ -134,35 +134,23 @@ var baseMass = 30
 // ================================= Global Variables ====================================
 // =========This is where the global variables for the game are being declared ===========
 // RexUI function
-const COLOR_PRIMARY = 0x4e342e;
-const COLOR_LIGHT = 0x7b5e57;
-const COLOR_DARK = 0x260e04;        
+const COLOR_PRIMARY = 0x634d0a;
+const COLOR_LIGHT = 0xffd100;
+const COLOR_DARK = 0x499689;        
 var items = [
     {
         name: 'Head upgrades',
         children: [
             {
-                name: 'AA-0',
+                name: 'Spike',
                 children: [
-                    { name: 'AA-00' },
-                    { name: 'AA-01' },
-                    { name: 'AA-02' },
+                    { name: 'A predatory spike [10 points]' },
                 ]
             },
             {
-                name: 'AA-1',
+                name: 'Jaws',
                 children: [
-                    { name: 'AA-10' },
-                    { name: 'AA-11' },
-                    { name: 'AA-12' },
-                ]
-            },
-            {
-                name: 'AA-2',
-                children: [
-                    { name: 'AA-20' },
-                    { name: 'AA-21' },
-                    { name: 'AA-22' },
+                    { name: 'A pair of jaws [7 points]' },
                 ]
             },
         ]
@@ -170,17 +158,35 @@ var items = [
     {
         name: 'Body upgrades',
         children: [
-            { name: 'BB-0' },
-            { name: 'BB-1' },
-            { name: 'BB-2' },
+            {
+                name: 'Stiffened body',
+                children: [
+                    { name: 'Resistance to damage (Requires tail upgrade) [5 points]' },
+                ]
+            },
+            {
+                name: 'Chitinous body',
+                children: [
+                    { name: 'Chitinous body that resists damage at the cost of speed (Requires tail upgrade) [5 points]' },
+                ]
+            },
         ]
     },
     {
         name: 'Tail upgrades',
         children: [
-            { name: 'CC-0' },
-            { name: 'CC-1' },
-            { name: 'CC-2' },
+            {
+                name: 'Flagellum',
+                children: [{
+                    name: 'A long, thin tail capable of high speeds, but limited in terms of maneuverability [8 points]',
+                }]
+            },
+            {
+                name: 'Pseudofin',
+                children: [
+                    { name: 'A primitive fin which increases speed and maneuverability [10 points]' },
+                ]
+            },
         ]
     },
 ];
@@ -247,6 +253,13 @@ var createMenu = function (scene, x, y, items, onClick) {
 
     return menu;
 }
+
+var playerUpgrades = {
+    head: 'none',
+    body: 'none',
+    tail: 'none'
+}
+
 // General variables
 var gridTable;
 var newRound = false;
@@ -273,8 +286,8 @@ console.log(enemies)
 var posX = [0,0];
 var posY = [0,0];
 var moving = false;//Variable for testing if the player is in motion
-var currentIdleAnimation = 'spike-player-idle';
-var currentMoveAnimation = 'spike-player-move';
+var currentIdleAnimation = 'base-player-idle';
+var currentMoveAnimation = 'base-player-move';
 var spike = false; // Variable for testing whether the player has the spike part
 var playerCompoundBody; //Object holding static body parts for the player
 var enemyCompoundBody;

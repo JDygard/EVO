@@ -75,6 +75,22 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
                 frameHeight: 126                                // Size of the frames' height in the sheet in pixels
             }
         )
+        this.load.spritesheet(                                          // Method to load spritesheets
+            "spikeflagellum-player-moving",                                        // "Key" to refer to this sheet later
+            "assets/images/sprites/player_spritemap_flagspike_moving.png",  // Path to the spritesheet
+            {
+                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
+                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
+            }
+        )
+        this.load.spritesheet(                                          // Method to load spritesheets
+            "spikeflagellumstiff-player-moving",                                        // "Key" to refer to this sheet later
+            "assets/images/sprites/player_spritemap_flagspikestiff_moving.png",  // Path to the spritesheet
+            {
+                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
+                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
+            }
+        )
 //=========== Enemy animations ======================
 
         this.load.spritesheet(                                          // Method to load spritesheets

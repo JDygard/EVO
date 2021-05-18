@@ -27,12 +27,14 @@ class Player extends Phaser.Physics.Matter.Sprite {        // Declare player spr
     const mainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { chamfer: { radius: 10 }, label: 'playerBody' }); // Create a constant for the main body hitbox
     this.sensors = {                                       // Declaring all of the sensors used on this sprite
       mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'mouth' }), // The mouth, used for eating and eventually biting
-      spike: Bodies.trapezoid((w * 0.5) + 40, h * 0.5 -3, 12, 32, 1, { angle: 1.57 }),
-      spike2: Bodies.trapezoid((w * 0.5) + 50, h * 0.5 -3, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'spike'})
     };
-    playerCompoundBody = Body.create({                     // Declaring the compoundBody containing all of the components of the Player sprite
-     parts: [mainBody, this.sensors.mouth, this.sensors.spike, this.sensors.spike2],                // The components.
-    });
+    let bodyParts = {parts: [mainBody, this.sensors.mouth]}
+    if (playerUpgrades.head == 'spike'){
+      this.sensors.spike = Bodies.trapezoid((w * 0.5) + 40, h * 0.5 -3, 12, 32, 1, { angle: 1.57 });
+      this.sensors.spike2 = Bodies.trapezoid((w * 0.5) + 50, h * 0.5 -3, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'spike'})
+      bodyParts.parts.push(this.sensors.spike, this.sensors.spike2)
+    }
+    playerCompoundBody = Body.create(bodyParts);
     this
       .setExistingBody(playerCompoundBody)//===== Applies the compoundBody defined above to the sprite
       .setFixedRotation()           //===== Sets inertia to infinity so the player can't rotate

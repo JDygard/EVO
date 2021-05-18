@@ -28,11 +28,68 @@ class Gameplay extends Phaser.Scene {
         healthContainer.setScale(healthBarScale); 
         var scene = this,
         menu = undefined;
-        this.print = this.add.text(0, 0, '');
         healthBar.on('pointerdown', function (pointer) {
             if (menu === undefined) {
                 menu = createMenu(scene, healthContainer.x - 35, healthContainer.y + 35, items, function (button) {
-                    scene.print.text += 'Click ' + button.text + '\n';
+                    if (button.text == 'A predatory spike [10 points]'){
+                        if (evoPoints >= 10){
+                            playerUpgrades.head = 'spike'
+                            scene.newRound()
+                        } else if (evoPoints <= 9){
+                            //Print a message about not having enough points for this.
+                        }
+
+                    }
+                    if (button.text == 'A pair of jaws [8 points]'){
+                        if (evoPoints >= 8){
+                            playerUpgrades.head = 'jaws'
+                            scene.newRound()
+                        } else if (evoPoints <= 7){
+                            //Print a message about not having enough points for this.
+                        }
+
+                    }
+                    if (button.text == 'Resistance to damage (Requires tail upgrade) [5 points]'){
+                        if (evoPoints >= 5 && playerUpgrades.tail !== 'none'){
+                            playerUpgrades.body = 'stiff'
+                            scene.newRound()
+                        } else if (evoPoints <= 4){
+                            //Print a message about not having enough points for this.
+                        } else if (playerUpgrades.tail == 'none'){
+                            // Print a message about not having a tail upgrade
+                        }
+
+                    }
+                    if (button.text == 'Chitinous body that resists damage at the cost of speed (Requires tail upgrade) [5 points]'){
+                        if (evoPoints >= 5 && playerUpgrades.tail !== 'none'){
+                            playerUpgrades.head = 'chitin'
+                            scene.newRound()
+                        } else if (evoPoints <= 4){
+                            //Print a message about not having enough points for this.
+                        } else if (playerUpgrades.tail == 'none'){
+                            // Print a message about not having a tail upgrade
+                        }
+
+                    }
+                    if (button.text == 'A long, thin tail capable of high speeds, but limited in terms of maneuverability [8 points]'){
+                        if (evoPoints >= 8){
+                            playerUpgrades.head = 'flagellum'
+                            scene.newRound()
+                        } else if (evoPoints <= 7){
+                            //Print a message about not having enough points for this.
+                        }
+
+                    }
+                    if (button.text == 'A primitive fin which increases speed and maneuverability [10 points]' && evoPoints >= 10){
+                        if (evoPoints >= 10){
+                            playerUpgrades.head = 'fin'
+                            scene.newRound()
+                        } else if (evoPoints <= 9){
+                            //Print a message about not having enough points for this.
+                        }
+
+                    }
+                    
                 });
             } else if (!menu.isInTouching(pointer)) {
                 menu.collapse();
@@ -90,9 +147,9 @@ class Gameplay extends Phaser.Scene {
         }
     }
     makePlayer() {
-        player = new Player(this, 400, 300, 'base-player-idle');
+        player = new Player(this, 400, 300, currentIdleAnimation);
         player.setDataEnabled();
-        player.data.set('inMotion', false)
+        player.data.set('inMotion', false);
     }
     makeEnemies() {
         for (let i = 0; i < enemies.length; i++){
