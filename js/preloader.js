@@ -26,7 +26,17 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         
 
 //========================================== Animations spritesheet generation ==========================================//
-//============= Player animations =================
+        this.load.spritesheet(
+            "player-master-spritesheet",
+            "assets/images/sprites/player_master_spritesheet.png",
+            {
+                frameWidth: 126,
+                frameHeight: 126
+            }
+        )
+
+
+/*//============= Player animations =================/*
         this.load.spritesheet(                                  // Method to load spritesheets
             "base-player-idle",                                 // "Key" to refer to this sheet later
             "assets/images/sprites/player_spritemap_idle.png",  // Path to the spritesheet
@@ -91,7 +101,7 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
                 frameHeight: 126                                // Size of the frames' height in the sheet in pixels
             }
         )
-//=========== Enemy animations ======================
+*///=========== Enemy animations ======================
 
         this.load.spritesheet(                                          // Method to load spritesheets
             "base-enemy-move",                                        // "Key" to refer to this sheet later

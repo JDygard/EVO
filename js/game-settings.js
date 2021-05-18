@@ -259,6 +259,11 @@ var playerUpgrades = {
     body: 'none',
     tail: 'none'
 }
+// This is an array to house the variables for various animations. It is used by the animation-creating for-loop to efficiently name and create animations.
+// KEY: 0 = null/no other upgrades, J = jaws, S = spike, F = flagellum, T = tail, K = stiff skin, C = chitin, M = moving
+var animationSetter = [
+    '00','00M','0J','0JM','0S','0SM','0F','0FM','FJ','FJM','FS','FSM','FK','FKM','FC','FCM','0T','0TM','TJ','TJM','TS','TSM','TK','TKM','TC','TCM','FJK','FJKM','FJC','FJCM','FSK','FSKM','FSC','FSCM','TJK','TJKM','TJC','TJCM','TSK','TSKM','TSC','TSCM',
+]
 
 // General variables
 var gridTable;
@@ -286,8 +291,8 @@ console.log(enemies)
 var posX = [0,0];
 var posY = [0,0];
 var moving = false;//Variable for testing if the player is in motion
-var currentIdleAnimation = 'base-player-idle';
-var currentMoveAnimation = 'base-player-move';
+var currentIdleAnimation = '00';
+var currentMoveAnimation = '00M';
 var spike = false; // Variable for testing whether the player has the spike part
 var playerCompoundBody; //Object holding static body parts for the player
 var enemyCompoundBody;

@@ -11,92 +11,102 @@ class Gameplay extends Phaser.Scene {
         });
     }
 
-//================================== Declaring general use methods ================================
-    makeBar(){
-        var hitBox = new Phaser.Geom.Rectangle(175, 100, 225, 75)
-        healthBar = this.add.sprite(0, 0, 'healthbar').setScrollFactor(0).setDepth(5).setInteractive();
-        healthBar.setDataEnabled();
-        healthBar.data.set('evoPoints', 0);
-        if (debugMode == true){
-            healthBar.data.set('evoPoints', 9)
+//================================== Declaring general use methods ============================
+//================================== The health bar ===========================================
+//===== The healthbar gameObject carries a great deal more water than its graphic implies =====
+//===== It keeps and displays the score, as well as housing the machinery for starting    =====
+//===== new rounds, and displaying, purchasing, and rearranging code for new parts.       =====
+    makeBar(){                                                          // the method called to generate the healthbar
+        healthBar = this.add.sprite(0, 0, 'healthbar')                  // Instantiate the sprite for the bar
+            .setScrollFactor(0)                                         // Make the bar static in the camera view
+            .setDepth(5)                                                // A depth of 5 will keep it in front of everything else
+            .setInteractive()                                           // Makes it so that the graphic for the bar can can be the target of listener events
+            .setDataEnabled();                                          // Allows the healthbar to store data
+        healthBar.data.set('evoPoints', 0);                             // Sets the beginning score to 0
+        if (debugMode == true){                                         // Test for debug mode
+            healthBar.data.set('evoPoints', 10)                         // If debug mode is on, the starting evo points is 10
         };
-        pointText = this.add.text(-45, 0, '', {fontFamily: '"Roboto Mono", sans serif'});
-        pointText.setText(evoPoints).setScrollFactor(0).setColor('#264653').setDepth(6).setFontSize(36).setOrigin(.5);
-        healthContainer = this.add.container(175, 100);
-        healthContainer.add(pointText);
-        healthContainer.add(healthBar);
-        healthContainer.setScale(healthBarScale); 
-        var scene = this,
-        menu = undefined;
-        healthBar.on('pointerdown', function (pointer) {
-            if (menu === undefined) {
-                menu = createMenu(scene, healthContainer.x - 35, healthContainer.y + 35, items, function (button) {
-                    if (button.text == 'A predatory spike [10 points]'){
-                        if (evoPoints >= 10){
-                            playerUpgrades.head = 'spike'
-                            scene.newRound()
-                        } else if (evoPoints <= 9){
-                            //Print a message about not having enough points for this.
+        pointText = this.add.text(-45, 0, '', {fontFamily: '"Roboto Mono", sans serif'}); // A place for points to be displayed
+        pointText.setText(evoPoints)                                    // Displays the score  
+            .setScrollFactor(0)                                         // Make the number static in the camera view
+            .setColor('#264653')                                        // Text display color
+            .setDepth(6)                                                // Depth of 6 keeps the score above everything else
+            .setFontSize(36)                                            // Font size
+            .setOrigin(.5);                                             // Sets the origin to the middle of the text so that when the text increments above 10 it can be adjusted to fit.
+        healthContainer = this.add.container(175, 100);                 // Create a container to hold all of the bar elements together
+        healthContainer.add(pointText);                                 // Add the point text to the container
+        healthContainer.add(healthBar);                                 // Add the health bar graphic to the container
+        healthContainer.setScale(healthBarScale);                       // Scale all the elements together to a variable from game-settings.js.
+        var scene = this,                                               // To get around the context issues within event listeners
+        menu = undefined;                                               // Set the menu as undefined so that it doesn't appear at random
+        healthBar.on('pointerdown', function (pointer) {                // Listen for pointer
+            if (menu === undefined) {                                   // Test for undefined
+                menu = createMenu(scene, healthContainer.x - 35, healthContainer.y + 35, items, function (button) { // If the pointer comes down on the healthbar, generate a menu
+                    if (button.text == 'A predatory spike [10 points]'){                // If the player clicks this button
+                        if (evoPoints >= 10){                                           // And they have enough points
+                            playerUpgrades.head = 'spike'                               // put the selected upgrade into the array
+                            scene.newRound()                                            // and start a new round
+                        } else if (evoPoints <= 9){                                     // But if they don't have enough points
+                            //Print a message about not having enough points for this.  // Let them know
                         }
 
                     }
-                    if (button.text == 'A pair of jaws [8 points]'){
-                        if (evoPoints >= 8){
-                            playerUpgrades.head = 'jaws'
-                            scene.newRound()
-                        } else if (evoPoints <= 7){
-                            //Print a message about not having enough points for this.
+                    if (button.text == 'A pair of jaws [8 points]'){                // If the player clicks this button
+                        if (evoPoints >= 8){                                           // And they have enough points
+                            playerUpgrades.head = 'jaws'                               // put the selected upgrade into the array
+                            scene.newRound()                                            // and start a new round
+                        } else if (evoPoints <= 7){                                     // But if they don't have enough points
+                            //Print a message about not having enough points for this.  // Let them know
                         }
 
                     }
-                    if (button.text == 'Resistance to damage (Requires tail upgrade) [5 points]'){
-                        if (evoPoints >= 5 && playerUpgrades.tail !== 'none'){
-                            playerUpgrades.body = 'stiff'
-                            scene.newRound()
-                        } else if (evoPoints <= 4){
-                            //Print a message about not having enough points for this.
-                        } else if (playerUpgrades.tail == 'none'){
-                            // Print a message about not having a tail upgrade
+                    if (button.text == 'Resistance to damage (Requires tail upgrade) [5 points]'){                // If the player clicks this button
+                        if (evoPoints >= 5 && playerUpgrades.tail !== 'none'){                                    // And they have enough points AND a tail upgrade
+                            playerUpgrades.body = 'stiff'                               // put the selected upgrade into the array
+                            scene.newRound()                                            // and start a new round
+                        } else if (evoPoints <= 4){                                     // But if they don't have enough points
+                            //Print a message about not having enough points for this.  // Let them know
+                        } else if (playerUpgrades.tail == 'none'){                      // or if they don't have the requisite tail upgrade
+                            // Print a message about not having a tail upgrade     // Let them know
                         }
 
                     }
-                    if (button.text == 'Chitinous body that resists damage at the cost of speed (Requires tail upgrade) [5 points]'){
-                        if (evoPoints >= 5 && playerUpgrades.tail !== 'none'){
-                            playerUpgrades.head = 'chitin'
-                            scene.newRound()
-                        } else if (evoPoints <= 4){
-                            //Print a message about not having enough points for this.
-                        } else if (playerUpgrades.tail == 'none'){
-                            // Print a message about not having a tail upgrade
+                    if (button.text == 'Chitinous body that resists damage at the cost of speed (Requires tail upgrade) [5 points]'){                // If the player clicks this button
+                        if (evoPoints >= 5 && playerUpgrades.tail !== 'none'){                                           // And they have enough points AND a tail upgrade
+                            playerUpgrades.head = 'chitin'                               // put the selected upgrade into the array
+                            scene.newRound()                                            // and start a new round
+                        } else if (evoPoints <= 4){                                     // But if they don't have enough points
+                            //Print a message about not having enough points for this.  // Let them know
+                        } else if (playerUpgrades.tail == 'none'){                      // or if they don't have the requisite tail upgrade
+                            // Print a message about not having a tail upgrade  // Let them know
                         }
 
                     }
-                    if (button.text == 'A long, thin tail capable of high speeds, but limited in terms of maneuverability [8 points]'){
-                        if (evoPoints >= 8){
-                            playerUpgrades.head = 'flagellum'
-                            scene.newRound()
-                        } else if (evoPoints <= 7){
-                            //Print a message about not having enough points for this.
+                    if (button.text == 'A long, thin tail capable of high speeds, but limited in terms of maneuverability [8 points]'){                // If the player clicks this button
+                        if (evoPoints >= 8){                                           // And they have enough points
+                            playerUpgrades.head = 'flagellum'                               // put the selected upgrade into the array
+                            scene.newRound()                                            // and start a new round
+                        } else if (evoPoints <= 7){                                     // But if they don't have enough points
+                            //Print a message about not having enough points for this.  // Let them know
                         }
 
                     }
-                    if (button.text == 'A primitive fin which increases speed and maneuverability [10 points]' && evoPoints >= 10){
-                        if (evoPoints >= 10){
-                            playerUpgrades.head = 'fin'
-                            scene.newRound()
-                        } else if (evoPoints <= 9){
-                            //Print a message about not having enough points for this.
+                    if (button.text == 'A primitive fin which increases speed and maneuverability [10 points]' && evoPoints >= 10){                // If the player clicks this button
+                        if (evoPoints >= 10){                                           // And they have enough points
+                            playerUpgrades.head = 'fin'                               // put the selected upgrade into the array
+                            scene.newRound()                                            // and start a new round
+                        } else if (evoPoints <= 9){                                     // But if they don't have enough points
+                            //Print a message about not having enough points for this.  // Let them know
                         }
 
                     }
                     
                 });
-            } else if (!menu.isInTouching(pointer)) {
-                menu.collapse();
-                menu = undefined;
-                scene.print.text = '';
+            } else if (!menu.isInTouching(pointer)) {   //If the pointer comes down outside the boundary of the menu object
+                menu.collapse();                        // collapse the menu
+                menu = undefined;                       // and reset the variable
             }
-        }, this);
+        }, this);                                       // context of the event listener started on line 44 above
     }
 
     
@@ -197,7 +207,15 @@ class Gameplay extends Phaser.Scene {
         console.log("gameplay create")
 
 //================================== Player animation definitions ========================================
+    var scene = this;
+    for (let i = 0; i < animationSetter.length; i++){
         this.anims.create({
+            key: animationSetter[i],
+            frames: scene.anims.generateFrameNumbers("player-master-spritesheet", { start: (i * 4), end: ((i * 4) + 3) }),
+            frameRate: 4,
+        })
+    }
+/*        this.anims.create({
             key: "base-player-idle",
             frames: this.anims.generateFrameNumbers("base-player-idle", { start: 0, end: 3 }),
             frameRate: 3,
@@ -227,7 +245,7 @@ class Gameplay extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("flagellum-player-idle", { start: 0, end: 3 }),
             frameRate: 5,
         })
-
+*/
 //=============================== Enemy animation definitions =======================================
         this.anims.create({
             key: "base-enemy-move",
@@ -306,6 +324,35 @@ class Gameplay extends Phaser.Scene {
                         var sensorSprite = sensorBody.gameObject; // Now grab the game object
                         var otherSprite = otherBody.gameObject;     // for each of the colliders
                         if (otherSprite != null){                 // Test to make sure the collision isn't with the game border, which causes a crash
+//================================================== Jaws damage stuff ============================================================
+                            if (sensorBody.label === 'mouth' && otherBody.label == 'enemyBody' && playerUpgrades.head == 'jaws'){
+                                for (let i = 0; i < enemyGroup.length; i++){    // Iterate through the existing enemies
+                                    let targetPos = {                           // Store the position of the non-sensor body
+                                        x: otherSprite.x,                       // in the x dimension
+                                        y: otherSprite.y,                       // and in the y dimension
+                                    }
+                                    let enemyPos = {                            // Store the position of each enemy for comparison
+                                        x: enemyGroup[i].x,                     // In the x
+                                        y: enemyGroup[i].y,                     // and y
+                                    }
+                                    let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y)  // See how large the difference between the coordinates are
+                                    if (result > -1 && result < 1 ){                                                    // See if the result is roughly 0
+                                        let enemy = enemyGroup[i];                                                      // Variable for readability
+                                        let bounceAngle = Phaser.Math.Angle.BetweenPoints(player, enemy)                // Find the angle between the player and the target 
+                                        let vec = new Phaser.Math.Vector2()                                             // Create a Vector2 vector in a variable
+                                            .setToPolar(bounceAngle)                                                    // Store the angle in degrees
+                                            .setLength(100)                                                             // Give the vector some more length
+                                        enemy.setTint("0xff4646")                                                       // Make the enemy turn red
+                                        setTimeout(function(){                                                          // Wait for a moment
+                                            enemy.clearTint()                                                           // before removing the tint
+                                        }, 75)                                                                          // 75ms
+                                        let hp = enemy.data.get("hp");                                                  // Collect the current HP (hit point) value of the target
+                                        hp -= 2;                                                                        // Knock 3 hp off
+                                        enemy.data.set("hp", hp)                                                        // and set the enemy hp to the new value
+                                    }
+                                }
+                            }
+//============================================== Spike damage stuff ==============================================================
                             if (sensorBody.label === 'spike' && otherBody.label == 'enemyBody'){    // If the collision is between the player's spike and the enemy's body
                                     for (let i = 0; i < enemyGroup.length; i++){    // Iterate through the existing enemies
                                         let targetPos = {                           // Store the position of the non-sensor body
@@ -333,6 +380,7 @@ class Gameplay extends Phaser.Scene {
                                         }
                                     }
                                 }
+//============================================== Enemy eating food stuff ==========================================================
                             if (sensorBody.label === 'enemyMouth' && otherSprite.label == 'food'){ // If it's an enemy's mouth colliding with food
                                 otherSprite.label = 'eatenFood'              // Label the food in the mouth
                                 for (let i = 0; i < food.length; i++){      // So that it can be found in the food array
@@ -344,6 +392,7 @@ class Gameplay extends Phaser.Scene {
                                 garbage = otherSprite;                   // Flag the food for cleanup
                                 break
                             }
+//============================================= Player eating food ==================================================================
                             if (sensorBody.label === 'mouth' && otherSprite.label == 'food'){ // If it's a mouth colliding with food
                                 otherSprite.label = 'eatenFood'              // Label the food in the mouth
                                 for (let i = 0; i < food.length; i++){      // So that it can be found in the food array

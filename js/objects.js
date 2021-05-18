@@ -25,6 +25,7 @@ class Player extends Phaser.Physics.Matter.Sprite {        // Declare player spr
     const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
     const { width: w, height: h } = this;                  // Declare some useful constants for dimensions
     const mainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { chamfer: { radius: 10 }, label: 'playerBody' }); // Create a constant for the main body hitbox
+    console.log(h)
     this.sensors = {                                       // Declaring all of the sensors used on this sprite
       mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'mouth' }), // The mouth, used for eating and eventually biting
     };
