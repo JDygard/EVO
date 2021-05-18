@@ -109,19 +109,19 @@ const config = {
 // ===This is where all of the constants for game elements can be adjusted in one place.===
 
 // ==Debug mode : Turns off touch controls and menu scene for rapid testing
-var debugMode = true
+var debugMode = false
 
 // ==Rotation speed
 // Unupgraded speed
 const baseRotation = 0.055
 const tailRotation = 0.069
-const flagellumRotation = 0.06
+const flagellumRotation = 0.03
 
 // ==Acceleration
 // Unupgraded speed
 const baseSpeed = 0.03
 const tailSpeed = 0.04
-const flagellumSpeed = 0.06
+const flagellumSpeed = 0.048
 
 // ==Fluid friction
 // Probably a constant
@@ -255,9 +255,9 @@ var createMenu = function (scene, x, y, items, onClick) {
 }
 
 var playerUpgrades = {
-    head: 'spike',
-    body: 'chitin',
-    tail: 'flagellum'
+    head: 'jaws',
+    body: 'stiff',
+    tail: 'tail'
 }
 // This is an array to house the variables for various animations. It is used by the animation-creating for-loop to efficiently name and create animations.
 // KEY: 0 = null/no other upgrades, J = jaws, S = spike, F = flagellum, T = tail, K = stiff skin, C = chitin, M = moving

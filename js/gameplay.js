@@ -129,7 +129,7 @@ class Gameplay extends Phaser.Scene {
 
         if (playerUpgrades.tail == 'none'){
             currentIdleAnimation += '0';
-        } else if (playerUpgrades.tail == 'fin'){
+        } else if (playerUpgrades.tail == 'tail'){
             currentIdleAnimation += 'T';
             currentPlayerSpeed = tailSpeed;
             currentPlayerRotation = tailRotation;
@@ -234,8 +234,6 @@ class Gameplay extends Phaser.Scene {
         this.scene.start("Gameplay")
     }
     create(){
-        console.log("gameplay create")
-
 //================================== Player animation definitions ========================================
     var scene = this;
     for (let i = 0; i < animationSetter.length; i++){
@@ -320,7 +318,6 @@ class Gameplay extends Phaser.Scene {
 
                         var sensorSprite = sensorBody.gameObject; // Now grab the game object
                         var otherSprite = otherBody.gameObject;     // for each of the colliders
-                        console.log(sensorBody.label + '::' + otherBody.label)
                         if (otherSprite != null){                 // Test to make sure the collision isn't with the game border, which causes a crash
 //================================================== Jaws damage stuff ============================================================
                             if (sensorBody.label === 'mouth' && otherBody.label == 'enemyBody' && playerUpgrades.head == 'jaws'){
