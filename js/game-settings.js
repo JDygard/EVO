@@ -292,7 +292,7 @@ var posX = [0,0];
 var posY = [0,0];
 var moving = false;//Variable for testing if the player is in motion
 var currentIdleAnimation = '00';
-var currentMoveAnimation = '00M';
+var currentMoveAnimation = currentIdleAnimation + 'M';
 var spike = false; // Variable for testing whether the player has the spike part
 var playerCompoundBody; //Object holding static body parts for the player
 var enemyCompoundBody;
