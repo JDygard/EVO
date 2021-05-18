@@ -26,99 +26,26 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         
 
 //========================================== Animations spritesheet generation ==========================================//
-        this.load.spritesheet(
-            "player-master-spritesheet",
-            "assets/images/sprites/player_master_spritesheet.png",
+//============= Player animations =================
+        this.load.spritesheet(                                      // Load the spritesheet into the texture manager
+            "player-master-spritesheet",                            // This is the master player spritesheet, with 42 animations at 4 frames per
+            "assets/images/sprites/player_master_spritesheet.png",  // Load from assets directories
             {
-                frameWidth: 126,
-                frameHeight: 126
+                frameWidth: 126,                                    // Defining the size of the individual frames in
+                frameHeight: 126                                    // the spritesheet.
             }
         )
 
+//=========== Enemy animations ======================
+        this.load.spritesheet(                                          // Method to load spritesheets
+            "enemy-master-spritesheet",                                 // "Key" to refer to this sheet later
+            "assets/images/sprites/enemy_master_spritesheet.png",       // Path to the spritesheet
+            {
+                frameWidth: 126,                                        // Size of the frames' width in the sheet in pixels
+                frameHeight: 126                                        // Size of the frames' height in the sheet in pixels
+            }
+        )
 
-/*//============= Player animations =================/*
-        this.load.spritesheet(                                  // Method to load spritesheets
-            "base-player-idle",                                 // "Key" to refer to this sheet later
-            "assets/images/sprites/player_spritemap_idle.png",  // Path to the spritesheet
-            {
-                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
-                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
-            }
-        );
-        this.load.spritesheet(                                  // Method to load spritesheets
-            "base-player-moving",                               // "Key" to refer to this sheet later
-            "assets/images/sprites/player_spritemap_moving.png",// Path to the spritesheet
-            {
-                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
-                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
-            }
-        )
-        this.load.spritesheet(                                          // Method to load spritesheets
-            "spike-player-move",                                        // "Key" to refer to this sheet later
-            "assets/images/sprites/player_spritemap_spike_moving.png",  // Path to the spritesheet
-            {
-                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
-                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
-            }
-        )
-        this.load.spritesheet(                                          // Method to load spritesheets
-            "spike-player-idle",                                        // "Key" to refer to this sheet later
-            "assets/images/sprites/player_spritemap_spike_idle.png",  // Path to the spritesheet
-            {
-                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
-                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
-            }
-        )
-        this.load.spritesheet(                                          // Method to load spritesheets
-            "flagellum-player-idle",                                        // "Key" to refer to this sheet later
-            "assets/images/sprites/player_spritemap_flagellum_idle.png",  // Path to the spritesheet
-            {
-                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
-                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
-            }
-        )
-        this.load.spritesheet(                                          // Method to load spritesheets
-            "flagellum-player-moving",                                        // "Key" to refer to this sheet later
-            "assets/images/sprites/player_spritemap_flagellum_moving.png",  // Path to the spritesheet
-            {
-                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
-                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
-            }
-        )
-        this.load.spritesheet(                                          // Method to load spritesheets
-            "spikeflagellum-player-moving",                                        // "Key" to refer to this sheet later
-            "assets/images/sprites/player_spritemap_flagspike_moving.png",  // Path to the spritesheet
-            {
-                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
-                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
-            }
-        )
-        this.load.spritesheet(                                          // Method to load spritesheets
-            "spikeflagellumstiff-player-moving",                                        // "Key" to refer to this sheet later
-            "assets/images/sprites/player_spritemap_flagspikestiff_moving.png",  // Path to the spritesheet
-            {
-                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
-                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
-            }
-        )
-*///=========== Enemy animations ======================
-
-        this.load.spritesheet(                                          // Method to load spritesheets
-            "base-enemy-move",                                        // "Key" to refer to this sheet later
-            "assets/images/sprites/enemy_spritemap_moving.png",  // Path to the spritesheet
-            {
-                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
-                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
-            }
-        )
-        this.load.spritesheet(                                          // Method to load spritesheets
-            "spike-enemy-move",                                        // "Key" to refer to this sheet later
-            "assets/images/sprites/enemy_spritemap_spike_moving.png",  // Path to the spritesheet
-            {
-                frameWidth: 126,                                // Size of the frames' width in the sheet in pixels
-                frameHeight: 126                                // Size of the frames' height in the sheet in pixels
-            }
-        )
 //============ Menu water animation =============
         this.load.spritesheet(                              // Method to load spritesheets
             "animatedWater",                                // "Key" to refer to this sheet later

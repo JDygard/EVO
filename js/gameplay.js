@@ -109,7 +109,37 @@ class Gameplay extends Phaser.Scene {
         }, this);                                       // context of the event listener started on line 44 above
     }
 
-    
+    applyUpgrades(){
+        currentIdleAnimation = '';
+        if (playerUpgrades.head == 'none'){
+            currentIdleAnimation += '0'
+        } else if (playerUpgrades.head == 'spike'){
+            currentIdleAnimation += 'S'
+        } else if (playerUpgrades.head == 'jaws'){
+            currentIdleAnimation += 'J'
+        }
+
+        if (playerUpgrades.body == 'none'){
+            currentIdleAnimation += '0'
+        } else if (playerUpgrades.body == 'stiff'){
+            currentIdleAnimation += 'K'
+        } else if (playerUpgrades.body == 'chitin'){
+            currentIdleAnimation += 'C'
+        }
+
+        if (playerUpgrades.tail == 'none'){
+            currentIdleAnimation += '0';
+        } else if (playerUpgrades.tail == 'fin'){
+            currentIdleAnimation += 'T';
+            currentPlayerSpeed = tailSpeed;
+            currentPlayerRotation = tailRotation;
+        } else if (playerUpgrades.tail == 'flagellum'){
+            currentIdleAnimation += 'F';
+            currentPlayerSpeed = flagellumSpeed;
+            currentPlayerRotation = flagellumRotation;
+        }
+        currentMoveAnimation = currentIdleAnimation + 'M'
+    }
 
 // =============================== Food related methods ================================
 // ===== Generate food and commit them to an array
@@ -169,7 +199,7 @@ class Gameplay extends Phaser.Scene {
                 key: currentMove,
                 repeat: -1,
             })
-            enemyGroup[i].setDataEnabled();
+            enemyGroup[i].setDataEnabled().setRandomPosition(-500,-500,500,500);
             enemyGroup[i].data.set('target', 0);
             enemyGroup[i].data.set('hp', 10)
         }
@@ -215,54 +245,21 @@ class Gameplay extends Phaser.Scene {
             frameRate: 4,
         })
     }
-/*        this.anims.create({
-            key: "base-player-idle",
-            frames: this.anims.generateFrameNumbers("base-player-idle", { start: 0, end: 3 }),
-            frameRate: 3,
-        });
+//=============================== Enemy animation definitions =======================================  
+    for (let i = 1; i < animationSetter.length; i+=2){
         this.anims.create({
-            key: "base-player-move",
-            frames: this.anims.generateFrameNumbers("base-player-moving", { start: 0, end: 3 }),
-            frameRate: 5,
+            key: 'E' + animationSetter[i],
+            frames: scene.anims.generateFrameNumbers("enemy-master-spritesheet", { start: (i * 4), end: ((i * 4) + 3) }),
+            frameRate: 4,
         })
-        this.anims.create({
-            key: "spike-player-move",
-            frames: this.anims.generateFrameNumbers("spike-player-move", { start: 0, end: 3}),
-            frameRate: 5
-        });
-        this.anims.create({
-            key: "spike-player-idle",
-            frames: this.anims.generateFrameNumbers("spike-player-idle", { start: 0, end: 3 }),
-            frameRate: 5,
-        });
-        this.anims.create({
-            key: "flagellum-player-move",
-            frames: this.anims.generateFrameNumbers("flagellum-player-moving", { start: 0, end: 3 }),
-            frameRate: 5,
-        });
-        this.anims.create({
-            key: "flagellum-player-idle",
-            frames: this.anims.generateFrameNumbers("flagellum-player-idle", { start: 0, end: 3 }),
-            frameRate: 5,
-        })
-*/
-//=============================== Enemy animation definitions =======================================
-        this.anims.create({
-            key: "base-enemy-move",
-            frames: this.anims.generateFrameNumbers("base-enemy-move", { start: 0, end: 3 }),
-            frameRate: 5,
-        });
-        this.anims.create({
-            key: "spike-enemy-move",
-            frames: this.anims.generateFrameNumbers("spike-enemy-move", { start: 0, end: 3 }),
-            frameRate: 5,
-        });
+    }
 
 //================================== Building the play area ===============================================
-        this.add.background(400, 300);                    // Set scene background                    
+        this.add.background(400, 300);                    // Set scene background             
+        this.applyUpgrades()       
         this.makePlayer()                                 // Calling the Player method to create the player object
         player.anims.play({                               // Activating the idle animation of the player object
-            key: currentIdleAnimation,                      // Key for the idle animation
+            key: currentIdleAnimation,                    // Key for the idle animation
             repeat: -1                                    // -1 for infinite repitition
         })
 
@@ -323,18 +320,11 @@ class Gameplay extends Phaser.Scene {
 
                         var sensorSprite = sensorBody.gameObject; // Now grab the game object
                         var otherSprite = otherBody.gameObject;     // for each of the colliders
+                        console.log(sensorBody.label + '::' + otherBody.label)
                         if (otherSprite != null){                 // Test to make sure the collision isn't with the game border, which causes a crash
 //================================================== Jaws damage stuff ============================================================
                             if (sensorBody.label === 'mouth' && otherBody.label == 'enemyBody' && playerUpgrades.head == 'jaws'){
                                 for (let i = 0; i < enemyGroup.length; i++){    // Iterate through the existing enemies
-                                    let targetPos = {                           // Store the position of the non-sensor body
-                                        x: otherSprite.x,                       // in the x dimension
-                                        y: otherSprite.y,                       // and in the y dimension
-                                    }
-                                    let enemyPos = {                            // Store the position of each enemy for comparison
-                                        x: enemyGroup[i].x,                     // In the x
-                                        y: enemyGroup[i].y,                     // and y
-                                    }
                                     let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y)  // See how large the difference between the coordinates are
                                     if (result > -1 && result < 1 ){                                                    // See if the result is roughly 0
                                         let enemy = enemyGroup[i];                                                      // Variable for readability
@@ -347,7 +337,7 @@ class Gameplay extends Phaser.Scene {
                                             enemy.clearTint()                                                           // before removing the tint
                                         }, 75)                                                                          // 75ms
                                         let hp = enemy.data.get("hp");                                                  // Collect the current HP (hit point) value of the target
-                                        hp -= 2;                                                                        // Knock 3 hp off
+                                        hp -= 5;                                                                        // Knock 5 hp off
                                         enemy.data.set("hp", hp)                                                        // and set the enemy hp to the new value
                                     }
                                 }
@@ -355,14 +345,6 @@ class Gameplay extends Phaser.Scene {
 //============================================== Spike damage stuff ==============================================================
                             if (sensorBody.label === 'spike' && otherBody.label == 'enemyBody'){    // If the collision is between the player's spike and the enemy's body
                                     for (let i = 0; i < enemyGroup.length; i++){    // Iterate through the existing enemies
-                                        let targetPos = {                           // Store the position of the non-sensor body
-                                            x: otherSprite.x,                       // in the x dimension
-                                            y: otherSprite.y,                       // and in the y dimension
-                                        }
-                                        let enemyPos = {                            // Store the position of each enemy for comparison
-                                            x: enemyGroup[i].x,                     // In the x
-                                            y: enemyGroup[i].y,                     // and y
-                                        }
                                         let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y)  // See how large the difference between the coordinates are
                                         if (result > -1 && result < 1 ){                                                    // See if the result is roughly 0
                                             let enemy = enemyGroup[i];                                                      // Variable for readability
@@ -500,15 +482,15 @@ class Gameplay extends Phaser.Scene {
 
         if (cursors.left.isDown || leftKeyDown)
         {
-            player.setAngularVelocity(-baseRotation);
+            player.setAngularVelocity(-currentPlayerRotation);
         }
         else if (cursors.right.isDown || rightKeyDown)
         {
-            player.setAngularVelocity(baseRotation);
+            player.setAngularVelocity(currentPlayerRotation);
         }
         if (cursors.up.isDown || upKeyDown)
         {
-            player.thrust(baseSpeed);
+            player.thrust(currentPlayerSpeed);
         }   
 //============================== Enemy target acquisition, calculation and movement ===================
 //=====

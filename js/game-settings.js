@@ -17,7 +17,7 @@ const config = {
         default: 'matter', // A physics engine with collisions and complex material interaction
         matter: { 
             
-            debug: {
+            /*debug: {
 
                 showAxes: false,
                 showAngleIndicator: true,
@@ -82,7 +82,7 @@ const config = {
     
                 showConvexHulls: true,
                 hullColor: 0xd703d0
-            },
+            },*/
             
             gravity: {
                 x: 0,
@@ -113,15 +113,15 @@ var debugMode = true
 
 // ==Rotation speed
 // Unupgraded speed
-var baseRotation = 0.055
-var tailRotation = 0.069
-var flagellumRotation = 0.06
+const baseRotation = 0.055
+const tailRotation = 0.069
+const flagellumRotation = 0.06
 
 // ==Acceleration
 // Unupgraded speed
-var baseSpeed = 0.03
-var tailSpeed = 0.04
-var flagellumSpeed = 0.06
+const baseSpeed = 0.03
+const tailSpeed = 0.04
+const flagellumSpeed = 0.06
 
 // ==Fluid friction
 // Probably a constant
@@ -255,17 +255,19 @@ var createMenu = function (scene, x, y, items, onClick) {
 }
 
 var playerUpgrades = {
-    head: 'none',
-    body: 'none',
-    tail: 'none'
+    head: 'spike',
+    body: 'chitin',
+    tail: 'flagellum'
 }
 // This is an array to house the variables for various animations. It is used by the animation-creating for-loop to efficiently name and create animations.
 // KEY: 0 = null/no other upgrades, J = jaws, S = spike, F = flagellum, T = tail, K = stiff skin, C = chitin, M = moving
 var animationSetter = [
-    '00','00M','0J','0JM','0S','0SM','0F','0FM','FJ','FJM','FS','FSM','FK','FKM','FC','FCM','0T','0TM','TJ','TJM','TS','TSM','TK','TKM','TC','TCM','FJK','FJKM','FJC','FJCM','FSK','FSKM','FSC','FSCM','TJK','TJKM','TJC','TJCM','TSK','TSKM','TSC','TSCM',
+    '000','000M','J00','J00M','S00','S00M','00F','00FM','J0F','J0FM','S0J','S0JM','0KF','0KFM','0CF','0CFM','00T','00TM','J0T','J0TM','S0T','S0TM','0KT','0KTM','0CT','0CTM','JKF','JKFM','JCF','JCFM','SKF','SKFM','SCF','SCFM','JKT','JKTM','JCT','JCTM','SKT','SKTM','SCT','SCTM',
 ]
 
 // General variables
+var currentPlayerSpeed = baseSpeed;
+var currentPlayerRotation = baseRotation;
 var gridTable;
 var newRound = false;
 var player;
@@ -283,16 +285,16 @@ var pointText; // The text displaying the current points value
 var garbage; // A variable for temporarily storing gameObjects queued for deletion to avoid removing them from the game in the middle of functions
 var enemyGroup = []  // An array for storing the actual instance of each enemy gameObject
 var enemies = [   // An array for storing the current evolution stage of each enemy. The value of each being the name of the relevant animation for that stage
-    "base-enemy-move",
-    "base-enemy-move",
-    "base-enemy-move",
+    'E000M',
+    "E000M",
+    "E000M",
 ];
 console.log(enemies)
 var posX = [0,0];
 var posY = [0,0];
 var moving = false;//Variable for testing if the player is in motion
-var currentIdleAnimation = '00';
-var currentMoveAnimation = currentIdleAnimation + 'M';
+var currentIdleAnimation = '000';
+var currentMoveAnimation = '000M';
 var spike = false; // Variable for testing whether the player has the spike part
 var playerCompoundBody; //Object holding static body parts for the player
 var enemyCompoundBody;

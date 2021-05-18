@@ -31,8 +31,8 @@ class Player extends Phaser.Physics.Matter.Sprite {        // Declare player spr
     };
     let bodyParts = {parts: [mainBody, this.sensors.mouth]}
     if (playerUpgrades.head == 'spike'){
-      this.sensors.spike = Bodies.trapezoid((w * 0.5) + 40, h * 0.5 -3, 12, 32, 1, { angle: 1.57 });
-      this.sensors.spike2 = Bodies.trapezoid((w * 0.5) + 50, h * 0.5 -3, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'spike'})
+      this.sensors.spike = Bodies.trapezoid((w * 0.5) + 20, h * 0.5 -3, 12, 32, 1, { angle: 1.57 });
+      this.sensors.spike2 = Bodies.trapezoid((w * 0.5) + 30, h * 0.5 -3, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'spike'})
       bodyParts.parts.push(this.sensors.spike, this.sensors.spike2)
     }
     playerCompoundBody = Body.create(bodyParts);
@@ -51,7 +51,7 @@ class Enemy extends Phaser.Physics.Matter.Sprite {
     scene.sys.displayList.add(this);    
     const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
     const { width: w, height: h } = this;                  // Declare some useful constants for dimensions
-    const enemyMainBody = Bodies.rectangle((w * 0.5)-10, (h * 0.5), (w * 0.64) - 10, h * 0.33, { label: 'enemyBody', chamfer: { radius: 10 } }); // Create a constant for the main body hitbox
+    const enemyMainBody = Bodies.rectangle(8, (h * 0.5), 64, 40, { label: 'enemyBody', chamfer: { radius: 10 } }); // Create a constant for the main body hitbox
     this.sensors = {                                       // Declaring all of the sensors used on this sprite
       mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'enemyMouth' }) // The mouth, used for eating and eventually biting
     };
