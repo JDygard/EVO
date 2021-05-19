@@ -105,31 +105,28 @@ const config = {
 };
 
 
-// ==================================== Game variables ====================================
-// ===This is where all of the constants for game elements can be adjusted in one place.===
+// ===================================== Game variables ====================================
+// === This is where all of the constants for game elements can be adjusted in one place ===
 
 // ==Debug mode : Turns off touch controls and menu scene for rapid testing
-var debugMode = false
+var debugMode = true
 
 // ==Rotation speed
-// Unupgraded speed
 const baseRotation = 0.055
 const tailRotation = 0.069
 const flagellumRotation = 0.03
 
 // ==Acceleration
-// Unupgraded speed
 const baseSpeed = 0.03
 const tailSpeed = 0.04
 const flagellumSpeed = 0.048
+const chitinSpeed = -0.05
 
 // ==Fluid friction
-// Probably a constant
-var baseFriction = 0.1
+const baseFriction = 0.1
 
 // ==Player mass
-// Probably a constant
-var baseMass = 30
+const baseMass = 30
 
 // ================================= Global Variables ====================================
 // =========This is where the global variables for the game are being declared ===========
@@ -255,9 +252,9 @@ var createMenu = function (scene, x, y, items, onClick) {
 }
 
 var playerUpgrades = {
-    head: 'jaws',
-    body: 'stiff',
-    tail: 'tail'
+    head: 'spike',
+    body: 'chitin',
+    tail: 'flagellum'
 }
 // This is an array to house the variables for various animations. It is used by the animation-creating for-loop to efficiently name and create animations.
 // KEY: 0 = null/no other upgrades, J = jaws, S = spike, F = flagellum, T = tail, K = stiff skin, C = chitin, M = moving
@@ -266,19 +263,18 @@ var animationSetter = [
 ]
 
 // General variables
-var currentPlayerSpeed = baseSpeed;
-var currentPlayerRotation = baseRotation;
-var gridTable;
-var newRound = false;
-var player;
-var enemy1;
-var foodBit = 0;
-var food = [];
-var foodRemaining;
-var evoPoints = 0;
-var cursors;
+var round = 1; // Global variable for storing the current round
+var currentPlayerSpeed = baseSpeed; // global variable for storing the player's speed
+var currentPlayerRotation = baseRotation; //Global variable for storing the player's rotation speed
+var newRound = false; //
+var player; // The player object
+var enemySpike = false; // A boolean to be flipped on while generating enemy gameObjects and flipped off immediately after
+var foodBit = 0; // Global variable for containing the amount of foodBits in the active scene
+var food = [];  // An array for storing all instances of food for reference
+var evoPoints = 0; // Global variable for managing the player's score in a round
+var cursors; // Global variable for storing directional inputs
 var healthBar; // The gameObject that displays the UI for the healthbar, evo points and dropdown evolution menu. Also stores most game values.
-var healthBarScale = 1.5 //
+var healthBarScale = 1.5 // A handy place to adjust the scale of the healthbar
 var startGame = false // Keeps the listener for any key presses in the menu screen separate from the function that starts the game
 var healthContainer; // A container that holds all of the graphics for the UI
 var pointText; // The text displaying the current points value

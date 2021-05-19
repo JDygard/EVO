@@ -108,37 +108,37 @@ class Gameplay extends Phaser.Scene {
             }
         }, this);                                       // context of the event listener started on line 44 above
     }
-
-    applyUpgrades(){
-        currentIdleAnimation = '';
-        if (playerUpgrades.head == 'none'){
-            currentIdleAnimation += '0'
-        } else if (playerUpgrades.head == 'spike'){
-            currentIdleAnimation += 'S'
-        } else if (playerUpgrades.head == 'jaws'){
-            currentIdleAnimation += 'J'
+//============================= Upgrades ================================
+    applyUpgrades(){                                        // A method for controlling upgrades and applying stat boosts
+        currentIdleAnimation = '';                          // Clear the current idle animation code
+        if (playerUpgrades.head == 'none'){                 // If there's no upgrade on the head
+            currentIdleAnimation += '0'                     // then the first character is a 0
+        } else if (playerUpgrades.head == 'spike'){         // If it's a spike
+            currentIdleAnimation += 'S'                     // then it's S
+        } else if (playerUpgrades.head == 'jaws'){          // if it's jaws
+            currentIdleAnimation += 'J'                     // then it's J
         }
 
-        if (playerUpgrades.body == 'none'){
-            currentIdleAnimation += '0'
-        } else if (playerUpgrades.body == 'stiff'){
-            currentIdleAnimation += 'K'
-        } else if (playerUpgrades.body == 'chitin'){
-            currentIdleAnimation += 'C'
+        if (playerUpgrades.body == 'none'){                 // If there's no upgrade on the body
+            currentIdleAnimation += '0'                     // Then the second character is 0
+        } else if (playerUpgrades.body == 'stiff'){         // If it's stiff body
+            currentIdleAnimation += 'K'                     // Then it's a K
+        } else if (playerUpgrades.body == 'chitin'){        // If it's chitinous
+            currentIdleAnimation += 'C'                     // Then it's a C
         }
 
-        if (playerUpgrades.tail == 'none'){
-            currentIdleAnimation += '0';
-        } else if (playerUpgrades.tail == 'tail'){
-            currentIdleAnimation += 'T';
-            currentPlayerSpeed = tailSpeed;
-            currentPlayerRotation = tailRotation;
-        } else if (playerUpgrades.tail == 'flagellum'){
-            currentIdleAnimation += 'F';
-            currentPlayerSpeed = flagellumSpeed;
-            currentPlayerRotation = flagellumRotation;
+        if (playerUpgrades.tail == 'none'){                 // If there's no upgrade on the tail
+            currentIdleAnimation += '0';                    // Then the third character is a 0
+        } else if (playerUpgrades.tail == 'tail'){          // If there's a tail upgrade
+            currentIdleAnimation += 'T';                    // It's a T
+            currentPlayerSpeed = tailSpeed;                 // And we adjust the player speed   
+            currentPlayerRotation = tailRotation;           // and rotation
+        } else if (playerUpgrades.tail == 'flagellum'){     // If there's a flagellum
+            currentIdleAnimation += 'F';                    // it's an F
+            currentPlayerSpeed = flagellumSpeed;            // And we adjust the speed
+            currentPlayerRotation = flagellumRotation;      // and rotation
         }
-        currentMoveAnimation = currentIdleAnimation + 'M'
+        currentMoveAnimation = currentIdleAnimation + 'M'   // Now put an M on the of the movement variable to get the right animation code.
     }
 
 // =============================== Food related methods ================================
@@ -170,7 +170,7 @@ class Gameplay extends Phaser.Scene {
                     distanceDecision.push(Math.abs(thisPos.x - foodPos.x) + Math.abs(thisPos.y - foodPos.y)) // Push the distances into an array
                 }
                 for (let i = 0; i < distanceDecision.length; i++){ //Iterate through the distance array
-                    if (testNumber == undefined){             // If there is no definiton for the variable
+                    if (testNumber == undefined){             // If there is no definiton for the variable (first iteration)
                         testNumber = distanceDecision[i]      // Set it to the 0 index
                     }                                   // Then compare the variable to each index in the array. 
                     if (distanceDecision[i] <= testNumber){   // If we find a lower distance value
@@ -180,6 +180,12 @@ class Gameplay extends Phaser.Scene {
                                                         // same index from the food array and get the corresponding food bit, which is closest to the enemy.
                     }
                 }
+
+                // We can put another loop in here 
+                // if (the enemy has a weapon)
+                //      Test for the distance to the player vs the distance to the food
+                //      maybe replace the food target with the player
+
                 enemyGroup[i].data.set('target', nearestFood)  // Now hand it off to the enemy gameobject
             }
         } else {
@@ -191,9 +197,94 @@ class Gameplay extends Phaser.Scene {
         player.setDataEnabled();
         player.data.set('inMotion', false);
     }
+
     makeEnemies() {
         for (let i = 0; i < enemies.length; i++){
-            let currentMove = enemies[i]
+            let randomUpgrades = ['0','0','0']
+            for (let y = 0; y < round - 1; y++){
+                let randomInt = Math.floor(Math.random() * 3)
+                console.log("initial enemy upgrade loop " + randomInt)
+                if (randomInt == 0){
+                    console.log("head upgrade if")
+                    if (randomUpgrades[0] == '0'){
+                        let selectIt = Math.floor(Math.random() * 2)
+                        if (selectIt == 0){
+                            randomUpgrades[0] = 'S'
+                        } else {
+                            randomUpgrades[0] = 'J'
+                        }
+
+                    } else if (randomUpgrades[2] == '0'){
+                        let selectIt = Math.floor(Math.random() * 2)
+                        if (selectIt == 0){
+                            randomUpgrades[1] = 'C'
+                        } else {
+                            randomUpgrades[1] = 'K'
+                        }
+                    } else if (randomUpgrades[2] !== '0' && randomUpgrades[1] == '0'){
+                        let selectIt = Math.floor(Math.random() * 2)
+                        if (selectIt == 0){
+                            randomUpgrades[2] = 'T'
+                        } else {
+                            randomUpgrades[2] = 'F'
+                        }
+                    }
+                }
+
+                if (randomInt == 1){
+                    console.log("tail upgrade if")
+                    if (randomUpgrades[2] == '0'){
+                        let selectIt = Math.floor(Math.random() * 2)
+                        if (selectIt == 0){
+                            randomUpgrades[2] = 'T'
+                        } else {
+                            randomUpgrades[2] = 'F'
+                        }
+                    } else if (randomUpgrades[0] == '0'){
+                        let selectIt = Math.floor(Math.random() * 2)
+                        if (selectIt == 0){
+                            randomUpgrades[0] = 'S'
+                        } else {
+                            randomUpgrades[0] = 'J'
+                        }
+                    } else if (randomUpgrades[2] !== '0' && randomUpgrades[1] == '0'){
+                        let selectIt = Math.floor(Math.random() * 2)
+                        if (selectIt == 0){
+                            randomUpgrades[1] = 'C'
+                        } else {
+                            randomUpgrades[1] = 'K'
+                        }
+                    }
+                }
+
+                if (randomInt == 2){
+                    console.log("body upgrade if")
+                    if (randomUpgrades[2] !== '0' && randomUpgrades[1] == '0'){
+                        let selectIt = Math.floor(Math.random() * 2)
+                        if (selectIt == 0){
+                            randomUpgrades[1] = 'C'
+                        } else {
+                            randomUpgrades[1] = 'K'
+                        }
+                    } else if (randomUpgrades[2] == '0'){
+                        let selectIt = Math.floor(Math.random() * 2)
+                        if (selectIt == 0){
+                            randomUpgrades[2] = 'T'
+                        } else {
+                            randomUpgrades[2] = 'F'
+                        }
+                    } else if (randomUpgrades[0] == '0'){
+                        let selectIt = Math.floor(Math.random() * 2)
+                        if (selectIt == 0){
+                            randomUpgrades[0] = 'S'
+                        } else {
+                            randomUpgrades[0] = 'J'
+                        }
+                    }
+                }
+            }
+            let currentMove = 'E' + randomUpgrades[0] + randomUpgrades[1] + randomUpgrades[2] + 'M';
+            console.log(currentMove);
             enemyGroup[i] = new Enemy(this, 400, 400, enemies[i])
             enemyGroup[i].anims.play({
                 key: currentMove,
@@ -202,6 +293,8 @@ class Gameplay extends Phaser.Scene {
             enemyGroup[i].setDataEnabled().setRandomPosition(-500,-500,500,500);
             enemyGroup[i].data.set('target', 0);
             enemyGroup[i].data.set('hp', 10)
+            enemyGroup[i].data.set('speed', 0)
+            enemyGroup[i].data.set('rotation', 0)
         }
     }
 
@@ -210,11 +303,12 @@ class Gameplay extends Phaser.Scene {
             let enemy = enemyGroup[i]
             if (enemy.data !== undefined){
                 let target = enemy.data.get('target');
+                console.log('Enemy: ' + enemy + '||| Target: ' + target)
                 let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
                 let angle2 = enemy.rotation
                 let angle = angle1 - angle2
                 if (angle > .4){
-                    enemy.setAngularVelocity(baseRotation)
+                    enemy.setAngularVelocity(baseRotation)  // We will delve the actual speed from the enemy.data
                 } else if (angle > .1){
                     enemy.setAngularVelocity(baseRotation / 1.5)
                 }
@@ -231,6 +325,9 @@ class Gameplay extends Phaser.Scene {
     }
 
     newRound() {
+        console.log('round number ' + round)
+        round++
+        console.log('round number ' + round)
         this.scene.start("Gameplay")
     }
     create(){

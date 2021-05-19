@@ -102,8 +102,7 @@ class MenuScreen extends Phaser.Scene {
         })
         /*
         
-        button to show instructions scene
-        ? button to show story screen
+        Instructions will go here
 
         */    
     }

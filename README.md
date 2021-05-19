@@ -103,6 +103,13 @@ When a function discovers that an item has been eaten or that its 'hp' data poin
 
 In the end, the issue was that even though the garbage variable destroyed its gameObject, it remained assigned to it, and would randomly destroy other objects as part of its functionality, because of how the statement tested the variable. A simple fix solved everything: Once the garbage is destroyed, reset the garbage variable == undefined.
 
+### Crash in round 3
+This may be the most tenacious bug I've yet discovered. Always in round 3, after two rounds have elapsed error-free, the game crashes. It happens when the moveToTarget() method is interrupted in trying to find the angle between the enemy and the target (food). It's almost certainly because it is targeting a food bit that doesn't exist, but I absolutely cannot find where the phantom food is coming from.
+
+1. The food array is cleaned and replaced every round.
+2. Food that is eaten is removed from the array before being removed from the game.
+3. The targeting mechanic targets food using the array
+
 ## Code credits
 
 1. [Rex's virtual joystick plugin](https://codepen.io/rexrainbow/pen/oyqvQY)
