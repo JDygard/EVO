@@ -147,7 +147,7 @@ var items = [
             {
                 name: 'Jaws',
                 children: [
-                    { name: 'A pair of jaws [7 points]' },
+                    { name: 'A pair of jaws [8 points]' },
                 ]
             },
         ]

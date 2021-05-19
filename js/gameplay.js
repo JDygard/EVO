@@ -147,7 +147,6 @@ class Gameplay extends Phaser.Scene {
         for (let i = 0; i < 30; i++){ //Iterate through 30 new food objects
             food[i] = new Food(this, 0, 0, 'food') //Create each new food object and assign them to the array
         }
-        foodRemaining = 30; // Set a variable that hopefully will become deprecated
     }
 
 //===== How do enemies find food?
@@ -184,7 +183,7 @@ class Gameplay extends Phaser.Scene {
                 // We can put another loop in here 
                 // if (the enemy has a weapon)
                 //      Test for the distance to the player vs the distance to the food
-                //      maybe replace the food target with the player
+                //      maybe replace the food target with the player (random chance ?)
 
                 enemyGroup[i].data.set('target', nearestFood)  // Now hand it off to the enemy gameobject
             }
@@ -198,105 +197,120 @@ class Gameplay extends Phaser.Scene {
         player.data.set('inMotion', false);
     }
 
+//=============================== Method for generating enemy gameObjects =================
     makeEnemies() {
         for (let i = 0; i < enemies.length; i++){
-            let randomUpgrades = ['0','0','0']
-            for (let y = 0; y < round - 1; y++){
-                let randomInt = Math.floor(Math.random() * 3)
-                console.log("initial enemy upgrade loop " + randomInt)
-                if (randomInt == 0){
-                    console.log("head upgrade if")
-                    if (randomUpgrades[0] == '0'){
-                        let selectIt = Math.floor(Math.random() * 2)
-                        if (selectIt == 0){
-                            randomUpgrades[0] = 'S'
-                        } else {
-                            randomUpgrades[0] = 'J'
+            //=============================== Generating random upgrades for enemies ==================
+            let randomUpgrades = ['0','0','0']                          // Configure an array to store the results
+            for (let y = 0; y < round - 1; y++){                        // Iterate once for each elapsed round. Note that on round one, this does not fire
+                let randomInt = Math.floor(Math.random() * 3)           // Generate a random number, 0, 1, or 2
+                console.log("initial enemy upgrade loop " + randomInt) 
+                // Trying for head upgrade first on a 0
+                if (randomInt == 0){                                    // If we get a 0
+                    console.log("head upgrade if")  
+                    // Head upgrade
+                    if (randomUpgrades[0] == '0'){                      // and if there is no head upgrade
+                        let selectIt = Math.floor(Math.random() * 2)    // pick a 0 or 1
+                        if (selectIt == 0){                             // if it's 0
+                            randomUpgrades[0] = 'S'                     // set the code for spike
+                        } else {                                        // otherwise
+                            randomUpgrades[0] = 'J'                     // set the code for jaws
                         }
-
-                    } else if (randomUpgrades[2] == '0'){
-                        let selectIt = Math.floor(Math.random() * 2)
-                        if (selectIt == 0){
-                            randomUpgrades[1] = 'C'
-                        } else {
-                            randomUpgrades[1] = 'K'
+                    // Tail upgrade
+                    } else if (randomUpgrades[2] == '0'){               // If there was a head upgrade, test if there is no tail and run the tail upgrade
+                        let selectIt = Math.floor(Math.random() * 2)    // flip a coin
+                        if (selectIt == 0){                             // If it's a 0
+                            randomUpgrades[2] = 'T'                     // set the code for tail
+                        } else {                                        // otherwise
+                            randomUpgrades[2] = 'F'                     // code for flagellum
                         }
-                    } else if (randomUpgrades[2] !== '0' && randomUpgrades[1] == '0'){
-                        let selectIt = Math.floor(Math.random() * 2)
-                        if (selectIt == 0){
-                            randomUpgrades[2] = 'T'
-                        } else {
-                            randomUpgrades[2] = 'F'
-                        }
-                    }
-                }
-
-                if (randomInt == 1){
-                    console.log("tail upgrade if")
-                    if (randomUpgrades[2] == '0'){
-                        let selectIt = Math.floor(Math.random() * 2)
-                        if (selectIt == 0){
-                            randomUpgrades[2] = 'T'
-                        } else {
-                            randomUpgrades[2] = 'F'
-                        }
-                    } else if (randomUpgrades[0] == '0'){
-                        let selectIt = Math.floor(Math.random() * 2)
-                        if (selectIt == 0){
-                            randomUpgrades[0] = 'S'
-                        } else {
-                            randomUpgrades[0] = 'J'
-                        }
-                    } else if (randomUpgrades[2] !== '0' && randomUpgrades[1] == '0'){
-                        let selectIt = Math.floor(Math.random() * 2)
-                        if (selectIt == 0){
-                            randomUpgrades[1] = 'C'
-                        } else {
-                            randomUpgrades[1] = 'K'
+                    // Body upgrade
+                    } else {                                            // If all else fails
+                        let selectIt = Math.floor(Math.random() * 2)    //Flip a coin
+                        if (selectIt == 0){                             // if it's 0
+                            randomUpgrades[1] = 'C'                     // apply code for chitin
+                        } else {                                        // otherwise
+                            randomUpgrades[1] = 'K'                     // apply code for stiff skin
                         }
                     }
                 }
-
-                if (randomInt == 2){
+                // Trying for a tail upgrade on a 1
+                if (randomInt == 1){                                    // if it's a 1
+                    console.log("tail upgrade if")  
+                    // Try for tail upgrade
+                    if (randomUpgrades[2] == '0'){                      // Check to see if there's already a tail
+                        let selectIt = Math.floor(Math.random() * 2)    // Flip a coin
+                        if (selectIt == 0){                             // If it's heads
+                            randomUpgrades[2] = 'T'                     // Apply code for tail
+                        } else {                                        // Otherwise
+                            randomUpgrades[2] = 'F'                     // apply code for flagellum
+                        }
+                    // Try for a head upgrade
+                    } else if (randomUpgrades[0] == '0'){               // Check to see if there's already a head
+                        let selectIt = Math.floor(Math.random() * 2)    // Flip a coin
+                        if (selectIt == 0){                             // If it's heads
+                            randomUpgrades[0] = 'S'                     // Apply spike code
+                        } else {                                        // otherwise
+                            randomUpgrades[0] = 'J'                     // apply jaws code
+                        }
+                    // Try for a body upgrade
+                    } else {                                            // If all else fails
+                        let selectIt = Math.floor(Math.random() * 2)    // flip a coin
+                        if (selectIt == 0){                             // If it's heads
+                            randomUpgrades[1] = 'C'                     // apply code for chitin
+                        } else {                                        // otherwise
+                            randomUpgrades[1] = 'K'                     // apply stiff skin code
+                        }
+                    }
+                }
+                // Trying for a body upgrade on 2
+                if (randomInt == 2){                                    // If it's a 2
                     console.log("body upgrade if")
-                    if (randomUpgrades[2] !== '0' && randomUpgrades[1] == '0'){
-                        let selectIt = Math.floor(Math.random() * 2)
-                        if (selectIt == 0){
-                            randomUpgrades[1] = 'C'
-                        } else {
-                            randomUpgrades[1] = 'K'
+                    // Try for a body upgrade
+                    if (randomUpgrades[2] !== '0' && randomUpgrades[1] == '0'){ // First, double check that there's a required tail upgrade, and that there's no body upgrade
+                        let selectIt = Math.floor(Math.random() * 2)            // flip a coin
+                        if (selectIt == 0){                                     // If it's heads
+                            randomUpgrades[1] = 'C'                             // Apply chitin code
+                        } else {                                                // otherwise
+                            randomUpgrades[1] = 'K'                             // apply stiff skin code
                         }
-                    } else if (randomUpgrades[2] == '0'){
-                        let selectIt = Math.floor(Math.random() * 2)
-                        if (selectIt == 0){
-                            randomUpgrades[2] = 'T'
-                        } else {
-                            randomUpgrades[2] = 'F'
+                    // Try for a tail upgrade
+                    } else if (randomUpgrades[2] == '0'){                       // If there's no tail already
+                        let selectIt = Math.floor(Math.random() * 2)            // flip a coin
+                        if (selectIt == 0){                                     // if it's heads
+                            randomUpgrades[2] = 'T'                             // apply tail code
+                        } else {                                                // otherwise
+                            randomUpgrades[2] = 'F'                             // apply flagellum code
                         }
-                    } else if (randomUpgrades[0] == '0'){
-                        let selectIt = Math.floor(Math.random() * 2)
-                        if (selectIt == 0){
-                            randomUpgrades[0] = 'S'
-                        } else {
-                            randomUpgrades[0] = 'J'
+                    // try for a head upgrade
+                    } else {                                                    // If all else fails
+                        let selectIt = Math.floor(Math.random() * 2)            // flip a coin
+                        if (selectIt == 0){                                     // If it's heads
+                            randomUpgrades[0] = 'S'                             // Apply spike code
+                        } else {                                                // otherwise
+                            randomUpgrades[0] = 'J'                             // apply jaws code
                         }
                     }
                 }
             }
-            let currentMove = 'E' + randomUpgrades[0] + randomUpgrades[1] + randomUpgrades[2] + 'M';
+            let currentMove = 'E' + randomUpgrades[0] + randomUpgrades[1] + randomUpgrades[2] + 'M'; // Build the code used to determine which animation to apply. 'E' for the enemy spritesheet, the 3 character code, then 'M' for moving
+            // ==================================  END random upgrade generation ===============================
             console.log(currentMove);
-            enemyGroup[i] = new Enemy(this, 400, 400, enemies[i])
-            enemyGroup[i].anims.play({
-                key: currentMove,
-                repeat: -1,
+            enemyGroup[i] = new Enemy(this, 400, 400, enemies[i])       // Build the gameObjects
+            enemyGroup[i].anims.play({  // Start the animation
+                key: currentMove,       // using the animation code
+                repeat: -1,             // repeat ad infinitum
             })
-            enemyGroup[i].setDataEnabled().setRandomPosition(-500,-500,500,500);
-            enemyGroup[i].data.set('target', 0);
-            enemyGroup[i].data.set('hp', 10)
-            enemyGroup[i].data.set('speed', 0)
-            enemyGroup[i].data.set('rotation', 0)
+            enemyGroup[i]
+                .setDataEnabled()                       // enable the enemy to hold individual data
+                .setRandomPosition(-500,-500,500,500);  // randomize start position slightly
+            enemyGroup[i].data.set('target', 0);        // Make space for the enemy to store target data
+            enemyGroup[i].data.set('hp', 10)            // Set their starting HP
+            enemyGroup[i].data.set('speed', 0)          // Set their speed
+            enemyGroup[i].data.set('rotation', 0)       // Set their rotation speed
         }
     }
+// ============================================== END enemy gameObject method =================================
 
     moveToTarget() {
         for (let i = 0; i < enemyGroup.length; i++){
