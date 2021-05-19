@@ -123,8 +123,12 @@ class Gameplay extends Phaser.Scene {
             currentIdleAnimation += '0'                     // Then the second character is 0
         } else if (playerUpgrades.body == 'stiff'){         // If it's stiff body
             currentIdleAnimation += 'K'                     // Then it's a K
+            playerHP = 18;
+            playerMaxHP = 25;
         } else if (playerUpgrades.body == 'chitin'){        // If it's chitinous
             currentIdleAnimation += 'C'                     // Then it's a C
+            playerHP = 25;
+            playerMaxHP = 25;
         }
 
         if (playerUpgrades.tail == 'none'){                 // If there's no upgrade on the tail
@@ -180,7 +184,6 @@ class Gameplay extends Phaser.Scene {
                     }
                 }
                 let enemyArmed = enemyGroup[i].data.get('armed')
-                console.log(enemyArmed)
                 if (enemyArmed == 1){
                     let playerDistance = Math.abs(thisPos.x - player.x) + Math.abs(thisPos.y - player.y) // Push the distances into an array
                     if (playerDistance <= testNumber *2){
@@ -194,6 +197,7 @@ class Gameplay extends Phaser.Scene {
             this.newRound()
         }
     }
+
     makePlayer() {
         player = new Player(this, 400, 300, currentIdleAnimation);
         player.setDataEnabled();
@@ -365,6 +369,18 @@ class Gameplay extends Phaser.Scene {
         this.scene.start("Gameplay")
     }
     create(){
+
+    let energyBar = this.add.sprite(207, 90, 'energybar')
+        .setDepth(6)
+        .setScrollFactor(0)
+        .setScale(1.5)
+    energyMask = this.add.sprite(207, 90, 'energybar')
+        .setDepth(6)
+        .setScrollFactor(0)
+        .setScale(1.5)
+    energyMask.visible = false;
+    energyBar.mask = new Phaser.Display.Masks.BitmapMask(this, energyMask);
+
 //================================== Player animation definitions ========================================
     var scene = this;
     for (let i = 0; i < animationSetter.length; i++){
@@ -424,6 +440,7 @@ class Gameplay extends Phaser.Scene {
 //=======                     for the code adapted into this section                                =======
 //======= This is all of the compound body sensor interactions in the game. Dealing damage, eating  =======
 //=======                      food, flagging for destruction is all here.                          =======
+        var scene = this;
         this.matter.world.on('collisionstart', function (event) { // Whenever two things collide,
             var pairs = event.pairs;                              // give them a useful nickname
                 for (var i = 0; i < pairs.length; i++)            // Then check them all out
@@ -504,8 +521,9 @@ class Gameplay extends Phaser.Scene {
                                 player.setTint("0xff4646")                                                       // Make the enemy turn red
                                 setTimeout(function(){                                                          // Wait for a moment
                                     player.clearTint()                                                           // before removing the tint
-                                }, 75)                                                                          // 75ms
-                                // damage the player here
+                                }, 75)                                                                      // 75ms    
+                                playerHP -= 5;
+                                console.log(playerHP)
                             }
 //========================================= Enemy spike damage =======================================================
                             if (sensorBody.label === 'enemySpike' && otherBody.label == 'playerBody'){
@@ -513,7 +531,8 @@ class Gameplay extends Phaser.Scene {
                                 setTimeout(function(){                                                          // Wait for a moment
                                     player.clearTint()                                                           // before removing the tint
                                 }, 75)                                                                          // 75ms
-                                // damage the player here
+                                playerHP -= 3;
+                                console.log(playerHP)
                             }
 //============================================== Enemy eating food stuff ==========================================================
                             if ((sensorBody.label === 'enemyMouth' || sensorBody.label === 'enemyJaws') && otherSprite.label == 'food'){ // If it's an enemy's mouth colliding with food
@@ -567,6 +586,17 @@ class Gameplay extends Phaser.Scene {
     }
 
     update(){  // Update method, executed every frame
+// ========== Healthbar and player death business conducted here =============
+        if (playerHP >= 1){
+            stepWidth = energyMask.displayWidth / playerMaxHP;
+            if (playerHP !== referenceHP){
+                let lostHP = referenceHP - playerHP;
+                referenceHP = playerHP
+                energyMask.x -= lostHP * stepWidth;
+                console.log(energyMask.x)
+            }
+        }
+    
 // ======================== Controlling for dead enemies =====================
         for (let i = 0; i < enemyGroup.length; i++){
             if (enemyGroup[i].data !== undefined){

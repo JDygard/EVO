@@ -268,6 +268,10 @@ var currentPlayerSpeed = baseSpeed; // global variable for storing the player's 
 var currentPlayerRotation = baseRotation; //Global variable for storing the player's rotation speed
 var newRound = false; //
 var player; // The player object
+var playerHP = 10;
+var playerMaxHP = 10;
+var referenceHP = 0;
+var stepWidth;
 var enemySpike = false; // A boolean to be flipped on while generating enemy gameObjects and flipped off immediately after
 var enemyJaws = false;
 var foodBit = 0; // Global variable for containing the amount of foodBits in the active scene
@@ -276,6 +280,7 @@ var evoPoints = 0; // Global variable for managing the player's score in a round
 var cursors; // Global variable for storing directional inputs
 var healthBar; // The gameObject that displays the UI for the healthbar, evo points and dropdown evolution menu. Also stores most game values.
 var healthBarScale = 1.5 // A handy place to adjust the scale of the healthbar
+var energyMask;
 var startGame = false // Keeps the listener for any key presses in the menu screen separate from the function that starts the game
 var healthContainer; // A container that holds all of the graphics for the UI
 var pointText; // The text displaying the current points value
