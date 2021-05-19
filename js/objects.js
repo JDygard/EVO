@@ -52,12 +52,22 @@ class Enemy extends Phaser.Physics.Matter.Sprite {
     const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
     const { width: w, height: h } = this;                  // Declare some useful constants for dimensions
     const enemyMainBody = Bodies.rectangle(8, (h * 0.5), 64, 40, { label: 'enemyBody', chamfer: { radius: 10 } }); // Create a constant for the main body hitbox
-    this.sensors = {                                       // Declaring all of the sensors used on this sprite
-      mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'enemyMouth' }) // The mouth, used for eating and eventually biting
-    };
-    enemyCompoundBody = Body.create({                     // Declaring the compoundBody containing all of the components of the Player sprite
-     parts: [enemyMainBody, this.sensors.mouth],                // The components.
-    });
+    if (enemyJaws == false){
+      this.sensors = {                                       // Declaring all of the sensors used on this sprite
+        mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'enemyMouth' }) // The mouth, used for eating and eventually biting
+      };
+    } else {
+      this.sensors = {                                       // Declaring all of the sensors used on this sprite
+        mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'enemyJaws' }) // The mouth, used for eating and eventually biting
+      };
+    }
+    let bodyParts = {parts: [enemyMainBody, this.sensors.mouth]}
+    if (enemySpike == true){
+      this.sensors.spike = Bodies.trapezoid((w * 0.5) + 20, h * 0.5 -3, 12, 32, 1, { angle: 1.57 });
+      this.sensors.spike2 = Bodies.trapezoid((w * 0.5) + 30, h * 0.5 -3, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'enemySpike'})
+      bodyParts.parts.push(this.sensors.spike, this.sensors.spike2)
+    }
+    enemyCompoundBody = Body.create(bodyParts);
     this
       .setExistingBody(enemyCompoundBody)//===== Applies the compoundBody defined above to the sprite
       .setFixedRotation()           //===== Sets inertia to infinity so the player can't rotate

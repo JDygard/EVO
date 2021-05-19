@@ -110,6 +110,9 @@ This may be the most tenacious bug I've yet discovered. Always in round 3, after
 2. Food that is eaten is removed from the array before being removed from the game.
 3. The targeting mechanic targets food using the array
 
+### Enemy pathing results in driving loops
+Occasionally when the enemy is pathing toward their target, they'll decide to perform an entire loop rather than go directly to their target.
+
 ## Code credits
 
 1. [Rex's virtual joystick plugin](https://codepen.io/rexrainbow/pen/oyqvQY)

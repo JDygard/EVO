@@ -73,7 +73,7 @@ class Gameplay extends Phaser.Scene {
                     }
                     if (button.text == 'Chitinous body that resists damage at the cost of speed (Requires tail upgrade) [5 points]'){                // If the player clicks this button
                         if (evoPoints >= 5 && playerUpgrades.tail !== 'none'){                                           // And they have enough points AND a tail upgrade
-                            playerUpgrades.head = 'chitin'                               // put the selected upgrade into the array
+                            playerUpgrades.body = 'chitin'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 4){                                     // But if they don't have enough points
                             //Print a message about not having enough points for this.  // Let them know
@@ -84,7 +84,7 @@ class Gameplay extends Phaser.Scene {
                     }
                     if (button.text == 'A long, thin tail capable of high speeds, but limited in terms of maneuverability [8 points]'){                // If the player clicks this button
                         if (evoPoints >= 8){                                           // And they have enough points
-                            playerUpgrades.head = 'flagellum'                               // put the selected upgrade into the array
+                            playerUpgrades.tail = 'flagellum'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 7){                                     // But if they don't have enough points
                             //Print a message about not having enough points for this.  // Let them know
@@ -93,7 +93,7 @@ class Gameplay extends Phaser.Scene {
                     }
                     if (button.text == 'A primitive fin which increases speed and maneuverability [10 points]' && evoPoints >= 10){                // If the player clicks this button
                         if (evoPoints >= 10){                                           // And they have enough points
-                            playerUpgrades.head = 'fin'                               // put the selected upgrade into the array
+                            playerUpgrades.tail = 'tail'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 9){                                     // But if they don't have enough points
                             //Print a message about not having enough points for this.  // Let them know
@@ -179,12 +179,15 @@ class Gameplay extends Phaser.Scene {
                                                         // same index from the food array and get the corresponding food bit, which is closest to the enemy.
                     }
                 }
+                let enemyArmed = enemyGroup[i].data.get('armed')
+                console.log(enemyArmed)
+                if (enemyArmed == 1){
+                    let playerDistance = Math.abs(thisPos.x - player.x) + Math.abs(thisPos.y - player.y) // Push the distances into an array
+                    if (playerDistance <= testNumber *2){
+                        nearestFood = player
+                    }
 
-                // We can put another loop in here 
-                // if (the enemy has a weapon)
-                //      Test for the distance to the player vs the distance to the food
-                //      maybe replace the food target with the player (random chance ?)
-
+                }
                 enemyGroup[i].data.set('target', nearestFood)  // Now hand it off to the enemy gameobject
             }
         } else {
@@ -201,7 +204,9 @@ class Gameplay extends Phaser.Scene {
     makeEnemies() {
         for (let i = 0; i < enemies.length; i++){
             //=============================== Generating random upgrades for enemies ==================
-            let randomUpgrades = ['0','0','0']                          // Configure an array to store the results
+            let hp = 10;
+            let enemyArmed = 0;
+            let randomUpgrades = ['0','0','0'];                          // Configure an array to store the results
             for (let y = 0; y < round - 1; y++){                        // Iterate once for each elapsed round. Note that on round one, this does not fire
                 let randomInt = Math.floor(Math.random() * 3)           // Generate a random number, 0, 1, or 2
                 console.log("initial enemy upgrade loop " + randomInt) 
@@ -212,9 +217,13 @@ class Gameplay extends Phaser.Scene {
                     if (randomUpgrades[0] == '0'){                      // and if there is no head upgrade
                         let selectIt = Math.floor(Math.random() * 2)    // pick a 0 or 1
                         if (selectIt == 0){                             // if it's 0
-                            randomUpgrades[0] = 'S'                     // set the code for spike
+                            randomUpgrades[0] = 'S';                     // set the code for spike
+                            enemySpike = true;
+                            enemyArmed = 1;
                         } else {                                        // otherwise
                             randomUpgrades[0] = 'J'                     // set the code for jaws
+                            enemyArmed = 1;
+                            enemyJaws = true;
                         }
                     // Tail upgrade
                     } else if (randomUpgrades[2] == '0'){               // If there was a head upgrade, test if there is no tail and run the tail upgrade
@@ -249,9 +258,13 @@ class Gameplay extends Phaser.Scene {
                     } else if (randomUpgrades[0] == '0'){               // Check to see if there's already a head
                         let selectIt = Math.floor(Math.random() * 2)    // Flip a coin
                         if (selectIt == 0){                             // If it's heads
-                            randomUpgrades[0] = 'S'                     // Apply spike code
+                            randomUpgrades[0] = 'S';                     // Apply spike code
+                            enemySpike = true;
+                            enemyArmed = 1;
                         } else {                                        // otherwise
                             randomUpgrades[0] = 'J'                     // apply jaws code
+                            enemyArmed = 1;
+                            enemyJaws = true;
                         }
                     // Try for a body upgrade
                     } else {                                            // If all else fails
@@ -287,8 +300,12 @@ class Gameplay extends Phaser.Scene {
                         let selectIt = Math.floor(Math.random() * 2)            // flip a coin
                         if (selectIt == 0){                                     // If it's heads
                             randomUpgrades[0] = 'S'                             // Apply spike code
+                            enemySpike = true;
+                            enemyArmed = 1;
                         } else {                                                // otherwise
                             randomUpgrades[0] = 'J'                             // apply jaws code
+                            enemyArmed = 1;
+                            enemyJaws = true;
                         }
                     }
                 }
@@ -297,6 +314,8 @@ class Gameplay extends Phaser.Scene {
             // ==================================  END random upgrade generation ===============================
             console.log(currentMove);
             enemyGroup[i] = new Enemy(this, 400, 400, enemies[i])       // Build the gameObjects
+            enemySpike = false;
+            enemyJaws = false;
             enemyGroup[i].anims.play({  // Start the animation
                 key: currentMove,       // using the animation code
                 repeat: -1,             // repeat ad infinitum
@@ -304,8 +323,10 @@ class Gameplay extends Phaser.Scene {
             enemyGroup[i]
                 .setDataEnabled()                       // enable the enemy to hold individual data
                 .setRandomPosition(-500,-500,500,500);  // randomize start position slightly
+            enemyGroup[i].data.set('jaws', enemyJaws);
+            enemyGroup[i].data.set('armed', enemyArmed);
             enemyGroup[i].data.set('target', 0);        // Make space for the enemy to store target data
-            enemyGroup[i].data.set('hp', 10)            // Set their starting HP
+            enemyGroup[i].data.set('hp', hp)            // Set their starting HP
             enemyGroup[i].data.set('speed', 0)          // Set their speed
             enemyGroup[i].data.set('rotation', 0)       // Set their rotation speed
         }
@@ -317,7 +338,6 @@ class Gameplay extends Phaser.Scene {
             let enemy = enemyGroup[i]
             if (enemy.data !== undefined){
                 let target = enemy.data.get('target');
-                console.log('Enemy: ' + enemy + '||| Target: ' + target)
                 let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
                 let angle2 = enemy.rotation
                 let angle = angle1 - angle2
@@ -430,16 +450,13 @@ class Gameplay extends Phaser.Scene {
                         var sensorSprite = sensorBody.gameObject; // Now grab the game object
                         var otherSprite = otherBody.gameObject;     // for each of the colliders
                         if (otherSprite != null){                 // Test to make sure the collision isn't with the game border, which causes a crash
-//================================================== Jaws damage stuff ============================================================
+//================================================== Player-primary sensor interactions ==================================================
+//================================================== Player Jaws damage stuff ================================================
                             if (sensorBody.label === 'mouth' && otherBody.label == 'enemyBody' && playerUpgrades.head == 'jaws'){
                                 for (let i = 0; i < enemyGroup.length; i++){    // Iterate through the existing enemies
                                     let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y)  // See how large the difference between the coordinates are
                                     if (result > -1 && result < 1 ){                                                    // See if the result is roughly 0
                                         let enemy = enemyGroup[i];                                                      // Variable for readability
-                                        let bounceAngle = Phaser.Math.Angle.BetweenPoints(player, enemy)                // Find the angle between the player and the target 
-                                        let vec = new Phaser.Math.Vector2()                                             // Create a Vector2 vector in a variable
-                                            .setToPolar(bounceAngle)                                                    // Store the angle in degrees
-                                            .setLength(100)                                                             // Give the vector some more length
                                         enemy.setTint("0xff4646")                                                       // Make the enemy turn red
                                         setTimeout(function(){                                                          // Wait for a moment
                                             enemy.clearTint()                                                           // before removing the tint
@@ -450,16 +467,12 @@ class Gameplay extends Phaser.Scene {
                                     }
                                 }
                             }
-//============================================== Spike damage stuff ==============================================================
+//============================================== Player Spike damage stuff ==============================================================
                             if (sensorBody.label === 'spike' && otherBody.label == 'enemyBody'){    // If the collision is between the player's spike and the enemy's body
                                     for (let i = 0; i < enemyGroup.length; i++){    // Iterate through the existing enemies
                                         let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y)  // See how large the difference between the coordinates are
                                         if (result > -1 && result < 1 ){                                                    // See if the result is roughly 0
                                             let enemy = enemyGroup[i];                                                      // Variable for readability
-                                            let bounceAngle = Phaser.Math.Angle.BetweenPoints(player, enemy)                // Find the angle between the player and the target 
-                                            let vec = new Phaser.Math.Vector2()                                             // Create a Vector2 vector in a variable
-                                                .setToPolar(bounceAngle)                                                    // Store the angle in degrees
-                                                .setLength(100)                                                             // Give the vector some more length
                                             enemy.setTint("0xff4646")                                                       // Make the enemy turn red
                                             setTimeout(function(){                                                          // Wait for a moment
                                                 enemy.clearTint()                                                           // before removing the tint
@@ -470,18 +483,6 @@ class Gameplay extends Phaser.Scene {
                                         }
                                     }
                                 }
-//============================================== Enemy eating food stuff ==========================================================
-                            if (sensorBody.label === 'enemyMouth' && otherSprite.label == 'food'){ // If it's an enemy's mouth colliding with food
-                                otherSprite.label = 'eatenFood'              // Label the food in the mouth
-                                for (let i = 0; i < food.length; i++){      // So that it can be found in the food array
-                                    if (otherSprite.label == food[i].label){ // Compare the mouth food with the array 
-                                        food.splice(i, 1)                   // Cut out the eaten food out of the array
-                                        break                               // We're done here.
-                                    }
-                                }
-                                garbage = otherSprite;                   // Flag the food for cleanup
-                                break
-                            }
 //============================================= Player eating food ==================================================================
                             if (sensorBody.label === 'mouth' && otherSprite.label == 'food'){ // If it's a mouth colliding with food
                                 otherSprite.label = 'eatenFood'              // Label the food in the mouth
@@ -494,6 +495,37 @@ class Gameplay extends Phaser.Scene {
                                 garbage = otherSprite;                                  // Flag the food for cleanup
                                 healthBar.data.values.evoPoints += 1;                       // Add an evoPoint
                                 evoPoints += 1;
+                            }
+//=========================================END PLAYER-PRIMARY SENSOR INTERACTIONS =================================================
+
+//=========================================  Enemy-primary sensor interactions ====================================================
+//========================================= Enemy jaw damage ========================================================
+                            if (sensorBody.label === 'enemyJaws' && otherBody.label == 'playerBody'){
+                                player.setTint("0xff4646")                                                       // Make the enemy turn red
+                                setTimeout(function(){                                                          // Wait for a moment
+                                    player.clearTint()                                                           // before removing the tint
+                                }, 75)                                                                          // 75ms
+                                // damage the player here
+                            }
+//========================================= Enemy spike damage =======================================================
+                            if (sensorBody.label === 'enemySpike' && otherBody.label == 'playerBody'){
+                                player.setTint("0xff4646")                                                       // Make the enemy turn red
+                                setTimeout(function(){                                                          // Wait for a moment
+                                    player.clearTint()                                                           // before removing the tint
+                                }, 75)                                                                          // 75ms
+                                // damage the player here
+                            }
+//============================================== Enemy eating food stuff ==========================================================
+                            if ((sensorBody.label === 'enemyMouth' || sensorBody.label === 'enemyJaws') && otherSprite.label == 'food'){ // If it's an enemy's mouth colliding with food
+                                otherSprite.label = 'eatenFood'              // Label the food in the mouth
+                                for (let i = 0; i < food.length; i++){      // So that it can be found in the food array
+                                    if (otherSprite.label == food[i].label){ // Compare the mouth food with the array 
+                                        food.splice(i, 1)                   // Cut out the eaten food out of the array
+                                        break                               // We're done here.
+                                    }
+                                }
+                                garbage = otherSprite;                   // Flag the food for cleanup
+                                break
                             }
                         }
                     }

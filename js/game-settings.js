@@ -252,14 +252,14 @@ var createMenu = function (scene, x, y, items, onClick) {
 }
 
 var playerUpgrades = {
-    head: 'spike',
-    body: 'chitin',
-    tail: 'flagellum'
+    head: 'none',
+    body: 'none',
+    tail: 'none'
 }
 // This is an array to house the variables for various animations. It is used by the animation-creating for-loop to efficiently name and create animations.
 // KEY: 0 = null/no other upgrades, J = jaws, S = spike, F = flagellum, T = tail, K = stiff skin, C = chitin, M = moving
 var animationSetter = [
-    '000','000M','J00','J00M','S00','S00M','00F','00FM','J0F','J0FM','S0J','S0JM','0KF','0KFM','0CF','0CFM','00T','00TM','J0T','J0TM','S0T','S0TM','0KT','0KTM','0CT','0CTM','JKF','JKFM','JCF','JCFM','SKF','SKFM','SCF','SCFM','JKT','JKTM','JCT','JCTM','SKT','SKTM','SCT','SCTM',
+    '000','000M','J00','J00M','S00','S00M','00F','00FM','J0F','J0FM','S0F','S0FM','0KF','0KFM','0CF','0CFM','00T','00TM','J0T','J0TM','S0T','S0TM','0KT','0KTM','0CT','0CTM','JKF','JKFM','JCF','JCFM','SKF','SKFM','SCF','SCFM','JKT','JKTM','JCT','JCTM','SKT','SKTM','SCT','SCTM',
 ]
 
 // General variables
@@ -269,6 +269,7 @@ var currentPlayerRotation = baseRotation; //Global variable for storing the play
 var newRound = false; //
 var player; // The player object
 var enemySpike = false; // A boolean to be flipped on while generating enemy gameObjects and flipped off immediately after
+var enemyJaws = false;
 var foodBit = 0; // Global variable for containing the amount of foodBits in the active scene
 var food = [];  // An array for storing all instances of food for reference
 var evoPoints = 0; // Global variable for managing the player's score in a round
