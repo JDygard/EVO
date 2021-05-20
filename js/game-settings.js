@@ -109,7 +109,7 @@ const config = {
 // === This is where all of the constants for game elements can be adjusted in one place ===
 
 // ==Debug mode : Turns off touch controls and menu scene for rapid testing
-var debugMode = true
+var debugMode = false
 
 // ==Rotation speed
 const baseRotation = 0.055
@@ -128,8 +128,6 @@ const baseFriction = 0.1
 // ==Player mass
 const baseMass = 30
 
-// ================================= Global Variables ====================================
-// =========This is where the global variables for the game are being declared ===========
 // RexUI function
 const COLOR_PRIMARY = 0x634d0a;
 const COLOR_LIGHT = 0xffd100;
@@ -256,18 +254,21 @@ var playerUpgrades = {
     body: 'none',
     tail: 'none'
 }
-// This is an array to house the variables for various animations. It is used by the animation-creating for-loop to efficiently name and create animations.
+
+// This is an array to house the keys for all of the animations. It is used by the animation-creating for-loop to efficiently name, create amd call animations.
 // KEY: 0 = null/no other upgrades, J = jaws, S = spike, F = flagellum, T = tail, K = stiff skin, C = chitin, M = moving
 var animationSetter = [
     '000','000M','J00','J00M','S00','S00M','00F','00FM','J0F','J0FM','S0F','S0FM','0KF','0KFM','0CF','0CFM','00T','00TM','J0T','J0TM','S0T','S0TM','0KT','0KTM','0CT','0CTM','JKF','JKFM','JCF','JCFM','SKF','SKFM','SCF','SCFM','JKT','JKTM','JCT','JCTM','SKT','SKTM','SCT','SCTM',
 ]
+// ================================= Global Variables ====================================
+// =========This is where the global variables for the game are being declared ===========
 // General variables
 var round = 1; // Global variable for storing the current round
 var gameText; // Global variable for accessing the center screen text element
 var currentPlayerSpeed = baseSpeed; // global variable for storing the player's speed
 var currentPlayerRotation = baseRotation; //Global variable for storing the player's rotation speed
 var playerDead = false;
-var newRound = false; //
+var newRound = false;
 var player; // The player object
 var playerHP = 10;     // Determines how durable the player is
 var playerMaxHP = 10;  // Used to determine how to increment the energy bar
@@ -296,19 +297,13 @@ console.log(enemies)
 var posX = [0,0];
 var posY = [0,0];
 var moving = false;//Variable for testing if the player is in motion
-var currentIdleAnimation = '000';
-var currentMoveAnimation = '000M';
+var currentIdleAnimation = '000';  // Initial animation state for the player. "000" means no upgrades
+var currentMoveAnimation = '000M'; // initial moving animation state for the player. "000" means no upgrades, "M" means this is the moving version of that sprite
 var chitinPenalty = 0; // A variable for storing the speed penalty for the chitin upgrade
 var spike = false; // Variable for testing whether the player has the spike part
 var playerCompoundBody; //Object holding static body parts for the player
-var enemyCompoundBody;
+var enemyCompoundBody;  //Object holding the static body parts for the enemies
 var debris = []; //Empty array for holding all the background debris
-
-// Variables with useful screen size values
-var viewX = this.window.devicePixelRatio * this.window.innerWidth * .99;
-var viewY = this.window.devicePixelRatio * this.window.innerHeight * .99;
-var centerX = (this.window.devicePixelRatio * this.window.innerWidth * .99) / 2;
-var centerY = (this.window.devicePixelRatio * this.window.innerHeight * .99) / 2;
 
 // Virtual joystick objects
 var touch;
@@ -321,7 +316,6 @@ var leftKeyDown;
 var rightKeyDown;
 var upKeyDown;
 var downKeyDown;
-
 var spaceKey;
 
 // Uses the config object keys to set the start conditions for the game

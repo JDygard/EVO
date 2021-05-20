@@ -25,17 +25,16 @@ class Player extends Phaser.Physics.Matter.Sprite {        // Declare player spr
     const { Body, Bodies } = Phaser.Physics.Matter.Matter; // Native Matter modules
     const { width: w, height: h } = this;                  // Declare some useful constants for dimensions
     const mainBody = Bodies.rectangle(8, (h * 0.5), 64, 40, { chamfer: { radius: 10 }, label: 'playerBody' }); // Create a constant for the main body hitbox
-    console.log(h)
     this.sensors = {                                       // Declaring all of the sensors used on this sprite
       mouth: Bodies.circle((w * 0.5) + 20, h * 0.5, 18, { isSensor: true, label: 'mouth' }), // The mouth, used for eating and eventually biting
     };
-    let bodyParts = {parts: [mainBody, this.sensors.mouth]}
-    if (playerUpgrades.head == 'spike'){
-      this.sensors.spike = Bodies.trapezoid((w * 0.5) + 20, h * 0.5 -3, 12, 32, 1, { angle: 1.57 });
-      this.sensors.spike2 = Bodies.trapezoid((w * 0.5) + 30, h * 0.5 -3, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'spike'})
-      bodyParts.parts.push(this.sensors.spike, this.sensors.spike2)
+    let bodyParts = {parts: [mainBody, this.sensors.mouth]}// Declaring a variable containing the basic parts of the player object
+    if (playerUpgrades.head == 'spike'){                                                                                            // If the player has upgraded into a spike
+      this.sensors.spike = Bodies.trapezoid((w * 0.5) + 20, h * 0.5 -3, 12, 32, 1, { angle: 1.57 });                                // Put the physical spike in place
+      this.sensors.spike2 = Bodies.trapezoid((w * 0.5) + 30, h * 0.5 -3, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'spike'}) // and the sensor
+      bodyParts.parts.push(this.sensors.spike, this.sensors.spike2)                                                                 // And load it into the parts array
     }
-    playerCompoundBody = Body.create(bodyParts);
+    playerCompoundBody = Body.create(bodyParts);           // create a body from the parts.
     this
       .setExistingBody(playerCompoundBody)//===== Applies the compoundBody defined above to the sprite
       .setFixedRotation()           //===== Sets inertia to infinity so the player can't rotate

@@ -213,14 +213,15 @@ class Gameplay extends Phaser.Scene {
         for (let i = 0; i < enemies.length; i++){
             //=============================== Generating random upgrades for enemies ==================
             let hp = 10;
+            let enemySpeed;
+            let enemyRotation;
+            let enemyChitin = 0;
             let enemyArmed = 0;
             let randomUpgrades = ['0','0','0'];                          // Configure an array to store the results
             for (let y = 0; y < round - 1; y++){                        // Iterate once for each elapsed round. Note that on round one, this does not fire
                 let randomInt = Math.floor(Math.random() * 3)           // Generate a random number, 0, 1, or 2
-                console.log("initial enemy upgrade loop " + randomInt) 
                 // Trying for head upgrade first on a 0
                 if (randomInt == 0){                                    // If we get a 0
-                    console.log("head upgrade if")  
                     // Head upgrade
                     if (randomUpgrades[0] == '0'){                      // and if there is no head upgrade
                         let selectIt = Math.floor(Math.random() * 2)    // pick a 0 or 1
@@ -237,15 +238,20 @@ class Gameplay extends Phaser.Scene {
                     } else if (randomUpgrades[2] == '0'){               // If there was a head upgrade, test if there is no tail and run the tail upgrade
                         let selectIt = Math.floor(Math.random() * 2)    // flip a coin
                         if (selectIt == 0){                             // If it's a 0
-                            randomUpgrades[2] = 'T'                     // set the code for tail
+                            randomUpgrades[2] = 'T';                    // set the code for tail
+                            enemySpeed = tailSpeed;
+                            enemyRotation = tailRotation;
                         } else {                                        // otherwise
                             randomUpgrades[2] = 'F'                     // code for flagellum
+                            enemySpeed = flagellumSpeed;
+                            enemyRotation = flagellumRotation;
                         }
                     // Body upgrade
                     } else {                                            // If all else fails
                         let selectIt = Math.floor(Math.random() * 2)    //Flip a coin
                         if (selectIt == 0){                             // if it's 0
                             randomUpgrades[1] = 'C'                     // apply code for chitin
+                            enemyChitin = chitinSpeed;
                         } else {                                        // otherwise
                             randomUpgrades[1] = 'K'                     // apply code for stiff skin
                         }
@@ -253,14 +259,17 @@ class Gameplay extends Phaser.Scene {
                 }
                 // Trying for a tail upgrade on a 1
                 if (randomInt == 1){                                    // if it's a 1
-                    console.log("tail upgrade if")  
                     // Try for tail upgrade
                     if (randomUpgrades[2] == '0'){                      // Check to see if there's already a tail
                         let selectIt = Math.floor(Math.random() * 2)    // Flip a coin
                         if (selectIt == 0){                             // If it's heads
                             randomUpgrades[2] = 'T'                     // Apply code for tail
+                            enemySpeed = tailSpeed;
+                            enemyRotation = tailRotation;
                         } else {                                        // Otherwise
                             randomUpgrades[2] = 'F'                     // apply code for flagellum
+                            enemySpeed = flagellumSpeed;
+                            enemyRotation = flagellumRotation;
                         }
                     // Try for a head upgrade
                     } else if (randomUpgrades[0] == '0'){               // Check to see if there's already a head
@@ -279,6 +288,7 @@ class Gameplay extends Phaser.Scene {
                         let selectIt = Math.floor(Math.random() * 2)    // flip a coin
                         if (selectIt == 0){                             // If it's heads
                             randomUpgrades[1] = 'C'                     // apply code for chitin
+                            enemyChitin = chitinSpeed;
                         } else {                                        // otherwise
                             randomUpgrades[1] = 'K'                     // apply stiff skin code
                         }
@@ -286,12 +296,12 @@ class Gameplay extends Phaser.Scene {
                 }
                 // Trying for a body upgrade on 2
                 if (randomInt == 2){                                    // If it's a 2
-                    console.log("body upgrade if")
                     // Try for a body upgrade
                     if (randomUpgrades[2] !== '0' && randomUpgrades[1] == '0'){ // First, double check that there's a required tail upgrade, and that there's no body upgrade
                         let selectIt = Math.floor(Math.random() * 2)            // flip a coin
                         if (selectIt == 0){                                     // If it's heads
                             randomUpgrades[1] = 'C'                             // Apply chitin code
+                            enemyChitin = chitinSpeed;
                         } else {                                                // otherwise
                             randomUpgrades[1] = 'K'                             // apply stiff skin code
                         }
@@ -300,8 +310,12 @@ class Gameplay extends Phaser.Scene {
                         let selectIt = Math.floor(Math.random() * 2)            // flip a coin
                         if (selectIt == 0){                                     // if it's heads
                             randomUpgrades[2] = 'T'                             // apply tail code
+                            enemySpeed = tailSpeed;
+                            enemyRotation = tailRotation;
                         } else {                                                // otherwise
                             randomUpgrades[2] = 'F'                             // apply flagellum code
+                            enemySpeed = flagellumSpeed;
+                            enemyRotation = flagellumRotation;
                         }
                     // try for a head upgrade
                     } else {                                                    // If all else fails
@@ -324,6 +338,7 @@ class Gameplay extends Phaser.Scene {
             enemyGroup[i] = new Enemy(this, 400, 400, enemies[i])       // Build the gameObjects
             enemySpike = false;
             enemyJaws = false;
+            enemySpeed -= enemyChitin;
             enemyGroup[i].anims.play({  // Start the animation
                 key: currentMove,       // using the animation code
                 repeat: -1,             // repeat ad infinitum
@@ -335,8 +350,8 @@ class Gameplay extends Phaser.Scene {
             enemyGroup[i].data.set('armed', enemyArmed);
             enemyGroup[i].data.set('target', 0);        // Make space for the enemy to store target data
             enemyGroup[i].data.set('hp', hp)            // Set their starting HP
-            enemyGroup[i].data.set('speed', 0)          // Set their speed
-            enemyGroup[i].data.set('rotation', 0)       // Set their rotation speed
+            enemyGroup[i].data.set('speed', enemySpeed)          // Set their speed
+            enemyGroup[i].data.set('rotation', enemyRotation)       // Set their rotation speed
         }
     }
 // ============================================== END enemy gameObject method =================================
@@ -345,22 +360,24 @@ class Gameplay extends Phaser.Scene {
         for (let i = 0; i < enemyGroup.length; i++){
             let enemy = enemyGroup[i]
             if (enemy.data !== undefined){
+                let enemySpeed = enemy.data.get('speed');
+                let enemyRotation = enemy.data.get('rotation');
                 let target = enemy.data.get('target');
                 let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
                 let angle2 = enemy.rotation
                 let angle = angle1 - angle2
                 if (angle > .4){
-                    enemy.setAngularVelocity(baseRotation)  // We will delve the actual speed from the enemy.data
+                    enemy.setAngularVelocity(enemyRotation)  // We will delve the actual speed from the enemy.data
                 } else if (angle > .1){
-                    enemy.setAngularVelocity(baseRotation / 1.5)
+                    enemy.setAngularVelocity(enemyRotation / 1.5)
                 }
                 if (angle < .4){
-                    enemy.setAngularVelocity(-baseRotation)
+                    enemy.setAngularVelocity(-enemyRotation)
                 } else if (angle < .1){
-                    enemy.setAngularVelocity(-baseRotation / 1.5)
+                    enemy.setAngularVelocity(-enemyRotation / 1.5)
                 }
                 if (Math.abs(angle) < Math.abs(6)){
-                    enemy.thrust(baseSpeed)
+                    enemy.thrust(enemySpeed)
                 }
             }
         }
@@ -401,6 +418,10 @@ class Gameplay extends Phaser.Scene {
         playerHP = 10;
         playerMaxHP = 10;
         referenceHP = 10;
+        if (debugMode == false){
+            evoPoints = 0
+            healthBar.data.set('evoPoints', 0)
+        }
         round++
         this.scene.start("Gameplay")
     }
@@ -705,7 +726,6 @@ class Gameplay extends Phaser.Scene {
         if (cursors.up.isDown || upKeyDown)
         {
             player.thrust(thrustSpeed);
-            console.log(currentPlayerSpeed + ' + ' + chitinPenalty + ' = ' + thrustSpeed)
         }   
 //============================== Enemy target acquisition, calculation and movement ===================
 //=====
