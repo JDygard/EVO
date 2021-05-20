@@ -120,7 +120,7 @@ const flagellumRotation = 0.03
 const baseSpeed = 0.03
 const tailSpeed = 0.04
 const flagellumSpeed = 0.048
-const chitinSpeed = -0.05
+const chitinSpeed = -0.005
 
 // ==Fluid friction
 const baseFriction = 0.1
@@ -261,11 +261,12 @@ var playerUpgrades = {
 var animationSetter = [
     '000','000M','J00','J00M','S00','S00M','00F','00FM','J0F','J0FM','S0F','S0FM','0KF','0KFM','0CF','0CFM','00T','00TM','J0T','J0TM','S0T','S0TM','0KT','0KTM','0CT','0CTM','JKF','JKFM','JCF','JCFM','SKF','SKFM','SCF','SCFM','JKT','JKTM','JCT','JCTM','SKT','SKTM','SCT','SCTM',
 ]
-
 // General variables
 var round = 1; // Global variable for storing the current round
+var gameText; // Global variable for accessing the center screen text element
 var currentPlayerSpeed = baseSpeed; // global variable for storing the player's speed
 var currentPlayerRotation = baseRotation; //Global variable for storing the player's rotation speed
+var playerDead = false;
 var newRound = false; //
 var player; // The player object
 var playerHP = 10;     // Determines how durable the player is
@@ -297,6 +298,7 @@ var posY = [0,0];
 var moving = false;//Variable for testing if the player is in motion
 var currentIdleAnimation = '000';
 var currentMoveAnimation = '000M';
+var chitinPenalty = 0; // A variable for storing the speed penalty for the chitin upgrade
 var spike = false; // Variable for testing whether the player has the spike part
 var playerCompoundBody; //Object holding static body parts for the player
 var enemyCompoundBody;

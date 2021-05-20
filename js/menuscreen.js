@@ -3,11 +3,11 @@ class MenuScreen extends Phaser.Scene {
         super('MenuScreen')
     }
     create(){
-        
+        playerDead = false; // Resetting the game if the menu was reached through death
+        var textureSizeTest = this.game.renderer.getMaxTextureSize(); // Collect the maximum allowed texture size to adjust for low tolerance
 //======================================= Adding images ======================================
 //===== There's a lot of moving pieces in this animation. We are adding them all in a    =====
 //=====                                   big chunk here.                                =====
-
         let sky = this.add.image(800, 160, "menu-sky")                      // Sky image
         let water = this.add.image(800, 435, "menu-water")                  // Water surface
         let underwater = this.add.sprite(800, 970, "menu-underwater")       // Underwater
@@ -16,18 +16,20 @@ class MenuScreen extends Phaser.Scene {
         let consume = this.add.image(350, 550, "menu-consume").setAlpha(0); // Consume text, alpha set to 0 to make it invisible
         let survive = this.add.image(800, 650, "menu-survive").setAlpha(0); // Survive text, alpha set to 0 to make it invisible
         let pressKey = this.add.image(800, 750, "menu-press").setAlpha(0);  // Press any key text, alpha set to 0 to make it invisible
-        this.anims.create({                                                 // Creating our water animation
-            key: "animated-water",                                          // Declaring the key to which it will be referred
-            frames: this.anims.generateFrameNumbers("animatedWater", { start: 0, end: 5 }), // Getting the spritesheet and numbering the frames for the array
-            frameRate: 3,                                                   // Speed at which the frames are cycled
-        })
         let durationSky = 2000;                                             // A useful variable for adjusting the duration of the initial "dive" animation in one place
+        if (textureSizeTest >= 4800){
+            this.anims.create({                                                 // Creating our water animation
+                key: "animated-water",                                          // Declaring the key to which it will be referred
+                frames: this.anims.generateFrameNumbers("animatedWater", { start: 0, end: 5 }), // Getting the spritesheet and numbering the frames for the array
+                frameRate: 3,                                                   // Speed at which the frames are cycled
+            })
 
 //=============================== Menu intro ==============================
-        underwater.anims.play({         // Start playing the underwater animation
-            key: "animated-water",      // Call on the key declared above in the this.anims.create() method
-            repeat: -1,                 // "repeat: -1" means to repeat it ad infinitum
-        })
+            underwater.anims.play({         // Start playing the underwater animation
+                key: "animated-water",      // Call on the key declared above in the this.anims.create() method
+                repeat: -1,                 // "repeat: -1" means to repeat it ad infinitum
+            })
+        }
         this.cameras.main.fadeIn(300);  // A short fade into the background
         this.tweens.add({               // Start a tween
             targets: title,             // Targeting the title image

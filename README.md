@@ -116,6 +116,9 @@ Occasionally when the enemy is pathing toward their target, they'll decide to pe
 ## WebGL MAX_TEXTURE_SIZE
 After converting my myriad textures into a master spritesheet, my sprites stopped rendering properly, appearing as small black boxes instead. I discovered that this is due to specific browser/hardware combinations having very low texture size limitations.
 
+For accessibility, I added an if statement that makes sure the max permitted texture size is enough to accommodate the size of the intro menu animation. If it doesn't, a static version of the menu graphic is shown.
+I also discovered that textures are treated like the next largest squared integer, i.e. a 5x2 px image is treated as 8x8, a 126x12 is 128x128 etc. By packing my master spritesheets into as square a version as possible, I was able to squeeze it down to the lowest possible WebGL maximum texture size (Chrome on mobile.)
+
 ## Code credits
 
 1. [Rex's virtual joystick plugin](https://codepen.io/rexrainbow/pen/oyqvQY)
