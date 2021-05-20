@@ -269,6 +269,7 @@ var currentPlayerSpeed = baseSpeed; // global variable for storing the player's 
 var currentPlayerRotation = baseRotation; //Global variable for storing the player's rotation speed
 var playerDead = false;
 var newRound = false;
+var deathScreen = false;
 var player; // The player object
 var playerHP = 10;     // Determines how durable the player is
 var playerMaxHP = 10;  // Used to determine how to increment the energy bar

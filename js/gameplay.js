@@ -213,8 +213,8 @@ class Gameplay extends Phaser.Scene {
         for (let i = 0; i < enemies.length; i++){
             //=============================== Generating random upgrades for enemies ==================
             let hp = 10;
-            let enemySpeed;
-            let enemyRotation;
+            let enemySpeed = baseSpeed;
+            let enemyRotation = baseRotation;
             let enemyChitin = 0;
             let enemyArmed = 0;
             let randomUpgrades = ['0','0','0'];                          // Configure an array to store the results
@@ -350,6 +350,7 @@ class Gameplay extends Phaser.Scene {
             enemyGroup[i].data.set('armed', enemyArmed);
             enemyGroup[i].data.set('target', 0);        // Make space for the enemy to store target data
             enemyGroup[i].data.set('hp', hp)            // Set their starting HP
+            console.log(enemySpeed)
             enemyGroup[i].data.set('speed', enemySpeed)          // Set their speed
             enemyGroup[i].data.set('rotation', enemyRotation)       // Set their rotation speed
         }
@@ -366,6 +367,7 @@ class Gameplay extends Phaser.Scene {
                 let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
                 let angle2 = enemy.rotation
                 let angle = angle1 - angle2
+                console.log(enemySpeed)
                 if (angle > .4){
                     enemy.setAngularVelocity(enemyRotation)  // We will delve the actual speed from the enemy.data
                 } else if (angle > .1){

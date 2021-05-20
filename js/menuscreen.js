@@ -4,6 +4,7 @@ class MenuScreen extends Phaser.Scene {
     }
     create(){
         playerDead = false; // Resetting the game if the menu was reached through death
+        deathScreen = false; // Resetting the game if the menu was reached through death
         var textureSizeTest = this.game.renderer.getMaxTextureSize(); // Collect the maximum allowed texture size to adjust for low tolerance
 //======================================= Adding images ======================================
 //===== There's a lot of moving pieces in this animation. We are adding them all in a    =====
