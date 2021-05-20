@@ -25,6 +25,7 @@ class Gameplay extends Phaser.Scene {
         healthBar.data.set('evoPoints', 0);                             // Sets the beginning score to 0
         if (debugMode == true){                                         // Test for debug mode
             healthBar.data.set('evoPoints', 10)                         // If debug mode is on, the starting evo points is 10
+            evoPoints = 10
         };
         pointText = this.add.text(-45, 0, '', {fontFamily: '"Roboto Mono", sans serif'}); // A place for points to be displayed
         pointText.setText(evoPoints)                                    // Displays the score  
@@ -124,11 +125,13 @@ class Gameplay extends Phaser.Scene {
         } else if (playerUpgrades.body == 'stiff'){         // If it's stiff body
             currentIdleAnimation += 'K'                     // Then it's a K
             playerHP = 18;
-            playerMaxHP = 25;
+            playerMaxHP = 18;
+            referenceHP = 18;
         } else if (playerUpgrades.body == 'chitin'){        // If it's chitinous
             currentIdleAnimation += 'C'                     // Then it's a C
             playerHP = 25;
             playerMaxHP = 25;
+            referenceHP = 25;
         }
 
         if (playerUpgrades.tail == 'none'){                 // If there's no upgrade on the tail
@@ -363,13 +366,18 @@ class Gameplay extends Phaser.Scene {
     }
 
     newRound() {
+        playerHP = 10;
+        playerMaxHP = 10;
+        referenceHP = 10;
         console.log('round number ' + round)
         round++
         console.log('round number ' + round)
         this.scene.start("Gameplay")
     }
     create(){
-
+// ================= Setting up the energy bar in the healthBar object ================
+// == Thanks to Emanuele Feronato for the simple tutorial on using masks for this ==
+// == ref = https://www.emanueleferonato.com/2019/04/24/add-a-nice-time-bar-energy-bar-mana-bar-whatever-bar-to-your-html5-games-using-phaser-3-masks/
     let energyBar = this.add.sprite(207, 90, 'energybar')
         .setDepth(6)
         .setScrollFactor(0)

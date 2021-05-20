@@ -109,7 +109,7 @@ const config = {
 // === This is where all of the constants for game elements can be adjusted in one place ===
 
 // ==Debug mode : Turns off touch controls and menu scene for rapid testing
-var debugMode = false
+var debugMode = true
 
 // ==Rotation speed
 const baseRotation = 0.055
@@ -268,10 +268,10 @@ var currentPlayerSpeed = baseSpeed; // global variable for storing the player's 
 var currentPlayerRotation = baseRotation; //Global variable for storing the player's rotation speed
 var newRound = false; //
 var player; // The player object
-var playerHP = 10;
-var playerMaxHP = 10;
-var referenceHP = 0;
-var stepWidth;
+var playerHP = 10;     // Determines how durable the player is
+var playerMaxHP = 10;  // Used to determine how to increment the energy bar
+var referenceHP = 10;  // Used to determine if the HP total has changed between frames
+var stepWidth; // The increment by which the health bar moves
 var enemySpike = false; // A boolean to be flipped on while generating enemy gameObjects and flipped off immediately after
 var enemyJaws = false;
 var foodBit = 0; // Global variable for containing the amount of foodBits in the active scene

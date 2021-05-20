@@ -113,6 +113,9 @@ This may be the most tenacious bug I've yet discovered. Always in round 3, after
 ### Enemy pathing results in driving loops
 Occasionally when the enemy is pathing toward their target, they'll decide to perform an entire loop rather than go directly to their target.
 
+## WebGL MAX_TEXTURE_SIZE
+After converting my myriad textures into a master spritesheet, my sprites stopped rendering properly, appearing as small black boxes instead. I discovered that this is due to specific browser/hardware combinations having very low texture size limitations.
+
 ## Code credits
 
 1. [Rex's virtual joystick plugin](https://codepen.io/rexrainbow/pen/oyqvQY)
@@ -126,6 +129,10 @@ Occasionally when the enemy is pathing toward their target, they'll decide to pe
 3. [Rex's UI plugin](https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ui-overview/)
 
     Rex's UI plugin was used to build the "Evolve" menu. This made the code lighter, and eased the process of making a complex build menu.
+
+4. [Emanuele Feranto's simple mask tutorial](https://www.emanueleferonato.com/2019/04/24/add-a-nice-time-bar-energy-bar-mana-bar-whatever-bar-to-your-html5-games-using-phaser-3-masks/)
+
+    This was a simple tutorial on using masks. I almost wouldn't have credited it, but I did lift the concept of stepWidth directly from the tutorial.
 
 ## Visuals credits
 
