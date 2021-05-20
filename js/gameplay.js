@@ -334,7 +334,6 @@ class Gameplay extends Phaser.Scene {
             }
             let currentMove = 'E' + randomUpgrades[0] + randomUpgrades[1] + randomUpgrades[2] + 'M'; // Build the code used to determine which animation to apply. 'E' for the enemy spritesheet, the 3 character code, then 'M' for moving
             // ==================================  END random upgrade generation ===============================
-            console.log(currentMove);
             enemyGroup[i] = new Enemy(this, 400, 400, enemies[i])       // Build the gameObjects
             enemySpike = false;
             enemyJaws = false;
@@ -350,7 +349,6 @@ class Gameplay extends Phaser.Scene {
             enemyGroup[i].data.set('armed', enemyArmed);
             enemyGroup[i].data.set('target', 0);        // Make space for the enemy to store target data
             enemyGroup[i].data.set('hp', hp)            // Set their starting HP
-            console.log(enemySpeed)
             enemyGroup[i].data.set('speed', enemySpeed)          // Set their speed
             enemyGroup[i].data.set('rotation', enemyRotation)       // Set their rotation speed
         }
