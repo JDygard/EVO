@@ -274,6 +274,7 @@ var animationSetter = [
 // ================================= Global Variables ====================================
 // =========This is where the global variables for the game are being declared ===========
 // General variables
+var timer = false; // A timer to avoid building a message queue
 var round = 1; // Global variable for storing the current round
 var gameText; // Global variable for accessing the center screen text element
 var currentPlayerSpeed = baseSpeed; // global variable for storing the player's speed
