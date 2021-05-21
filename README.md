@@ -78,12 +78,12 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 
     iv. Size upgrade
 ## Bugs
-### Mouth sensor contact with world boundary causes crash
+### Mouth sensor contact with world boundary causes crash (Solved)
 When the mouth sensor on the Player object makes contact with the world boundary, it assigns assigns a null value to one of the temporary variables within the querying function associated with the sensor. This crashes the game.
 This bug has been tenacious as the sensor functions become more complex. We've had to implement a test before each if statement involving encountered variables. Another option would have been to give a value to the world boundary to eliminate
 the problem of null values clogging up functions.
 
-### Food target .destroy() bug crashes game.
+### Food target .destroy() bug crashes game. (Solved)
 This one was a doozy! After adding an enemy and giving them the ability to seek out food, I started getting a repetitive crash from the phaser library. I was destroying something the game was using. I assumed it had to do with the
 code I had just added (the pairs loop .on('collisionstart' ) and had a difficult time figuring it out. I tried:
 - Moving the foodSprite.destroy() function to the end of, and out of the for loop.
@@ -94,7 +94,7 @@ It was only when I noticed that it was only the food being TARGETED by the enemy
 
 This was fixed by separating the destruction of the sprite into the update method, and forcing all enemy sprites to decide on a new target each time the garbage would empty. This is effective because the eaten food is removed from the targeting array as part of the collision process and thus cannot be retargeted.
 
-### Adding the possibility to delete defeated enemies crashes the game
+### Adding the possibility to delete defeated enemies crashes the game (Solved)
 When a function discovers that an item has been eaten or that its 'hp' data point has been recuced to 0, it is flagged for garbage cleanup and removed from its object group/array, and assigning it to the garbage variable. Every frame tests the garbage variable for content and destroys it. In the case of eaten food, the garbage emptying function runs the findFood() method to prevent enemies from seeking destroyed food items. When adding the functionality to destroy enemy creatures, many methods started crashing the game. I tried:
 - The lazy way out: adding a test to each crashing method to make sure nothing undefined got in
 
@@ -103,17 +103,21 @@ When a function discovers that an item has been eaten or that its 'hp' data poin
 
 In the end, the issue was that even though the garbage variable destroyed its gameObject, it remained assigned to it, and would randomly destroy other objects as part of its functionality, because of how the statement tested the variable. A simple fix solved everything: Once the garbage is destroyed, reset the garbage variable == undefined.
 
-### Crash in round 3
+### Crash in round 3 (Probably solved)
 This may be the most tenacious bug I've yet discovered. Always in round 3, after two rounds have elapsed error-free, the game crashes. It happens when the moveToTarget() method is interrupted in trying to find the angle between the enemy and the target (food). It's almost certainly because it is targeting a food bit that doesn't exist, but I absolutely cannot find where the phantom food is coming from.
 
 1. The food array is cleaned and replaced every round.
 2. Food that is eaten is removed from the array before being removed from the game.
 3. The targeting mechanic targets food using the array
 
-### Enemy pathing results in driving loops
-Occasionally when the enemy is pathing toward their target, they'll decide to perform an entire loop rather than go directly to their target.
+#### Conclusion
 
-## WebGL MAX_TEXTURE_SIZE
+I've put a check at the beginning of all loops that triggered the crash that tests that the food array has some length before going through the loop. This has stopped instances of the crash, but as I never found a reliable way to recreate the crash, I don't know if it is completely fixed.
+
+### Enemy pathing results in driving loops
+Occasionally when the enemy is pathing toward their target, they'll decide to perform an entire loop rather than go directly to their target. This is due to the simplicity of the target acquisition mechanism. It compares the angle between the enemy object and the target, to the angle of the enemy itself. Since the result can be negative, when the target is down and left of the enemy, it will loop around instead of aiming straight toward the target. Fixing this will require testing for the bug condition.
+
+## WebGL MAX_TEXTURE_SIZE (Solved)
 After converting my myriad textures into a master spritesheet, my sprites stopped rendering properly, appearing as small black boxes instead. I discovered that this is due to specific browser/hardware combinations having very low texture size limitations.
 
 For accessibility, I added an if statement that makes sure the max permitted texture size is enough to accommodate the size of the intro menu animation. If it doesn't, a static version of the menu graphic is shown.
