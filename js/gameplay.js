@@ -48,7 +48,7 @@ class Gameplay extends Phaser.Scene {
                             playerUpgrades.head = 'spike'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 9){                                     // But if they don't have enough points
-                            this.showText('More food needed for that', 1500)  // Let them know
+                            scene.showText('More food needed for that', 1500)  // Let them know
                         }
 
                     }
@@ -57,7 +57,7 @@ class Gameplay extends Phaser.Scene {
                             playerUpgrades.head = 'jaws'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 7){                                     // But if they don't have enough points
-                            this.showText('More food needed for that', 1500)  // Let them know
+                            scene.showText('More food needed for that', 1500)  // Let them know
                         }
 
                     }
@@ -66,9 +66,9 @@ class Gameplay extends Phaser.Scene {
                             playerUpgrades.body = 'stiff'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 4){                                     // But if they don't have enough points
-                            this.showText('More food needed for that', 1500)  // Let them know
+                            scene.showText('More food needed for that', 1500)  // Let them know
                         } else if (playerUpgrades.tail == 'none'){                      // or if they don't have the requisite tail upgrade
-                            this.showText('You require a tail upgrade before a body upgrade', 1500)     // Let them know
+                            scene.showText('You require a tail upgrade before a body upgrade', 1500)     // Let them know
                         }
 
                     }
@@ -77,9 +77,9 @@ class Gameplay extends Phaser.Scene {
                             playerUpgrades.body = 'chitin'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 4){                                     // But if they don't have enough points
-                            this.showText('More food needed for that', 1500)  // Let them know
+                            scene.showText('More food needed for that', 1500)  // Let them know
                         } else if (playerUpgrades.tail == 'none'){                      // or if they don't have the requisite tail upgrade
-                            this.showText('You require a tail upgrade before a body upgrade', 1500)  // Let them know
+                            scene.showText('You require a tail upgrade before a body upgrade', 1500)  // Let them know
                         }
 
                     }
@@ -88,19 +88,27 @@ class Gameplay extends Phaser.Scene {
                             playerUpgrades.tail = 'flagellum'                               // put the selected upgrade into the array
                             scene.newRound()                                                // and start a new round
                         } else if (evoPoints <= 7){                                         // But if they don't have enough points
-                            this.showText('More food needed for that', 1500)                // Let them know
+                            scene.showText('More food needed for that', 1500)                // Let them know
                         }
 
                     }
-                    if (button.text == 'A primitive fin which increases speed and maneuverability [10 points]' && evoPoints >= 10){                // If the player clicks this button
+                    if (button.text == 'A primitive fin which increases speed and maneuverability [10 points]'){                // If the player clicks this button
                         if (evoPoints >= 10){                                             // And they have enough points
                             playerUpgrades.tail = 'tail'                                  // put the selected upgrade into the array
                             scene.newRound()                                              // and start a new round
                         } else if (evoPoints <= 9){                                       // But if they don't have enough points
-                            this.showText('More food needed for that', 1500)              // Let them know
+                            scene.showText('More food needed for that', 1500)              // Let them know
                         }
-
                     }
+                    if (button.text == 'Evolve in round 4 to win [10 points]'){
+                        if (round <= 3){
+                            scene.showText('You must evolve further before attempting this.', 1500)
+                        } else if (evoPoints <= 9) {
+                            scene.showText('More food needed for that', 1500)
+                        } else {
+                            scene.youWin()
+                        }
+                    } 
                     
                 });
             } else if (!menu.isInTouching(pointer)) {   //If the pointer comes down outside the boundary of the menu object
@@ -197,8 +205,6 @@ class Gameplay extends Phaser.Scene {
                 }
                 enemyGroup[i].data.set('target', nearestFood)  // Now hand it off to the enemy gameobject
             }
-        } else {
-            this.newRound()
         }
     }
 
@@ -358,7 +364,7 @@ class Gameplay extends Phaser.Scene {
     moveToTarget() {
         for (let i = 0; i < enemyGroup.length; i++){
             let enemy = enemyGroup[i]
-            if (enemy.data !== undefined){
+            if (enemy.data !== undefined && food.length >= 1){
                 let enemySpeed = enemy.data.get('speed');
                 let enemyRotation = enemy.data.get('rotation');
                 let target = enemy.data.get('target');
@@ -378,8 +384,31 @@ class Gameplay extends Phaser.Scene {
                 if (Math.abs(angle) < Math.abs(6)){
                     enemy.thrust(enemySpeed)
                 }
+            } else {
+                this.findFood();
             }
         }
+    }
+
+    youWin() {
+        round = 1
+        playerHP = 10
+        playerMaxHP = 10
+        referenceHP = 10
+        foodBit = 0
+        food = []
+        evoPoints = 0
+        currentIdleAnimation = '000';
+        currentMoveAnimation = '000M';
+        playerUpgrades = {
+            head: 'none',
+            body: 'none',
+            tail: 'none'
+        }
+        chitinPenalty = 0
+        this.showText('Your evolutionary line was successful!', 5000)
+        this.cameras.main.fadeOut(2000)
+        setTimeout(() => { this.scene.start("MenuScreen"); }, 5000);
     }
 
     youLose() {
@@ -661,7 +690,14 @@ class Gameplay extends Phaser.Scene {
             playerDead = true;
             this.youLose();
         }
-    
+        
+        let canIWin = food.length + (enemyGroup.length * 2) + evoPoints;
+        if (canIWin <= 4){
+            this.showText('There is not enough food left, you starved', 5000)
+            setTimeout(() => {
+                this.youLose();
+            }, 5000)
+        }
 // ======================== Controlling for dead enemies =====================
         for (let i = 0; i < enemyGroup.length; i++){
             if (enemyGroup[i].data !== undefined){
@@ -682,8 +718,10 @@ class Gameplay extends Phaser.Scene {
                         garbage = deathTarget;
                     }, 200);
                     setTimeout(() => { 
-                            let deathFood = new Meat(this, foodX, foodY, 'meat')
-                            food.push(deathFood)
+                            let deathFood = new Meat(this, foodX, foodY, 'meat');
+                            food.push(deathFood);
+                            deathFood = new Meat(this, foodX, foodY, 'meat');
+                            food.push(deathFood);
                     }, 250);
                 }
             }
