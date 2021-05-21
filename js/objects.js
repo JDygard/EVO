@@ -85,6 +85,15 @@ class Food extends Phaser.Physics.Matter.Sprite {
   }
 }
 
+class Meat extends Phaser.Physics.Matter.Sprite {
+  constructor(scene, x, y, texture) {
+    super(scene.matter.world, x, y, texture)
+    scene.sys.displayList.add(this);
+    scene.sys.displayList.add(this);
+    this.label = 'food'
+  }
+}
+
 
 
 class Debris extends Phaser.Physics.Matter.Sprite {

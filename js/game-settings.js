@@ -109,7 +109,7 @@ const config = {
 // === This is where all of the constants for game elements can be adjusted in one place ===
 
 // ==Debug mode : Turns off touch controls and menu scene for rapid testing
-var debugMode = false
+var debugMode = true
 
 // ==Rotation speed
 const baseRotation = 0.055
@@ -250,9 +250,9 @@ var createMenu = function (scene, x, y, items, onClick) {
 }
 
 var playerUpgrades = {
-    head: 'none',
+    head: 'jaws',
     body: 'none',
-    tail: 'none'
+    tail: 'tail'
 }
 
 // This is an array to house the keys for all of the animations. It is used by the animation-creating for-loop to efficiently name, create amd call animations.

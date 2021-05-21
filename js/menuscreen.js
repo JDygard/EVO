@@ -110,20 +110,15 @@ class MenuScreen extends Phaser.Scene {
             alpha: 1,                   // From 0 to 1 alpha
             delay: 3500,                // 3.5 seconds after scene load
             duration: 500,              // Lasts .5 seconds
-            scale: 1.05                      // Transition to 765 (just 15 pixels)
+            scale: 1.05                      // Expand scale slightly
         })
         this.tweens.add({               // Start a tween
             targets: rulesLeft,          // Targeting the pressKey text
             alpha: 1,                   // From 0 to 1 alpha
             delay: 3500,                // 3.5 seconds after scene load
             duration: 500,              // Lasts .5 seconds
-            scale: 1.05                      // Transition to 765 (just 15 pixels)
+            scale: 1.05                      // Expand scale slightly
         })
-        /*
-        
-        Instructions will go here
-
-        */    
     }
     update(){
 //================= Conditions for starting the game with/without touch controls ================

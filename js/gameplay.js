@@ -365,7 +365,6 @@ class Gameplay extends Phaser.Scene {
                 let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
                 let angle2 = enemy.rotation
                 let angle = angle1 - angle2
-                console.log(enemySpeed)
                 if (angle > .4){
                     enemy.setAngularVelocity(enemyRotation)  // We will delve the actual speed from the enemy.data
                 } else if (angle > .1){
@@ -382,6 +381,7 @@ class Gameplay extends Phaser.Scene {
             }
         }
     }
+
     youLose() {
         round = 1
         playerHP = 10
@@ -667,8 +667,24 @@ class Gameplay extends Phaser.Scene {
             if (enemyGroup[i].data !== undefined){
                 let hp = enemyGroup[i].data.get('hp')
                 if (hp <= 0){
-                    garbage = enemyGroup[i];
-                    enemyGroup.splice(i, 1)
+                    let deathTarget = enemyGroup[i]
+                    enemyGroup.splice(i, 1); 
+                    let foodX = deathTarget.x;
+                    let foodY = deathTarget.y;
+                    console.log(foodX + ' ' + foodY)
+                    console.log(player.x + ' ' + player.y)
+                    let deathTween = this.tweens.add({               // Start a tween
+                        targets: deathTarget,          // Targeting the pressKey text
+                        scale: 0.7,
+                        duration: 180,              // Lasts .5 seconds
+                    })
+                    setTimeout(() => { 
+                        garbage = deathTarget;
+                    }, 200);
+                    setTimeout(() => { 
+                            let deathFood = new Meat(this, foodX, foodY, 'meat')
+                            food.push(deathFood)
+                    }, 250);
                 }
             }
         }                  
