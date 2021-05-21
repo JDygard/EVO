@@ -15,6 +15,8 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         this.load.image('menu-evolve', 'assets/images/menuscreen/menu-evolve.png')          // Menu evolve text
         this.load.image('menu-survive', 'assets/images/menuscreen/menu-survive.png')        // Menu survive text
         this.load.image('menu-press', 'assets/images/menuscreen/menu-press-any-key.png')    // Menu "Press any key" text
+        this.load.image('rulesRight', 'assets/images/menuscreen/menu-rules-right.png')
+        this.load.image('rulesLeft', 'assets/images/menuscreen/menu-rules-left.png')
         this.load.image('evo-menu-bg', 'assets/images/evolvemenu/evo-menu-background.png')  // Evo menu scene background
         this.load.image('background', 'assets/images/BG.jpg');                              // Background image    
         this.load.image('food', 'assets/images/sprites/food_green.png')                     // Food image

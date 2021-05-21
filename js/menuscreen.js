@@ -17,6 +17,8 @@ class MenuScreen extends Phaser.Scene {
         let consume = this.add.image(350, 550, "menu-consume").setAlpha(0); // Consume text, alpha set to 0 to make it invisible
         let survive = this.add.image(800, 650, "menu-survive").setAlpha(0); // Survive text, alpha set to 0 to make it invisible
         let pressKey = this.add.image(800, 750, "menu-press").setAlpha(0);  // Press any key text, alpha set to 0 to make it invisible
+        let rulesRight = this.add.image(1290, 750, "rulesRight").setAlpha(0);
+        let rulesLeft = this.add.image(310, 750, "rulesLeft").setAlpha(0);
         let durationSky = 2000;                                             // A useful variable for adjusting the duration of the initial "dive" animation in one place
         if (textureSizeTest >= 4800){
             this.anims.create({                                                 // Creating our water animation
@@ -102,6 +104,20 @@ class MenuScreen extends Phaser.Scene {
             delay: 3500,                // 3.5 seconds after scene load
             duration: 500,              // Lasts .5 seconds
             y: 765                      // Transition to 765 (just 15 pixels)
+        })
+        this.tweens.add({               // Start a tween
+            targets: rulesRight,          // Targeting the pressKey text
+            alpha: 1,                   // From 0 to 1 alpha
+            delay: 3500,                // 3.5 seconds after scene load
+            duration: 500,              // Lasts .5 seconds
+            scale: 1.05                      // Transition to 765 (just 15 pixels)
+        })
+        this.tweens.add({               // Start a tween
+            targets: rulesLeft,          // Targeting the pressKey text
+            alpha: 1,                   // From 0 to 1 alpha
+            delay: 3500,                // 3.5 seconds after scene load
+            duration: 500,              // Lasts .5 seconds
+            scale: 1.05                      // Transition to 765 (just 15 pixels)
         })
         /*
         
