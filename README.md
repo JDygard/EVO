@@ -141,6 +141,19 @@ I also discovered that textures are treated like the next largest squared intege
 
 1. Jess Vide's [Blue Ocean Blue Sky](https://www.pexels.com/photo/blue-ocean-under-blue-sky-and-white-clouds-4611748/). This image was disassembled and used for the menu screen animation.
 
+## Sound Credits
+
+All game sounds used were found on [Open Game Art](https://opengameart.org/). They are used here under Creative Commons free licensing.
+
+1. Menu music: [Lurid Delusion](https://opengameart.org/content/lurid-delusion) by Matthew Pablo.
+2. Game music: [Caves of Sorrow](https://opengameart.org/content/caves-of-sorrow) by Alexander Zhelanov.
+3. Menu denial sound: [Bad Sound](https://opengameart.org/content/bad-sound-1) by remaxim.
+4. Hit sound effect: [Hit Sound Bitcrush](https://opengameart.org/content/hit-sound-bitcrush) by DaGameKnower.
+5. New round sound: [Epic Amulet Item](https://opengameart.org/content/epic-amulet-item) by CosmicD.
+6. Game over: [Game Over Music Box II](https://opengameart.org/content/music-box-game-over-ii) by Kim Light Year.
+7. Victory: [Win Jingle](https://opengameart.org/content/win-jingle) by Fupi.
+8. Eating: [7 Eating Crunches](https://opengameart.org/content/7-eating-crunches) by StarNinjas.
+
 ## Acknowledgements
 
 1. Richard Davey, aka Photonstorm, creator of the Phaser 3 library used extensively in this project. He, personally, tirelessly fielded my questions as an active member of his Discord community, and deserves much more than my humble thanks for all of his help.

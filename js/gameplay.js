@@ -49,6 +49,7 @@ class Gameplay extends Phaser.Scene {
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 9){                                     // But if they don't have enough points
                             scene.showText('More food needed for that', 1500)  // Let them know
+                            scene.playSound('denied');
                         }
 
                     }
@@ -58,6 +59,7 @@ class Gameplay extends Phaser.Scene {
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 7){                                     // But if they don't have enough points
                             scene.showText('More food needed for that', 1500)  // Let them know
+                            scene.playSound('denied');
                         }
 
                     }
@@ -67,8 +69,10 @@ class Gameplay extends Phaser.Scene {
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 4){                                     // But if they don't have enough points
                             scene.showText('More food needed for that', 1500)  // Let them know
+                            scene.playSound('denied');
                         } else if (playerUpgrades.tail == 'none'){                      // or if they don't have the requisite tail upgrade
                             scene.showText('You require a tail upgrade before a body upgrade', 1500)     // Let them know
+                            scene.playSound('denied');
                         }
 
                     }
@@ -78,8 +82,10 @@ class Gameplay extends Phaser.Scene {
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 4){                                     // But if they don't have enough points
                             scene.showText('More food needed for that', 1500)  // Let them know
+                            scene.playSound('denied');
                         } else if (playerUpgrades.tail == 'none'){                      // or if they don't have the requisite tail upgrade
                             scene.showText('You require a tail upgrade before a body upgrade', 1500)  // Let them know
+                            scene.playSound('denied');
                         }
 
                     }
@@ -89,6 +95,7 @@ class Gameplay extends Phaser.Scene {
                             scene.newRound()                                                // and start a new round
                         } else if (evoPoints <= 7){                                         // But if they don't have enough points
                             scene.showText('More food needed for that', 1500)                // Let them know
+                            scene.playSound('denied');
                         }
 
                     }
@@ -98,13 +105,16 @@ class Gameplay extends Phaser.Scene {
                             scene.newRound()                                              // and start a new round
                         } else if (evoPoints <= 9){                                       // But if they don't have enough points
                             scene.showText('More food needed for that', 1500)              // Let them know
+                            scene.playSound('denied');
                         }
                     }
                     if (button.text == 'Evolve in round 4 to win [10 points]'){
                         if (round <= 3){
                             scene.showText('You must evolve further before attempting this.', 1500)
+                            scene.playSound('denied');
                         } else if (evoPoints <= 9) {
-                            scene.showText('More food needed for that', 1500)
+                            scene.showText('More food needed for that', 1500);
+                            scene.playSound('denied');
                         } else {
                             scene.youWin()
                         }
@@ -391,27 +401,22 @@ class Gameplay extends Phaser.Scene {
     }
 
     youWin() {
-        round = 1
-        playerHP = 10
-        playerMaxHP = 10
-        referenceHP = 10
-        foodBit = 0
-        food = []
-        evoPoints = 0
-        currentIdleAnimation = '000';
-        currentMoveAnimation = '000M';
-        playerUpgrades = {
-            head: 'none',
-            body: 'none',
-            tail: 'none'
-        }
-        chitinPenalty = 0
-        this.showText('Your evolutionary line was successful!', 5000)
-        this.cameras.main.fadeOut(2000)
+        this.playSound('victory')
+        this.showText('Your evolutionary line was successful!', 4000);
+        this.cameras.main.fadeOut(4000);
+        this.resetConditions();
         setTimeout(() => { this.scene.start("MenuScreen"); }, 5000);
     }
 
     youLose() {
+        this.playSound('game-over')
+        this.showText('Your evolutionary line was cut short', 4000);
+        this.cameras.main.fadeOut(4000);
+        this.resetConditions();
+        setTimeout(() => { this.scene.start("MenuScreen"); }, 5000);
+    }
+
+    resetConditions(){
         round = 1
         playerHP = 10
         playerMaxHP = 10
@@ -426,10 +431,8 @@ class Gameplay extends Phaser.Scene {
             body: 'none',
             tail: 'none'
         }
+        music.stop()
         chitinPenalty = 0
-        this.showText('Your evolutionary line was cut short', 5000)
-        this.cameras.main.fadeOut(2000)
-        setTimeout(() => { this.scene.start("MenuScreen"); }, 5000);
     }
 
     showText(message, duration){
@@ -450,7 +453,15 @@ class Gameplay extends Phaser.Scene {
         }
     }
 
+    playSound(effect){
+        let sound = this.sound.add(effect)
+        sound.play({
+            mute: soundMute
+        })
+    }
+
     newRound() {
+        music.stop()
         playerHP = 10;
         playerMaxHP = 10;
         referenceHP = 10;
@@ -461,41 +472,48 @@ class Gameplay extends Phaser.Scene {
         round++
         this.scene.start("Gameplay")
     }
+
     create(){
-    gameText = this.add.text(800, 300, '', {fontFamily: '"Luckiest Guy", sans serif'});
-    gameText.setScrollFactor(0).setOrigin(0.5).setFontSize(40).setColor(0xe60022).setDepth(5).setAlpha(0)
-    this.showText('Round ' + round, 2000)
+        music = this.sound.add('game-music')
+        music.play({
+            mute: soundMute,
+            loop: true,            
+        })
+        gameText = this.add.text(800, 300, '', {fontFamily: '"Luckiest Guy", sans serif'});
+        gameText.setScrollFactor(0).setOrigin(0.5).setFontSize(40).setColor(0xe60022).setDepth(5).setAlpha(0)
+        this.showText('Round ' + round, 2000)
+        this.playSound('new-round')
 // ================= Setting up the energy bar in the healthBar object ================
 // == Thanks to Emanuele Feronato for the simple tutorial on using masks for this ==
 // == ref = https://www.emanueleferonato.com/2019/04/24/add-a-nice-time-bar-energy-bar-mana-bar-whatever-bar-to-your-html5-games-using-phaser-3-masks/
-    let energyBar = this.add.sprite(207, 90, 'energybar')
-        .setDepth(6)
-        .setScrollFactor(0)
-        .setScale(1.5)
-    energyMask = this.add.sprite(207, 90, 'energybar')
-        .setDepth(6)
-        .setScrollFactor(0)
-        .setScale(1.5)
-    energyMask.visible = false;
-    energyBar.mask = new Phaser.Display.Masks.BitmapMask(this, energyMask);
+        let energyBar = this.add.sprite(207, 90, 'energybar')
+            .setDepth(6)
+            .setScrollFactor(0)
+            .setScale(1.5)
+        energyMask = this.add.sprite(207, 90, 'energybar')
+            .setDepth(6)
+            .setScrollFactor(0)
+            .setScale(1.5)
+        energyMask.visible = false;
+        energyBar.mask = new Phaser.Display.Masks.BitmapMask(this, energyMask);
 
 //================================== Player animation definitions ========================================
-    var scene = this;
-    for (let i = 0; i < animationSetter.length; i++){
-        this.anims.create({
-            key: animationSetter[i],
-            frames: scene.anims.generateFrameNumbers("player-master-spritesheet", { start: (i * 4), end: ((i * 4) + 3) }),
-            frameRate: 4,
-        })
-    }
+        var scene = this;
+        for (let i = 0; i < animationSetter.length; i++){
+            this.anims.create({
+                key: animationSetter[i],
+                frames: scene.anims.generateFrameNumbers("player-master-spritesheet", { start: (i * 4), end: ((i * 4) + 3) }),
+                frameRate: 4,
+            })
+        }
 //=============================== Enemy animation definitions =======================================  
-    for (let i = 1; i < animationSetter.length; i+=2){
-        this.anims.create({
-            key: 'E' + animationSetter[i],
-            frames: scene.anims.generateFrameNumbers("enemy-master-spritesheet", { start: (i * 4), end: ((i * 4) + 3) }),
-            frameRate: 4,
-        })
-    }
+        for (let i = 1; i < animationSetter.length; i+=2){
+            this.anims.create({
+                key: 'E' + animationSetter[i],
+                frames: scene.anims.generateFrameNumbers("enemy-master-spritesheet", { start: (i * 4), end: ((i * 4) + 3) }),
+                frameRate: 4,
+            })
+        }
 
 //================================== Building the play area ===============================================
         this.add.background(400, 300);                    // Set scene background             
@@ -572,6 +590,7 @@ class Gameplay extends Phaser.Scene {
                                     let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y)  // See how large the difference between the coordinates are
                                     if (result > -1 && result < 1 ){                                                    // See if the result is roughly 0
                                         let enemy = enemyGroup[i];                                                      // Variable for readability
+                                        scene.playSound('crunch');
                                         enemy.setTint("0xff4646")                                                       // Make the enemy turn red
                                         setTimeout(function(){                                                          // Wait for a moment
                                             enemy.clearTint()                                                           // before removing the tint
@@ -588,6 +607,7 @@ class Gameplay extends Phaser.Scene {
                                         let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y)  // See how large the difference between the coordinates are
                                         if (result > -1 && result < 1 ){                                                    // See if the result is roughly 0
                                             let enemy = enemyGroup[i];                                                      // Variable for readability
+                                            scene.playSound('hit');
                                             enemy.setTint("0xff4646")                                                       // Make the enemy turn red
                                             setTimeout(function(){                                                          // Wait for a moment
                                                 enemy.clearTint()                                                           // before removing the tint
@@ -603,6 +623,7 @@ class Gameplay extends Phaser.Scene {
                                 otherSprite.label = 'eatenFood'              // Label the food in the mouth
                                 for (let i = 0; i < food.length; i++){      // So that it can be found in the food array
                                     if (otherSprite.label == food[i].label){ // Compare the mouth food with the array 
+                                        scene.playSound('crunch')
                                         food.splice(i, 1)                   // Cut out the eaten food out of the array
                                         break                               // We're done here.
                                     }
@@ -616,6 +637,7 @@ class Gameplay extends Phaser.Scene {
 //=========================================  Enemy-primary sensor interactions ====================================================
 //========================================= Enemy jaw damage ========================================================
                             if (sensorBody.label === 'enemyJaws' && otherBody.label == 'playerBody'){
+                                scene.playSound('crunch');
                                 player.setTint("0xff4646")                                                       // Make the enemy turn red
                                 setTimeout(function(){                                                          // Wait for a moment
                                     player.clearTint()                                                           // before removing the tint
@@ -625,6 +647,7 @@ class Gameplay extends Phaser.Scene {
                             }
 //========================================= Enemy spike damage =======================================================
                             if (sensorBody.label === 'enemySpike' && otherBody.label == 'playerBody'){
+                                scene.playSound('hit');
                                 player.setTint("0xff4646")                                                       // Make the enemy turn red
                                 setTimeout(function(){                                                          // Wait for a moment
                                     player.clearTint()                                                           // before removing the tint
@@ -698,13 +721,6 @@ class Gameplay extends Phaser.Scene {
             this.youLose();
         }
         
-        let canIWin = food.length + (enemyGroup.length * 2) + evoPoints;
-        if (canIWin <= 4){
-            this.showText('There is not enough food left, you starved', 5000)
-            setTimeout(() => {
-                this.youLose();
-            }, 5000)
-        }
 // ======================== Controlling for dead enemies =====================
         for (let i = 0; i < enemyGroup.length; i++){
             if (enemyGroup[i].data !== undefined){

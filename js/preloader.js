@@ -26,7 +26,15 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         for (let i = 0; i < 16; i++){                                                                   // A loop to load all 16 debris images
             debris[i] = this.load.image('debris' + i, 'assets/images/bg_debris/debris' + i + '.png');   // because doing it one-by-one is so pedestrian.
         }
-        
+//========================================== Audio preloads ===================================================
+        this.load.audio('menu-music', 'assets/sounds/menu-music.mp3'); // The intro music
+        this.load.audio('game-music', 'assets/sounds/game-music.ogg'); // The game music
+        this.load.audio('denied', 'assets/sounds/denied.wav');         // Denied sound effect
+        this.load.audio('new-round', 'assets/sounds/new-round.wav');   // New round/evolving sound effect
+        this.load.audio('game-over', 'assets/sounds/game-over.mp3');   // Jingle played on game over
+        this.load.audio('victory', 'assets/sounds/victory.ogg');       // Jingle played on victory
+        this.load.audio('hit', 'assets/sounds/hit.wav');               // Sound played on hit
+        this.load.audio('crunch', 'assets/sounds/eat.ogg');            // Sound played when eating
 
 //========================================== Animations spritesheet generation ==========================================
 //============= Player animations =================

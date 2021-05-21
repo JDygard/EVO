@@ -109,7 +109,7 @@ const config = {
 // === This is where all of the constants for game elements can be adjusted in one place ===
 
 // ==Debug mode : Turns off touch controls and menu scene for rapid testing
-var debugMode = false;
+var debugMode = true;
 
 // ==Rotation speed
 const baseRotation = 0.055
@@ -274,6 +274,8 @@ var animationSetter = [
 // ================================= Global Variables ====================================
 // =========This is where the global variables for the game are being declared ===========
 // General variables
+var music;
+var soundMute = false;
 var timer = false; // A timer to avoid building a message queue
 var round = 1; // Global variable for storing the current round
 var gameText; // Global variable for accessing the center screen text element

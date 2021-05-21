@@ -6,6 +6,8 @@ class MenuScreen extends Phaser.Scene {
         playerDead = false; // Resetting the game if the menu was reached through death
         deathScreen = false; // Resetting the game if the menu was reached through death
         var textureSizeTest = this.game.renderer.getMaxTextureSize(); // Collect the maximum allowed texture size to adjust for low tolerance
+//======================================= Adding music  ======================================
+        music = this.sound.add('menu-music')
 //======================================= Adding images ======================================
 //===== There's a lot of moving pieces in this animation. We are adding them all in a    =====
 //=====                                   big chunk here.                                =====
@@ -19,7 +21,6 @@ class MenuScreen extends Phaser.Scene {
         let pressKey = this.add.image(800, 750, "menu-press").setAlpha(0);  // Press any key text, alpha set to 0 to make it invisible
         let rulesRight = this.add.image(1290, 750, "rulesRight").setAlpha(0);
         let rulesLeft = this.add.image(310, 750, "rulesLeft").setAlpha(0);
-        let durationSky = 2000;                                             // A useful variable for adjusting the duration of the initial "dive" animation in one place
         if (textureSizeTest >= 4800){
             this.anims.create({                                                 // Creating our water animation
                 key: "animated-water",                                          // Declaring the key to which it will be referred
@@ -33,6 +34,10 @@ class MenuScreen extends Phaser.Scene {
                 repeat: -1,                 // "repeat: -1" means to repeat it ad infinitum
             })
         }
+        music.play({
+            mute: soundMute,
+            loop: true,
+        });
         this.cameras.main.fadeIn(300);  // A short fade into the background
         this.tweens.add({               // Start a tween
             targets: title,             // Targeting the title image
@@ -46,11 +51,11 @@ class MenuScreen extends Phaser.Scene {
             targets: sky,               // Targeting the sky image
             scaleY: {                   // Set the Y scale
                 value: .7,              // From 1 to 0.7
-                duration: durationSky,  // for 2000ms
+                duration: 2000,  // for 2000ms
             },
             y: {                        // Move in the y axis
                 value: -50,             // to -50 pixels
-                duration: durationSky,  // over 2000ms
+                duration: 2000,  // over 2000ms
             },
             ease: "Sine.easeInOut",     // Nice and easy
             delay: 1000,                // 1000ms after scene load
@@ -63,7 +68,7 @@ class MenuScreen extends Phaser.Scene {
             y: {                        // Move in the y axis
                 value: 40,              // to 0, 40
             },
-            duration: durationSky,      // Over 2000ms
+            duration: 2000,      // Over 2000ms
             ease: "Sine.easeInOut",     // Nice and easy
             delay: 1000,                // 1000ms
         })
@@ -71,11 +76,11 @@ class MenuScreen extends Phaser.Scene {
             targets: underwater,        // Targeting the underwater animation
             scaleY: {                   // Set the Y scale 
                 value: .8,              // Go from 1 to 0.8
-                duration: durationSky,  // over 2000ms
+                duration: 2000,  // over 2000ms
             },
             y: {                        // Move in the y axis
                 value:800,              // to 800 pixels
-                duration: durationSky,  // over 2000ms
+                duration: 2000,  // over 2000ms
             },
             ease: "Sine.easeInOut",     // Do it dramatically
             delay: 1000,                // 2000ms after scene load
@@ -122,8 +127,10 @@ class MenuScreen extends Phaser.Scene {
     }
     update(){
 //================= Conditions for starting the game with/without touch controls ================
+        let scene = this
         if (this.input.activePointer.isDown){   // Did someone tap or click on the screen?
             touch = true;                       // Then activate touch controls
+            music.stop()
             this.scene.start('Gameplay')        // And start the show
         }
         this.input.keyboard.on('keydown', function(event){ // Did someone press a key on a keyboard?
@@ -131,6 +138,7 @@ class MenuScreen extends Phaser.Scene {
             startGame = true;                              // And set the startgame var to true
         })
         if (startGame == true){                            // Is the startgame var true?
+            music.stop()
             this.scene.start('Gameplay')                   // Then start the show.
         }
     }
