@@ -676,8 +676,8 @@ class Gameplay extends Phaser.Scene {
             
 //================================== Setting up the controls =============================================
 
-        this.matter.world.setBounds(-4400, -2400, 9600, 5400);      //===== Don't let the player go out of bounds
-        this.cameras.main.setBounds(-4400, -2400, 9600, 5400);      //===== Don't let the camera show out of bounds
+        this.matter.world.setBounds(-3520, -1920, 7680, 4320);      //===== Don't let the player go out of bounds
+        this.cameras.main.setBounds(-3520, -1920, 7680, 4320);      //===== Don't let the camera show out of bounds
         this.cameras.main.startFollow(player, true, 0.1, 0.1, 0, 0);//===== Set camera to follow player
         cursors = this.input.keyboard.createCursorKeys();           //===== Declare keyboard controls variable
 
@@ -688,7 +688,7 @@ class Gameplay extends Phaser.Scene {
             radius: 100,                                            //== and set the size
             base: this.add.circle(0, 0, 100, 0x888888),             //== Draw the outer circle
             thumb: this.add.circle(0, 0, 50, 0xcccccc),             //== and the inner one
-            dir: '8dir'                                             //== Set it to collect 8 directions of info
+            //dir: '8dir'                                             //== Set it to collect 8 directions of info
         })
         .on('update', this.dumpJoyStickState, this);                //== Deliver the information to the controls
         if (touch !== true) {                                       //== Hide the joystick if the player is using keyboard controls
@@ -700,12 +700,34 @@ class Gameplay extends Phaser.Scene {
 //===================================================================================================================
     }    
     
-    dumpJoyStickState() {                                           //== Method to handle the output from the joystick
+    /*dumpJoyStickState() {                                           //== Method to handle the output from the joystick
         joystickControls = joyStick.createCursorKeys();             //== plugin
         leftKeyDown = joystickControls.left.isDown;
         rightKeyDown = joystickControls.right.isDown;
         upKeyDown = joystickControls.up.isDown;
         downKeyDown = joystickControls.down.isDown;
+    }*/
+
+    dumpJoyStickState() {
+        let angle1 = joyStick.rotation;
+        let angle2 = player.rotation
+        let angle = Math.atan2(Math.sin(angle1-angle2), Math.cos(angle1-angle2));
+        console.log(angle)
+        if (Math.abs(angle) <= 1) {
+            upKeyDown = true;
+        } else {
+            upKeyDown = false;
+        }
+        if (angle >= 0.1){
+            rightKeyDown = true;
+        } else {
+            rightKeyDown = false;
+        }
+        if (angle <= -0.1){
+            leftKeyDown = true;
+        } else {
+            leftKeyDown = false;
+        }
     }
 
     update(){  // Update method, executed every frame
@@ -794,15 +816,15 @@ class Gameplay extends Phaser.Scene {
 //=====  Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors   =====
 //=====                     for the modified example code used here.                              =====
         let thrustSpeed = currentPlayerSpeed + chitinPenalty
-        if (cursors.left.isDown || leftKeyDown)
+        if (cursors.left.isDown || leftKeyDown == true)
         {
             player.setAngularVelocity(-currentPlayerRotation);
         }
-        else if (cursors.right.isDown || rightKeyDown)
+        else if (cursors.right.isDown || rightKeyDown == true)
         {
             player.setAngularVelocity(currentPlayerRotation);
         }
-        if (cursors.up.isDown || upKeyDown)
+        if (cursors.up.isDown || upKeyDown == true)
         {
             player.thrust(thrustSpeed);
         }   

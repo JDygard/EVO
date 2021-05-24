@@ -101,6 +101,7 @@ When a function discovers that an item has been eaten or that its 'hp' data poin
 - Rearranging how the object arrays are written to
 - Reorganizing the if statements that declare garbage
 
+#### Resolution
 In the end, the issue was that even though the garbage variable destroyed its gameObject, it remained assigned to it, and would randomly destroy other objects as part of its functionality, because of how the statement tested the variable. A simple fix solved everything: Once the garbage is destroyed, reset the garbage variable == undefined.
 
 ### Crash in round 3 (Probably solved)
@@ -114,7 +115,7 @@ This may be the most tenacious bug I've yet discovered. Always in round 3, after
 
 I've put a check at the beginning of all loops that triggered the crash that tests that the food array has some length before going through the loop. This has stopped instances of the crash, but as I never found a reliable way to recreate the crash, I don't know if it is completely fixed.
 
-### Enemy pathing results in driving loops
+### Enemy pathing results in driving loops (Solved)
 Occasionally when the enemy is pathing toward their target, they'll decide to perform an entire loop rather than go directly to their target. This is due to the simplicity of the target acquisition mechanism. It compares the angle between the enemy object and the target, to the angle of the enemy itself. Since the result can be negative, when the target is down and left of the enemy, it will loop around instead of aiming straight toward the target. Fixing this will require testing for the bug condition.
 
 #### Resolution
@@ -123,6 +124,7 @@ After logging the values involved in the turning calculations, I realized there 
 ## WebGL MAX_TEXTURE_SIZE (Solved)
 After converting my myriad textures into a master spritesheet, my sprites stopped rendering properly, appearing as small black boxes instead. I discovered that this is due to specific browser/hardware combinations having very low texture size limitations.
 
+#### Resolution
 For accessibility, I added an if statement that makes sure the max permitted texture size is enough to accommodate the size of the intro menu animation. If it doesn't, a static version of the menu graphic is shown.
 I also discovered that textures are treated like the next largest squared integer, i.e. a 5x2 px image is treated as 8x8, a 126x12 is 128x128 etc. By packing my master spritesheets into as square a version as possible, I was able to squeeze it down to the lowest possible WebGL maximum texture size (Chrome on mobile.)
 

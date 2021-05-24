@@ -1,7 +1,7 @@
 class Background extends Phaser.GameObjects.Image {
   constructor (scene, x, y){
     super (scene, x, y, 'background');
-    this.setScale(5);
+    this.setScale(4);
     this.setDepth(-5);
   }
 }
@@ -81,7 +81,7 @@ class Food extends Phaser.Physics.Matter.Sprite {
     scene.sys.displayList.add(this);
     scene.sys.displayList.add(this);
     this.label = 'food'
-    this.setRandomPosition(-4400, -2400, 9600, 5400);
+    this.setRandomPosition(-3520, -1920, 7680, 4320);
   }
 }
 
@@ -108,7 +108,7 @@ class Debris extends Phaser.Physics.Matter.Sprite {
       .setScale(tempNum * 2)
       .setAlpha(.5)
       .setAngle(tempNum * 360)
-      .setRandomPosition(-4400, -2400, 9600, 5400)
+      .setRandomPosition(-3520, -1920, 7680, 4320);
   }
 }
 
@@ -121,7 +121,7 @@ class BGDebris extends Phaser.GameObjects.Image {
     this
       .setScale(tempNum * 2)
       .setAlpha(.2)
-      .setRandomPosition(-4400, -2400, 9600, 5400)
+      .setRandomPosition(-3520, -1920, 7680, 4320)
       .setDepth(-4)
       .setAngle(tempNum * 360);
   }
