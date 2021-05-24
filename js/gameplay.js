@@ -44,27 +44,33 @@ class Gameplay extends Phaser.Scene {
             if (menu === undefined) {                                   // Test for undefined
                 menu = createMenu(scene, healthContainer.x - 35, healthContainer.y + 35, items, function (button) { // If the pointer comes down on the healthbar, generate a menu
                     if (button.text == 'A predatory spike [10 points]'){                // If the player clicks this button
-                        if (evoPoints >= 10){                                           // And they have enough points
+                        if (evoPoints >= 10 && playerUpgrades.head == 'none'){                                           // And they have enough points
                             playerUpgrades.head = 'spike'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 9){                                     // But if they don't have enough points
                             scene.showText('More food needed for that', 1500)  // Let them know
                             scene.playSound('denied');
+                        } else if (playerUpgrades.head != 'none'){
+                            scene.showText('You have already upgraded your head', 1500);
+                            scene.playSound('denied');
                         }
-
                     }
+
                     if (button.text == 'A pair of jaws [8 points]'){                // If the player clicks this button
-                        if (evoPoints >= 8){                                           // And they have enough points
+                        if (evoPoints >= 8 && playerUpgrades.head == 'none'){                                           // And they have enough points
                             playerUpgrades.head = 'jaws'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 7){                                     // But if they don't have enough points
                             scene.showText('More food needed for that', 1500)  // Let them know
                             scene.playSound('denied');
+                        } else if (playerUpgrades.head != 'none'){
+                            scene.showText('You have already upgraded your head', 1500);
+                            scene.playSound('denied');
                         }
-
                     }
+
                     if (button.text == 'Resistance to damage (Requires tail upgrade) [5 points]'){                // If the player clicks this button
-                        if (evoPoints >= 5 && playerUpgrades.tail !== 'none'){                                    // And they have enough points AND a tail upgrade
+                        if (evoPoints >= 5 && playerUpgrades.tail !== 'none' && playerUpgrades.body == 'none'){                                    // And they have enough points AND a tail upgrade
                             playerUpgrades.body = 'stiff'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 4){                                     // But if they don't have enough points
@@ -73,11 +79,14 @@ class Gameplay extends Phaser.Scene {
                         } else if (playerUpgrades.tail == 'none'){                      // or if they don't have the requisite tail upgrade
                             scene.showText('You require a tail upgrade before a body upgrade', 1500)     // Let them know
                             scene.playSound('denied');
+                        } else if (playerUpgrades.head != 'none'){
+                            scene.showText('You have already upgraded your body', 1500);
+                            scene.playSound('denied');
                         }
-
                     }
+
                     if (button.text == 'Chitinous body that resists damage at the cost of speed (Requires tail upgrade) [5 points]'){                // If the player clicks this button
-                        if (evoPoints >= 5 && playerUpgrades.tail !== 'none'){                                           // And they have enough points AND a tail upgrade
+                        if (evoPoints >= 5 && playerUpgrades.tail !== 'none' && playerUpgrades.body == 'none'){                                           // And they have enough points AND a tail upgrade
                             playerUpgrades.body = 'chitin'                               // put the selected upgrade into the array
                             scene.newRound()                                            // and start a new round
                         } else if (evoPoints <= 4){                                     // But if they don't have enough points
@@ -86,28 +95,38 @@ class Gameplay extends Phaser.Scene {
                         } else if (playerUpgrades.tail == 'none'){                      // or if they don't have the requisite tail upgrade
                             scene.showText('You require a tail upgrade before a body upgrade', 1500)  // Let them know
                             scene.playSound('denied');
+                        } else if (playerUpgrades.head != 'none'){
+                            scene.showText('You have already upgraded your body', 1500);
+                            scene.playSound('denied');
                         }
-
                     }
+
                     if (button.text == 'A long, thin tail capable of high speeds, but limited in terms of maneuverability [8 points]'){                // If the player clicks this button
-                        if (evoPoints >= 8){                                                // And they have enough points
+                        if (evoPoints >= 8 && playerUpgrades.tail == 'none'){                                                // And they have enough points
                             playerUpgrades.tail = 'flagellum'                               // put the selected upgrade into the array
                             scene.newRound()                                                // and start a new round
                         } else if (evoPoints <= 7){                                         // But if they don't have enough points
                             scene.showText('More food needed for that', 1500)                // Let them know
                             scene.playSound('denied');
+                        } else if (playerUpgrades.tail != 'none'){
+                            scene.showText('You have already upgraded your tail', 1500);
+                            scene.playSound('denied');
                         }
-
                     }
+
                     if (button.text == 'A primitive fin which increases speed and maneuverability [10 points]'){                // If the player clicks this button
-                        if (evoPoints >= 10){                                             // And they have enough points
+                        if (evoPoints >= 10 && playerUpgrades.tail == 'none'){                                             // And they have enough points
                             playerUpgrades.tail = 'tail'                                  // put the selected upgrade into the array
                             scene.newRound()                                              // and start a new round
                         } else if (evoPoints <= 9){                                       // But if they don't have enough points
                             scene.showText('More food needed for that', 1500)              // Let them know
                             scene.playSound('denied');
+                        } else if (playerUpgrades.tail != 'none'){
+                            scene.showText('You have already upgraded your tail', 1500);
+                            scene.playSound('denied');
                         }
                     }
+
                     if (button.text == 'Evolve in round 4 to win [10 points]'){
                         if (round <= 3){
                             scene.showText('You must evolve further before attempting this.', 1500)
@@ -119,8 +138,8 @@ class Gameplay extends Phaser.Scene {
                             scene.youWin()
                         }
                     } 
-                    
                 });
+
             } else if (!menu.isInTouching(pointer)) {   //If the pointer comes down outside the boundary of the menu object
                 menu.collapse();                        // collapse the menu
                 menu = undefined;                       // and reset the variable
@@ -418,22 +437,24 @@ class Gameplay extends Phaser.Scene {
     }
 
     resetConditions(){
-        round = 1
-        playerHP = 10
-        playerMaxHP = 10
-        referenceHP = 10
-        foodBit = 0
-        food = []
-        evoPoints = 0
+        round = 1;
+        playerHP = 10;
+        playerMaxHP = 10;
+        referenceHP = 10;
+        foodBit = 0;
+        food = [];
+        evoPoints = 0;
+        currentPlayerRotation = baseRotation;
+        currentPlayerSpeed = baseSpeed;
+        chitinPenalty = 0;
         currentIdleAnimation = '000';
         currentMoveAnimation = '000M';
         playerUpgrades = {
             head: 'none',
             body: 'none',
             tail: 'none'
-        }
-        music.stop()
-        chitinPenalty = 0
+        };
+        music.stop();
     }
 
     showText(message, duration){
