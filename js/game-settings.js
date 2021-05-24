@@ -268,6 +268,7 @@ var animationSetter = [
 // ================================= Global Variables ====================================
 // =========This is where the global variables for the game are being declared ===========
 // General variables
+var pressKey
 var music;
 var soundMute = false;
 var timer = false; // A timer to avoid building a message queue

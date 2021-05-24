@@ -18,7 +18,8 @@ class MenuScreen extends Phaser.Scene {
         let evolve = this.add.image(1240, 550, "menu-evolve").setAlpha(0);  // Evolve text, alpha set to 0 to make it invisible
         let consume = this.add.image(350, 550, "menu-consume").setAlpha(0); // Consume text, alpha set to 0 to make it invisible
         let survive = this.add.image(800, 650, "menu-survive").setAlpha(0); // Survive text, alpha set to 0 to make it invisible
-        let pressKey = this.add.image(800, 750, "menu-press").setAlpha(0);  // Press any key text, alpha set to 0 to make it invisible
+        pressKey = this.add.image(800, 750, "menu-press").setAlpha(0);  // Press any key text, alpha set to 0 to make it invisible
+        pressKey.setInteractive();
         let rulesRight = this.add.image(1290, 750, "rulesRight").setAlpha(0);  // Right side instructions, alpha set to 0 to make it invisible
         let rulesLeft = this.add.image(310, 750, "rulesLeft").setAlpha(0);  // Left side instructions, alpha set to 0 to make it invisible
         let muteButton = this.add.image(1500, 100, "mute-icon")             // Mute button
@@ -27,9 +28,18 @@ class MenuScreen extends Phaser.Scene {
             .setDepth(5)                                                    // Put it on top of all other objects
             .setScrollFactor(0)                                             // It shouldn't move around
             .setScale(0.8);                                                 // Make it a little smaller
+        let scene = this;
         muteButton.on('pointerdown', function(){                            // Listen for a click
-            soundMute = true;                                               // Make all sounds silent
-            music.stop();                                                   // Stop the music
+            if (soundMute == false){
+                console.log('sound off')
+                scene.sound.stopAll();
+                soundMute = true;                                               // Make all sounds silent
+                music.pause();                                                   // Stop the music
+            } else {
+                console.log('sound on')
+                soundMute = false;
+                music.play()
+            }
         })
         if (textureSizeTest >= 4800){
             this.anims.create({                                                 // Creating our water animation
@@ -137,11 +147,10 @@ class MenuScreen extends Phaser.Scene {
     update(){
 //================= Conditions for starting the game with/without touch controls ================
         let scene = this
-        if (this.input.activePointer.isDown){   // Did someone tap or click on the screen?
+        pressKey.on('pointerdown', function() {   // Did someone tap or click on the screen?
             touch = true;                       // Then activate touch controls
-            music.stop()
-            this.scene.start('Gameplay')        // And start the show
-        }
+            startGame = true;        // And start the show
+        });
         this.input.keyboard.on('keydown', function(event){ // Did someone press a key on a keyboard?
             touch = false;                                 // Then no touch controls
             startGame = true;                              // And set the startgame var to true

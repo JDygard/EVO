@@ -419,21 +419,14 @@ class Gameplay extends Phaser.Scene {
                 let enemySpeed = enemy.data.get('speed');
                 let enemyRotation = enemy.data.get('rotation');
                 let target = enemy.data.get('target');
-                let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
-                let angle2 = enemy.rotation
-                let angle = Math.atan2(Math.sin(angle1-angle2), Math.cos(angle1-angle2));
-                if (angle > .4){
-                    enemy.setAngularVelocity(enemyRotation)
-                } else if (angle > .1){
-                    enemy.setAngularVelocity(enemyRotation / 1.5)
-                }
-                if (angle < .4){
-                    enemy.setAngularVelocity(-enemyRotation)
-                } else if (angle < .1){
-                    enemy.setAngularVelocity(-enemyRotation / 1.5)
-                }
-                if (Math.abs(angle) < Math.abs(6)){
-                    enemy.thrust(enemySpeed)
+                let angleToPointer = Phaser.Math.Angle.BetweenPoints(enemy, target);
+                let angleDelta = Phaser.Math.Angle.Wrap(angleToPointer - enemy.rotation);
+                enemy.thrust(enemySpeed)
+                if (Phaser.Math.Within(angleDelta, 0, 0.02)) {
+                    enemy.rotation = angleToPointer;
+                    enemy.setAngularVelocity(0);
+                  } else {
+                    enemy.setAngularVelocity(Math.sign(angleDelta) * enemyRotation);
                 }
             } else {
                 this.findFood();
@@ -723,55 +716,7 @@ class Gameplay extends Phaser.Scene {
         this.cameras.main.setBounds(-3440, -1860, 7680, 4320);      //===== Don't let the camera show out of bounds
         this.cameras.main.startFollow(player, true, 0.1, 0.1, 0, 0);//===== Set camera to follow player
         cursors = this.input.keyboard.createCursorKeys();           //===== Declare keyboard controls variable
-
-/*        // ================================== Joystick plugin =========================================
-        joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, { //== Add the contents of our joystick plugin
-            x: 1400,                                          //== Put it in the bottom-right
-            y: 700,                                          //== corner for the thumb
-            radius: 100,                                            //== and set the size
-            base: this.add.circle(0, 0, 100, 0x888888),             //== Draw the outer circle
-            thumb: this.add.circle(0, 0, 50, 0xcccccc),             //== and the inner one
-            //dir: '8dir'                                             //== Set it to collect 8 directions of info
-        })
-        .on('update', this.dumpJoyStickState, this);                //== Deliver the information to the controls
-        if (touch !== true) {                                       //== Hide the joystick if the player is using keyboard controls
-            joyStick.visible = false
-        }*/
-//===================================================================================================================
-
-
-//===================================================================================================================
-    }    
-    
-    /*dumpJoyStickState() {                                           //== Method to handle the output from the joystick
-        joystickControls = joyStick.createCursorKeys();             //== plugin
-        leftKeyDown = joystickControls.left.isDown;
-        rightKeyDown = joystickControls.right.isDown;
-        upKeyDown = joystickControls.up.isDown;
-        downKeyDown = joystickControls.down.isDown;
-    }*/
-
-    /*dumpJoyStickState() {
-        let angle1 = joyStick.rotation;
-        let angle2 = player.rotation
-        let angle = Math.atan2(Math.sin(angle1-angle2), Math.cos(angle1-angle2));
-        console.log(angle)
-        if (Math.abs(angle) <= 1) {
-            upKeyDown = true;
-        } else {
-            upKeyDown = false;
-        }
-        if (angle >= 0.1){
-            rightKeyDown = true;
-        } else {
-            rightKeyDown = false;
-        }
-        if (angle <= -0.1){
-            leftKeyDown = true;
-        } else {
-            leftKeyDown = false;
-        }
-    }*/
+    }
 
     update(){  // Update method, executed every frame
 // ========== Healthbar and player death business conducted here =============
@@ -876,20 +821,21 @@ class Gameplay extends Phaser.Scene {
             }
         }
 
-
-
-        if (cursors.left.isDown || leftKeyDown == true)
-        {
-            player.setAngularVelocity(-currentPlayerRotation);
+        //========================= Keyboard controls =======================
+        if (touch == false){
+            if (cursors.left.isDown)
+            {
+                player.setAngularVelocity(-currentPlayerRotation);
+            }
+            else if (cursors.right.isDown)
+            {
+                player.setAngularVelocity(currentPlayerRotation);
+            }
+            if (cursors.up.isDown)
+            {
+                player.thrust(thrustSpeed);
+            }   
         }
-        else if (cursors.right.isDown || rightKeyDown == true)
-        {
-            player.setAngularVelocity(currentPlayerRotation);
-        }
-        if (cursors.up.isDown || upKeyDown == true)
-        {
-            player.thrust(thrustSpeed);
-        }   
 //============================== Enemy target acquisition, calculation and movement ===================
 //=====
         this.moveToTarget()

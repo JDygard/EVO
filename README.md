@@ -98,12 +98,20 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 [Back to top](#Table-of-contents)
 ***
 ## Known issues
+### No mute button on the menu screen
+
+### Game logic breaks down on slow processors
+Because the logic is frame independant, but the physics are frame-bound, when the framerate goes down certain aspects of the game become less consistent. One of the most important aspects is the enemy pathing. An enemy will select a target and start moving toward it at its maximum thrust setting between frame cycles, while adjusting its path every update cycle. When the update cycle is significantly shorter than the framerate, the enemies will simply fly by their intended target and begin circling it. This can't really be resolved in a reasonable timeframe.
+
+We considered adding a warning that framerate/update cycle ratio was becoming unplayable, but that would require a significantly larger pool of data to implement intelligently.
+***
+
 ### Game speed is very high on high refresh-rate displays
 Unfortunately, MatterJS physics is coupled very closely to the framerate of the display being used. This is an issue that has to be accounted for when initially coding how things interact within the canvas.
 
 Having discovered this issue when well into the project, it is beyond the project scope to completely rebuild elements of the game from the ground up at this time.
 
-Resolutions would involve creating a standardized step-timer, and use these ticks to apply force based on time rather than frames.
+Resolving this would involve creating a standardized step-timer, and use these ticks to apply force based on time rather than frames.
 ***
 ### "Red Food" dropped by enemies is sometimes not able to be eaten
 We've tracked this issue down to an issue with the food array.
