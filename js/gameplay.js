@@ -421,7 +421,6 @@ class Gameplay extends Phaser.Scene {
                 let target = enemy.data.get('target');
                 let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
                 let angle2 = enemy.rotation
-                //let angle = angle1 - angle2
                 let angle = Math.atan2(Math.sin(angle1-angle2), Math.cos(angle1-angle2));
                 if (angle > .4){
                     enemy.setAngularVelocity(enemyRotation)
@@ -725,7 +724,7 @@ class Gameplay extends Phaser.Scene {
         this.cameras.main.startFollow(player, true, 0.1, 0.1, 0, 0);//===== Set camera to follow player
         cursors = this.input.keyboard.createCursorKeys();           //===== Declare keyboard controls variable
 
-        // ================================== Joystick plugin =========================================
+/*        // ================================== Joystick plugin =========================================
         joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, { //== Add the contents of our joystick plugin
             x: 1400,                                          //== Put it in the bottom-right
             y: 700,                                          //== corner for the thumb
@@ -737,7 +736,7 @@ class Gameplay extends Phaser.Scene {
         .on('update', this.dumpJoyStickState, this);                //== Deliver the information to the controls
         if (touch !== true) {                                       //== Hide the joystick if the player is using keyboard controls
             joyStick.visible = false
-        }
+        }*/
 //===================================================================================================================
 
 
@@ -752,7 +751,7 @@ class Gameplay extends Phaser.Scene {
         downKeyDown = joystickControls.down.isDown;
     }*/
 
-    dumpJoyStickState() {
+    /*dumpJoyStickState() {
         let angle1 = joyStick.rotation;
         let angle2 = player.rotation
         let angle = Math.atan2(Math.sin(angle1-angle2), Math.cos(angle1-angle2));
@@ -772,7 +771,7 @@ class Gameplay extends Phaser.Scene {
         } else {
             leftKeyDown = false;
         }
-    }
+    }*/
 
     update(){  // Update method, executed every frame
 // ========== Healthbar and player death business conducted here =============
@@ -860,6 +859,25 @@ class Gameplay extends Phaser.Scene {
 //=====  Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors   =====
 //=====                     for the modified example code used here.                              =====
         let thrustSpeed = currentPlayerSpeed + chitinPenalty
+        //============================== Touch controls =================================='
+        var scene = this;
+        var pointer = scene.input.activePointer;
+        if (pointer.isDown){
+            var angleToPointer = Phaser.Math.Angle.Between(player.x, player.y, pointer.worldX, pointer.worldY);
+            var angleDelta = Phaser.Math.Angle.Wrap(angleToPointer - player.rotation);
+            if (Phaser.Math.Within(angleDelta, 0, 1)){
+                player.thrust(thrustSpeed)
+            }
+            if (Phaser.Math.Within(angleDelta, 0, 0.02)) {
+                player.rotation = angleToPointer;
+                player.setAngularVelocity(0);
+              } else {
+                player.setAngularVelocity(Math.sign(angleDelta) * currentPlayerRotation);
+            }
+        }
+
+
+
         if (cursors.left.isDown || leftKeyDown == true)
         {
             player.setAngularVelocity(-currentPlayerRotation);
