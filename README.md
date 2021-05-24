@@ -117,6 +117,9 @@ I've put a check at the beginning of all loops that triggered the crash that tes
 ### Enemy pathing results in driving loops
 Occasionally when the enemy is pathing toward their target, they'll decide to perform an entire loop rather than go directly to their target. This is due to the simplicity of the target acquisition mechanism. It compares the angle between the enemy object and the target, to the angle of the enemy itself. Since the result can be negative, when the target is down and left of the enemy, it will loop around instead of aiming straight toward the target. Fixing this will require testing for the bug condition.
 
+#### Resolution
+After logging the values involved in the turning calculations, I realized there are dead zones where the values fall out of the expected range, forcing the enemies to do a full loop and find an acceptable range again. In certain situations, this would result in a repeating loop as the values would never fall within the range again. This was fixed with the help of a [stackoverflow](https://stackoverflow.com/questions/1878907/how-can-i-find-the-difference-between-two-angles) question and answer.
+
 ## WebGL MAX_TEXTURE_SIZE (Solved)
 After converting my myriad textures into a master spritesheet, my sprites stopped rendering properly, appearing as small black boxes instead. I discovered that this is due to specific browser/hardware combinations having very low texture size limitations.
 

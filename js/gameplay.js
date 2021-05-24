@@ -353,7 +353,7 @@ class Gameplay extends Phaser.Scene {
             enemyGroup[i] = new Enemy(this, 400, 400, enemies[i])       // Build the gameObjects
             enemySpike = false;
             enemyJaws = false;
-            enemySpeed -= enemyChitin;
+            enemySpeed += enemyChitin;
             enemyGroup[i].anims.play({  // Start the animation
                 key: currentMove,       // using the animation code
                 repeat: -1,             // repeat ad infinitum
@@ -380,9 +380,10 @@ class Gameplay extends Phaser.Scene {
                 let target = enemy.data.get('target');
                 let angle1 = Phaser.Math.Angle.BetweenPoints(enemy, target);
                 let angle2 = enemy.rotation
-                let angle = angle1 - angle2
+                //let angle = angle1 - angle2
+                let angle = Math.atan2(Math.sin(angle1-angle2), Math.cos(angle1-angle2));
                 if (angle > .4){
-                    enemy.setAngularVelocity(enemyRotation)  // We will delve the actual speed from the enemy.data
+                    enemy.setAngularVelocity(enemyRotation)
                 } else if (angle > .1){
                     enemy.setAngularVelocity(enemyRotation / 1.5)
                 }
@@ -479,6 +480,7 @@ class Gameplay extends Phaser.Scene {
             mute: soundMute,
             loop: true,            
         })
+
         gameText = this.add.text(800, 300, '', {fontFamily: '"Luckiest Guy", sans serif'});
         gameText.setScrollFactor(0).setOrigin(0.5).setFontSize(40).setColor(0xe60022).setDepth(5).setAlpha(0)
         this.showText('Round ' + round, 2000)
