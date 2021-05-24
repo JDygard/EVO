@@ -19,15 +19,24 @@ class MenuScreen extends Phaser.Scene {
         let consume = this.add.image(350, 550, "menu-consume").setAlpha(0); // Consume text, alpha set to 0 to make it invisible
         let survive = this.add.image(800, 650, "menu-survive").setAlpha(0); // Survive text, alpha set to 0 to make it invisible
         let pressKey = this.add.image(800, 750, "menu-press").setAlpha(0);  // Press any key text, alpha set to 0 to make it invisible
-        let rulesRight = this.add.image(1290, 750, "rulesRight").setAlpha(0);
-        let rulesLeft = this.add.image(310, 750, "rulesLeft").setAlpha(0);
+        let rulesRight = this.add.image(1290, 750, "rulesRight").setAlpha(0);  // Right side instructions, alpha set to 0 to make it invisible
+        let rulesLeft = this.add.image(310, 750, "rulesLeft").setAlpha(0);  // Left side instructions, alpha set to 0 to make it invisible
+        let muteButton = this.add.image(1500, 100, "mute-icon")             // Mute button
+        muteButton                                                          // Edit the muteButton
+            .setInteractive()                                               // Make it listen for clicks on the object itself
+            .setDepth(5)                                                    // Put it on top of all other objects
+            .setScrollFactor(0)                                             // It shouldn't move around
+            .setScale(0.8);                                                 // Make it a little smaller
+        muteButton.on('pointerdown', function(){                            // Listen for a click
+            soundMute = true;                                               // Make all sounds silent
+            music.stop();                                                   // Stop the music
+        })
         if (textureSizeTest >= 4800){
             this.anims.create({                                                 // Creating our water animation
                 key: "animated-water",                                          // Declaring the key to which it will be referred
                 frames: this.anims.generateFrameNumbers("animatedWater", { start: 0, end: 5 }), // Getting the spritesheet and numbering the frames for the array
                 frameRate: 3,                                                   // Speed at which the frames are cycled
             })
-
 //=============================== Menu intro ==============================
             underwater.anims.play({         // Start playing the underwater animation
                 key: "animated-water",      // Call on the key declared above in the this.anims.create() method

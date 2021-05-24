@@ -12,6 +12,28 @@ class Gameplay extends Phaser.Scene {
     }
 
 //================================== Declaring general use methods ============================
+// ============== Generate a mute button =============
+    makeMuteButton(){
+        let muteButton = this.add.image(1500, 100, "mute-icon")             // Mute button
+        var scene = this;
+        muteButton                                                          // Edit the muteButton
+            .setInteractive()                                               // Make it listen for clicks on the object itself
+            .setDepth(5)                                                    // Put it on top of all other objects
+            .setScrollFactor(0)                                             // It shouldn't move around
+            .setScale(0.8);                                                 // Make it a little smaller
+        muteButton.on('pointerdown', function(){                            // Listen for a click
+            if (soundMute == false){
+                console.log('sound off')
+                scene.sound.stopAll();
+                soundMute = true;                                               // Make all sounds silent
+                music.pause();                                                   // Stop the music
+            } else {
+                console.log('sound on')
+                soundMute = false;
+                music.play()
+            }
+        })
+    }
 //================================== The health bar ===========================================
 //===== The healthbar gameObject carries a great deal more water than its graphic implies =====
 //===== It keeps and displays the score, as well as housing the machinery for starting    =====
@@ -498,7 +520,7 @@ class Gameplay extends Phaser.Scene {
     create(){
         music = this.sound.add('game-music')
         music.play({
-            mute: soundMute,
+            mute: false,
             loop: true,            
         })
 
@@ -564,8 +586,9 @@ class Gameplay extends Phaser.Scene {
             new BGDebris(this, 0,0, 'debris' + i)
         }
 
-//================================== Building the Evo bar ======================================
-        this.makeBar()
+//================================== Building the UI ======================================
+        this.makeMuteButton();
+        this.makeBar();
         healthBar.on('changedata-evoPoints', function (gameObject, value){
             evoPoints = healthBar.data.get('evoPoints')
             if (evoPoints == 10){
@@ -697,8 +720,8 @@ class Gameplay extends Phaser.Scene {
             
 //================================== Setting up the controls =============================================
 
-        this.matter.world.setBounds(-3520, -1920, 7680, 4320);      //===== Don't let the player go out of bounds
-        this.cameras.main.setBounds(-3520, -1920, 7680, 4320);      //===== Don't let the camera show out of bounds
+        this.matter.world.setBounds(-3440, -1860, 7680, 4320);      //===== Don't let the player go out of bounds
+        this.cameras.main.setBounds(-3440, -1860, 7680, 4320);      //===== Don't let the camera show out of bounds
         this.cameras.main.startFollow(player, true, 0.1, 0.1, 0, 0);//===== Set camera to follow player
         cursors = this.input.keyboard.createCursorKeys();           //===== Declare keyboard controls variable
 
