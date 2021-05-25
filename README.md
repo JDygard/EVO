@@ -181,20 +181,23 @@ I also discovered that textures are treated like the next largest squared intege
 [Back to top](#Table-of-contents)
 
 ## Code credits
+1. [Samme's Rotate to Cursor](https://codepen.io/samme/pen/JBwWLN?editors=0010) found in gameplay.js, lines 419-429 and lines 809-820
 
-1. [Rex's virtual joystick plugin](https://codepen.io/rexrainbow/pen/oyqvQY)
+    To my credit I did have a system in place for this exact process.
 
-    Rex's virtual joystick plugin provides the code for a sleek, easy to use joystick for use on mobile devices. We elected to use this for mobile accessibility because of our plans for a wide range of control types for the playable character.
+    `(Math.2atan(Math.sin(player.location - target.location), Math.cos(player.location - target.location)))`
 
-2. [Michael Hadley's code example](https://codesandbox.io/s/5vlzl8j9vp?file=/js/player.js)
+    However, the arctangent is very processor heavy and I found that my tablet had a hard time running the game after I involved this in a process that updates ~60 times a second. I found this example that did the exact same thing, but much more elegantly and - more importantly - less taxing on the hardware.
+
+2. [Michael Hadley's code example](https://codesandbox.io/s/5vlzl8j9vp?file=/js/player.js) found in objects.js, lines 20-69.
 
     This example was coded with a deprecated code simplifying library, and for an older version of the Phaser engine. However, much of the structure and entity interactions are carefully commented and helped immensely in learning about those systems.
 
-3. [Rex's UI plugin](https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ui-overview/)
+3. [Rex's UI plugin](https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ui-overview/) found in rexuiplugin.min.js and game-settings.js lines 132-198.
 
     Rex's UI plugin was used to build the "Evolve" menu. This made the code lighter, and eased the process of making a complex build menu.
 
-4. [Emanuele Feranto's simple mask tutorial](https://www.emanueleferonato.com/2019/04/24/add-a-nice-time-bar-energy-bar-mana-bar-whatever-bar-to-your-html5-games-using-phaser-3-masks/)
+4. [Emanuele Feranto's simple mask tutorial](https://www.emanueleferonato.com/2019/04/24/add-a-nice-time-bar-energy-bar-mana-bar-whatever-bar-to-your-html5-games-using-phaser-3-masks/) found in gameplay.js lines 523-535.
 
     This was a simple tutorial on using masks. I almost wouldn't have credited it, but I did lift the concept of stepWidth directly from the tutorial.
 ***
@@ -202,7 +205,9 @@ I also discovered that textures are treated like the next largest squared intege
 
 ## Visuals credits
 
-1. Jess Vide's [Blue Ocean Blue Sky](https://www.pexels.com/photo/blue-ocean-under-blue-sky-and-white-clouds-4611748/). This image was disassembled and used for the menu screen animation.
+1. Jess Vide's [Blue Ocean Blue Sky](https://www.pexels.com/photo/blue-ocean-under-blue-sky-and-white-clouds-4611748/). 
+
+This image was disassembled and used for the menu screen animation.
 ***
 
 [Back to top](#Table-of-contents)
@@ -224,5 +229,9 @@ All game sounds used were found on [Open Game Art](https://opengameart.org/). Th
 ## Acknowledgements
 
 1. Richard Davey, aka Photonstorm, creator of the Phaser 3 library used extensively in this project. He, personally, tirelessly fielded my questions as an active member of his Discord community, and deserves much more than my humble thanks for all of his help.
+
+2. My friends and family for tirelessly enduring every iteration of my game.
+
+3. My mentor Seun Owanikoko for her brusque demeanor and encouragement.
 
 [Back to top](#Table-of-contents)

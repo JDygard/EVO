@@ -112,21 +112,21 @@ const config = {
 var debugMode = false;
 
 // ==Rotation speed
-const baseRotation = 0.055
-const tailRotation = 0.069
-const flagellumRotation = 0.03
+const baseRotation = 0.055;
+const tailRotation = 0.069;
+const flagellumRotation = 0.03;
 
 // ==Acceleration
-const baseSpeed = 0.03
-const tailSpeed = 0.04
-const flagellumSpeed = 0.048
-const chitinSpeed = -0.005
+const baseSpeed = 0.03;
+const tailSpeed = 0.04;
+const flagellumSpeed = 0.048;
+const chitinSpeed = -0.005;
 
 // ==Fluid friction
-const baseFriction = 0.1
+const baseFriction = 0.1;
 
 // ==Player mass
-const baseMass = 30
+const baseMass = 30;
 
 // RexUI function
 const COLOR_PRIMARY = 0x634d0a;
@@ -222,7 +222,7 @@ var createMenu = function (scene, x, y, items, onClick) {
                     bottom: 10,
                     icon: 10
                 }
-            })
+            });
         },
 
         // easeIn: 500,
@@ -249,26 +249,28 @@ var createMenu = function (scene, x, y, items, onClick) {
         })
         .on('button.click', function (button) {
             onClick(button);
-        })
+        });
 
     return menu;
-}
+};
 
 var playerUpgrades = {
     head: 'none',
     body: 'none',
     tail: 'none'
-}
+};
 
 // This is an array to house the keys for all of the animations. It is used by the animation-creating for-loop to efficiently name, create amd call animations.
 // KEY: 0 = null/no other upgrades, J = jaws, S = spike, F = flagellum, T = tail, K = stiff skin, C = chitin, M = moving
 var animationSetter = [
     '000','000M','J00','J00M','S00','S00M','00F','00FM','J0F','J0FM','S0F','S0FM','0KF','0KFM','0CF','0CFM','00T','00TM','J0T','J0TM','S0T','S0TM','0KT','0KTM','0CT','0CTM','JKF','JKFM','JCF','JCFM','SKF','SKFM','SCF','SCFM','JKT','JKTM','JCT','JCTM','SKT','SKTM','SCT','SCTM',
-]
+];
 // ================================= Global Variables ====================================
 // =========This is where the global variables for the game are being declared ===========
 // General variables
-var pressKey
+var scarceMessage = false; // A toggle for only showing the food scarcity message once per round
+var slainMessage = false; // a toggle for only showing the 'consumed all other creatures' message once per round
+var pressKey;
 var music;
 var soundMute = false;
 var timer = false; // A timer to avoid building a message queue
@@ -291,19 +293,18 @@ var food = [];  // An array for storing all instances of food for reference
 var evoPoints = 0; // Global variable for managing the player's score in a round
 var cursors; // Global variable for storing directional inputs
 var healthBar; // The gameObject that displays the UI for the healthbar, evo points and dropdown evolution menu. Also stores most game values.
-var healthBarScale = 1.5 // A handy place to adjust the scale of the healthbar
+var healthBarScale = 1.5; // A handy place to adjust the scale of the healthbar
 var energyMask;
-var startGame = false // Keeps the listener for any key presses in the menu screen separate from the function that starts the game
+var startGame = false; // Keeps the listener for any key presses in the menu screen separate from the function that starts the game
 var healthContainer; // A container that holds all of the graphics for the UI
 var pointText; // The text displaying the current points value
 var garbage; // A variable for temporarily storing gameObjects queued for deletion to avoid removing them from the game in the middle of functions
-var enemyGroup = []  // An array for storing the actual instance of each enemy gameObject
+var enemyGroup = [];  // An array for storing the actual instance of each enemy gameObject
 var enemies = [   // An array for storing the current evolution stage of each enemy. The value of each being the name of the relevant animation for that stage
     'E000M',
     "E000M",
     "E000M",
 ];
-console.log(enemies)
 var posX = [0,0];
 var posY = [0,0];
 var moving = false;//Variable for testing if the player is in motion
