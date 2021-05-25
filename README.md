@@ -1,5 +1,5 @@
 # EVO: Evolution
-![alt text](assets/images/readme/gameplan.png "Logo Title Text 1")
+![alt text](assets/images/readme/gameplan.png "Evo gameplan")
 
 ## Table of contents
 ***

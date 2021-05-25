@@ -572,13 +572,17 @@ class Gameplay extends Phaser.Scene {
         this.makeFood();                                   // Initial food generation
         this.makeEnemies();
         this.findFood();
-        for (let i = 0; i < 64; i++){                     // A pair of loops to produce copies of the debris decoration
+        for (let i = 0; i < 16; i++){                     // A pair of loops to produce copies of the debris decoration
             new Debris(this, 0,0, 'debris' + i);
-        }
+            new Debris(this, 0,0, 'debris' + i);
+            new Debris(this, 0,0, 'debris' + i);
+            new Debris(this, 0,0, 'debris' + i);
         
-        for (let i = 0; i < 64; i++){
+        for (let i = 0; i < 16; i++){
             new BGDebris(this, 0,0, 'debris' + i);
-        }
+            new BGDebris(this, 0,0, 'debris' + i);
+            new BGDebris(this, 0,0, 'debris' + i);
+            new BGDebris(this, 0,0, 'debris' + i);
 
 //================================== Building the UI ======================================
         this.makeMuteButton();
