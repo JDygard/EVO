@@ -41,7 +41,14 @@ We will be testing each major game element and function as much as possible, mak
 
     ix. [Sensor interactions](#Sensor-interactions)
 
-3. [JSHint](#JSHint)
+3. [Validation](#Validation)
+
+    i. [JSHint](#JSHint)
+
+    ii. [WC3 CSS Validation](#CSS-validation)
+
+    iii. [WC3 HTML Validation](#HTML-validation)
+
 
 # Menu scene
 ![alt text](assets/images/readme/menu-screen.png "Menu Screen")
@@ -372,7 +379,7 @@ The gameplay.js file contains the bulk of the interactive elements of the game.
 
 ![alt text](assets/images/readme/htmlvalid.png "WC3 HTML Validator output")
 
-- The HTML is 21 lines.
+- The HTML is 25 lines.
 
 ***
 [Back to top](#Table-of-contents)
