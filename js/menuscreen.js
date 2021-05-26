@@ -6,8 +6,10 @@ class MenuScreen extends Phaser.Scene { // Creating a Preloader class as an exte
         playerDead = false; // Resetting the game if the menu was reached through death
         deathScreen = false; // Resetting the game if the menu was reached through death
         var textureSizeTest = this.game.renderer.getMaxTextureSize(); // Collect the maximum allowed texture size to adjust for low tolerance
+
 //======================================= Adding music  ======================================
         music = this.sound.add('menu-music');                                   // Add the music we will play later
+
 //======================================= Adding images ======================================
 //===== There's a lot of moving pieces in this animation. We are adding them all in a    =====
 //=====                                   big chunk here.                                =====
@@ -23,29 +25,38 @@ class MenuScreen extends Phaser.Scene { // Creating a Preloader class as an exte
         let rulesRight = this.add.image(1290, 750, "rulesRight").setAlpha(0);   // Right side instructions, alpha set to 0 to make it invisible
         let rulesLeft = this.add.image(310, 750, "rulesLeft").setAlpha(0);      // Left side instructions, alpha set to 0 to make it invisible
         let muteButton = this.add.image(1500, 100, "mute-icon");                // Mute button
+        let muteButtonOff = this.add.image(1500, 100, "mute-icon-off");         // Mute button
         muteButton                                                              // Edit the muteButton
             .setInteractive()                                                   // Make it listen for clicks on the object itself
             .setDepth(5)                                                        // Put it on top of all other objects
             .setScrollFactor(0)                                                 // It shouldn't move around
-            .setScale(0.8);                                                     // Make it a little smaller
+            .setScale(0.8)                                                     // Make it a little smaller
+            .setAlpha(0.1);
+        muteButtonOff
+            .setDepth(4)
+            .setScrollFactor(0)
+            .setScale(0.8)
         let scene = this;                                                       // Save some context
         muteButton.on('pointerdown', function(){                                // Listen for a click
             if (soundMute == false){                                            // If the sound is not already muted
                 scene.sound.stopAll();                                          // Halt all sound
                 soundMute = true;                                               // Make all sounds silent
+                muteButton.setAlpha(1)                                    // Make the X visible
                 music.pause();                                                  // Stop the music
             } else {                                        
+                muteButton.setAlpha(0.1)                                    // Make the X invisible again
                 soundMute = false;                                              // Set the variable to false
                 music.play();                                                   // Strike up the band
             }
         });
+
+        //=============================== Menu intro ==============================
         if (textureSizeTest >= 4800){                                           // Compare to the texture size read above
             this.anims.create({                                                 // Creating our water animation
                 key: "animated-water",                                          // Declaring the key to which it will be referred
                 frames: this.anims.generateFrameNumbers("animatedWater", { start: 0, end: 5 }), // Getting the spritesheet and numbering the frames for the array
                 frameRate: 3,                                                   // Speed at which the frames are cycled
             });
-//=============================== Menu intro ==============================
             underwater.anims.play({     // Start playing the underwater animation
                 key: "animated-water",  // Call on the key declared above in the this.anims.create() method
                 repeat: -1,             // "repeat: -1" means to repeat it ad infinitum

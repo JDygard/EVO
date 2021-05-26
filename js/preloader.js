@@ -7,7 +7,8 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
 //===== We are loading our sprites and images here. Since images are handled by the textureManager, they            =====
 //===== can be loaded anywhere within Phaser.Scene and still be used elsewhere.                                     =====
     preload(){                                                                                    
-        this.load.image('mute-icon', 'assets/images/sprites/mute_icon.png');                            // Mute button image                     
+        this.load.image('mute-icon', 'assets/images/sprites/mute_icon.png');                            // Mute button image    
+        this.load.image('mute-icon-off', 'assets/images/sprites/mute_icon_off.png');                            // Mute button image                   
         this.load.image('menu-sky', 'assets/images/menuscreen/menu-sky.png');                           // Menu sky image  
         this.load.image('menu-underwater', 'assets/images/menuscreen/menu-underwater.png');             // Menu underwater image
         this.load.image('menu-water', 'assets/images/menuscreen/menu-water.png');                       // Menu water image             

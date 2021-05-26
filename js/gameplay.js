@@ -15,18 +15,28 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
 // ============== Generate a mute button =============
     makeMuteButton(){                                                       // Method for making the mute button
         let muteButton = this.add.image(1500, 100, "mute-icon");            // Mute button
+        let muteButtonOff = this.add.image(1500, 100, "mute-icon-off");     // Mute button
         var scene = this;                                                   // Context for event listeners
         muteButton                                                          // Edit the muteButton
             .setInteractive()                                               // Make it listen for clicks on the object itself
             .setDepth(5)                                                    // Put it on top of all other objects
             .setScrollFactor(0)                                             // It shouldn't move around
-            .setScale(0.8);                                                 // Make it a little smaller
+            .setScale(0.8)                                                  // Make it a little smaller
+        if (soundMute == false){                                            // If the user hasn't muted sound in the menu screen
+            muteButton.setAlpha(0.1);                                       // Make the X translucent
+        }
+        muteButtonOff                                                       // Modifying the sound icon
+            .setDepth(4)                                                    // Put it in front of everything but the mute button
+            .setScrollFactor(0)                                             // Fix it in the viewport
+            .setScale(0.8)                                                  // Scale it slightly
         muteButton.on('pointerdown', function(){                            // Listen for a click
             if (soundMute == false){                                        // Check to see if we're muted already
                 scene.sound.stopAll();                                      // Stop all the current sounds
+                muteButton.setAlpha(1)                                      // Make the X visible
                 soundMute = true;                                           // Make all sounds silent
                 music.pause();                                              // Stop the music
             } else {
+                muteButton.setAlpha(0.1)                                    // Make the X invisible again
                 soundMute = false;                                          // Flip the mute button again
                 music.play();                                               // Strike up the band!!
             }
@@ -59,10 +69,11 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
         healthContainer.add(healthBar);                                 // Add the health bar graphic to the container
         healthContainer.setScale(healthBarScale);                       // Scale all the elements together to a variable from game-settings.js.
         var scene = this,                                               // To get around the context issues within event listeners
-        menu = undefined;                                               // Set the menu as undefined so that it doesn't appear at random
+        evoMenu = false;                                                // Set the menu as false so that it doesn't appear at random
         healthBar.on('pointerdown', function (pointer) {                // Listen for pointer
-            if (menu === undefined) {                                   // Test for undefined
-                menu = createMenu(scene, healthContainer.x - 35, healthContainer.y + 35, items, function (button) { // If the pointer comes down on the healthbar, generate a menu
+            if (evoMenu === false) {                                   // Test for undefined
+                menuMovement = true;                                                                                // Restrict movement while menu is open
+                evoMenu = createMenu(scene, healthContainer.x - 35, healthContainer.y + 35, items, function (button) { // If the pointer comes down on the healthbar, generate a menu
                     if (button.text == 'A predatory spike [10 points]'){                                            // If the player clicks this button
                         if (evoPoints >= 10 && playerUpgrades.head == 'none'){                                      // And they have enough points
                             playerUpgrades.head = 'spike';                                                          // put the selected upgrade into the array
@@ -76,15 +87,15 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                         }
                     }
 
-                    if (button.text == 'A pair of jaws [8 points]'){                // If the player clicks this button
-                        if (evoPoints >= 8 && playerUpgrades.head == 'none'){                                           // And they have enough points
-                            playerUpgrades.head = 'jaws';                               // put the selected upgrade into the array
-                            scene.newRound();                                            // and start a new round
-                        } else if (evoPoints <= 7){                                     // But if they don't have enough points
-                            scene.showText('More food needed for that', 1500);  // Let them know
+                    if (button.text == 'A pair of jaws [8 points]'){                                                // If the player clicks this button
+                        if (evoPoints >= 8 && playerUpgrades.head == 'none'){                                       // And they have enough points
+                            playerUpgrades.head = 'jaws';                                                           // put the selected upgrade into the array
+                            scene.newRound();                                                                       // and start a new round
+                        } else if (evoPoints <= 7){                                                                 // But if they don't have enough points
+                            scene.showText('More food needed for that', 1500);                                      // Let them know
                             scene.playSound('denied');                                                              // Play a 'denied' sound
-                        } else if (playerUpgrades.head != 'none'){
-                            scene.showText('You have already upgraded your head', 1500);
+                        } else if (playerUpgrades.head != 'none'){                                                  // If they already have a head upgrade
+                            scene.showText('You have already upgraded your head', 1500);                            // Give them a message
                             scene.playSound('denied');                                                              // Play a 'denied' sound
                         }
                     }
@@ -160,9 +171,10 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                     } 
                 });
 
-            } else if (!menu.isInTouching(pointer)) {   //If the pointer comes down outside the boundary of the menu object
-                menu.collapse();                        // collapse the menu
-                menu = undefined;                       // and reset the variable
+            } else if (!evoMenu.isInTouching(pointer)) {   //If the pointer comes down outside the boundary of the menu object
+                evoMenu.collapse();                        // collapse the menu
+                evoMenu = false;                           // and reset the variable
+                menuMovement = false;                      // re-enable movement
             }
         }, this);                                       // context of the event listener started on line 44 above
     }
@@ -521,8 +533,11 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             mute: false,                        // Just play it
             loop: true,                         // And loop it
         });
+        if (soundMute == true){
+            music.pause();
+        }
 
-        gameText = this.add.text(800, 300, '', {fontFamily: '"Luckiest Guy", sans serif'}); // Set up the text object for displaying messages to the user
+        gameText = this.add.text(800, 340, '', {fontFamily: '"Luckiest Guy", sans serif'}); // Set up the text object for displaying messages to the user
         gameText                // The text object
             .setScrollFactor(0) // Make the text fixed in the viewport
             .setOrigin(0.5)     // Set the origin in the middle so it displays cleanly
@@ -829,7 +844,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
         //============================== Touch controls =================================='
         var scene = this;                                           // Context
         var pointer = scene.input.activePointer;                    // A var for simplicity
-        if (pointer.isDown && touch == true){                       // If the pointer is down and touch is active
+        if (pointer.isDown && touch == true && menuMovement == false){                                             // If the pointer is down and touch is active
             var angleToPointer = Phaser.Math.Angle.Between(player.x, player.y, pointer.worldX, pointer.worldY); // Find the angle between the player and the pointer
             var angleDelta = Phaser.Math.Angle.Wrap(angleToPointer - player.rotation);                          // Find the difference in that angle and the player object's rotation
             if (Phaser.Math.Within(angleDelta, 0, 1)){      // If the angle is within a certain range
@@ -844,7 +859,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
         }
 
         //========================= Keyboard controls =======================
-        if (touch == false){                                        // If touch is off
+        if (touch == false && menuMovement == false){                    // If touch is off and the menu isn't open
             if (cursors.left.isDown)                                // If the user is pressing the left key
             {
                 player.setAngularVelocity(-currentPlayerRotation);  // Rotate to the left
@@ -860,6 +875,8 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
         }
 //============================== Enemy target acquisition, calculation and movement ===================
 //=====
-        this.moveToTarget();                                        // run moveToTarget() once everything else is settled
+        if (menuMovement == false){
+            this.moveToTarget();                                        // run moveToTarget() once everything else is settled
+        }
     }
 }

@@ -195,6 +195,8 @@ var animationSetter = [
 // ================================= Global Variables ====================================
 // ========= This is where the global variables for the game are being declared ==========
 // ===== General variables
+var menuMovement = false;                   // a variable for disabling movement when the menu is open
+var evoMenu = false;                        // Set the evoMenu to false for checking movement
 var scarceMessage = false;                  // A toggle for only showing the food scarcity message once per round
 var slainMessage = false;                   // a toggle for only showing the 'consumed all other creatures' message once per round
 var pressKey;                               // A variable to store the press any key sprite
