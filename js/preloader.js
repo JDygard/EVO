@@ -68,7 +68,6 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
                 frameHeight: 630                            // Size of the frames' height in the sheet in pixels
             }
         );
-        this.load.plugin('rexvirtualjoystickplugin', 'js/rexvirtualjoystickplugin.min.js', true);        // Preload virtual joystick plugin assets
     }                                                                   
 //========================================== End spritesheet generation ==============================================
 

@@ -30,8 +30,8 @@ class Player extends Phaser.Physics.Matter.Sprite {        // Declare player spr
     };
     let bodyParts = {parts: [mainBody, this.sensors.mouth]};// Declaring a variable containing the basic parts of the player object
     if (playerUpgrades.head == 'spike'){                                                                                            // If the player has upgraded into a spike
-      this.sensors.spike = Bodies.trapezoid((w * 0.5) + 20, h * 0.5 -3, 12, 32, 1, { angle: 1.57 });                                // Put the physical spike in place
-      this.sensors.spike2 = Bodies.trapezoid((w * 0.5) + 30, h * 0.5 -3, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'spike'}); // and the sensor
+      this.sensors.spike = Bodies.trapezoid((w * 0.5) + 20, h * 0.5, 12, 32, 1, { angle: 1.57 });                                // Put the physical spike in place
+      this.sensors.spike2 = Bodies.trapezoid((w * 0.5) + 30, h * 0.5, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'spike'}); // and the sensor
       bodyParts.parts.push(this.sensors.spike, this.sensors.spike2);                                                                 // And load it into the parts array
     }
     playerCompoundBody = Body.create(bodyParts);            // create a body from the parts.
@@ -62,8 +62,8 @@ class Enemy extends Phaser.Physics.Matter.Sprite {         // Declare Enemy spri
     }
     let bodyParts = {parts: [enemyMainBody, this.sensors.mouth]};// Declaring a variable containing the basic parts of the player object
     if (enemySpike == true){                                     // If the spike was selected as part of the random upgrade generation
-      this.sensors.spike = Bodies.trapezoid((w * 0.5) + 20, h * 0.5 -3, 12, 32, 1, { angle: 1.57 });                                      // Put the physical spike in place
-      this.sensors.spike2 = Bodies.trapezoid((w * 0.5) + 30, h * 0.5 -3, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'enemySpike'}); // and the sensor
+      this.sensors.spike = Bodies.trapezoid((w * 0.5) + 20, h * 0.5, 12, 32, 1, { angle: 1.57 });                                      // Put the physical spike in place
+      this.sensors.spike2 = Bodies.trapezoid((w * 0.5) + 30, h * 0.5, 12, 32, 1, { isSensor: true, angle: 1.57, label: 'enemySpike'}); // and the sensor
       bodyParts.parts.push(this.sensors.spike, this.sensors.spike2);                                                                      // And load it into the parts array
     }
     enemyCompoundBody = Body.create(bodyParts);         // create a body from the parts.

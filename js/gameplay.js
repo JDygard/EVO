@@ -405,6 +405,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             enemySpike = false;         // Reset the spike variable for the next enemy
             enemyJaws = false;          // Reset the jaws variable for the next enemy
             enemySpeed += enemyChitin;  // Apply the chitin skin penalty
+            enemySpeed -= 0.005;         // Give the player a slight advantage in speed
             enemyGroup[i].anims.play({  // Start the animation
                 key: currentMove,       // using the animation code
                 repeat: -1,             // repeat ad infinitum
@@ -456,11 +457,14 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
     }
 
     youLose() {                                                         // Declare the youLose() method
+        menuMovement = true;                                            // Lock player movement
         this.playSound('game-over');                                    // Play a loss song
         this.showText('Your evolutionary line was cut short', 4000);    // Display a message
         this.cameras.main.fadeOut(4000);                                // Fade the camera out
-        this.resetConditions();                                         // run resetConditions()
-        setTimeout(() => { this.scene.start("MenuScreen"); }, 5000);    // After the fadeout, go back to the menú screen
+        setTimeout(() => {
+            this.resetConditions();                                     // run resetConditions()
+            this.scene.start("MenuScreen");                             // After the fadeout, go back to the menú screen
+         }, 5000);
     }
 
     resetConditions(){                          // Declare resetConditions() method. This is housekeeping after the end of a game.
@@ -478,6 +482,8 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
         currentMoveAnimation = '000M';          // reset the move animation
         scarceMessage = false;                  // Reset the message switch
         slainMessage = false;                   // reset the message switch
+        startGame = false;                      // Reset the startGame switch
+        menuMovement = false;                   // Make sure that movement is maintained between sessions
         playerUpgrades = {                      // reset the upgrades object
             head: 'none',
             body: 'none',
@@ -497,6 +503,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             evoPoints = 0;                      // Reset the evo points
             healthBar.data.set('evoPoints', 0); // Reset the evo points
         }
+        menuMovement = false;                   // Set the movement to be activated again
         round++;                                // Increment the round
         this.scene.start("Gameplay");           // Start the next round
     }
@@ -707,7 +714,6 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                                     player.clearTint();                                                           // before removing the tint
                                 }, 75);                                                                      // 75ms    
                                 playerHP -= 5;
-                                console.log(playerHP);
                             }
 //========================================= Enemy spike damage =======================================================
                             if (sensorBody.label === 'enemySpike' && otherBody.label == 'playerBody'){

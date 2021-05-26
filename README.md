@@ -98,6 +98,15 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 [Back to top](#Table-of-contents)
 ***
 ## Known issues
+### Game is essentially unplayable on very small screens
+
+The game was designed with accessibility in mind. That being said, by the nature of the game, having a very small screen presents very real problems:
+
+- Putting your finger down on the screen for movement obscures the screen to the point that it is difficult to play normally
+- Accessing the evolution menu elements can be challenging with such a small target to tap
+
+As the game logic is quite demanding on processor performance by its nature, many devices with very small screens will be unable to run this game anyway.
+***
 ### Game logic breaks down on slow processors
 Because the logic is frame independant, but the physics are frame-bound, when the framerate goes down certain aspects of the game become less consistent. One of the most important aspects is the enemy pathing. An enemy will select a target and start moving toward it at its maximum thrust setting between frame cycles, while adjusting its path every update cycle. When the update cycle is significantly shorter than the framerate, the enemies will simply fly by their intended target and begin circling it. This can't really be resolved in a reasonable timeframe.
 
@@ -116,7 +125,7 @@ We've tracked this issue down to an issue with the food array.
 When the level is generated, 30 food is placed into an array and managed from there. When an enemy dies, two food pieces are generated after the death animation ends, and as part of their generation they are pushed into the same food array.
 
 The issue is that sometimes, one of the two food dropped by the enemy is not edible. Given the time frame of this project, this was considered too minor an issue to look into further.
-
+***
 ### Game does not pause when menu is open
 This is another example of "if only," because if I'd built the game with this in mind, it would be relatively easy to do. Same with that if I had built the menu as a separate scene (as I had planned) then I could have paused the
 gameplay scene while the menu was open. Unfortunately, at this point, the time investment involved with adding this feature is... too much.
@@ -126,7 +135,10 @@ gameplay scene while the menu was open. Unfortunately, at this point, the time i
 ***
 ### Mouth sensor contact with world boundary causes crash (Solved)
 When the mouth sensor on the Player object makes contact with the world boundary, it assigns assigns a null value to one of the temporary variables within the querying function associated with the sensor. This crashes the game.
-This bug has been tenacious as the sensor functions become more complex. We've had to implement a test before each if statement involving encountered variables. Another option would have been to give a value to the world boundary to eliminate
+This bug has been tenacious as the sensor functions become more complex. 
+
+### Resolution:
+We've had to implement a test before each if statement involving encountered variables. Another option would have been to give a value to the world boundary to eliminate
 the problem of null values clogging up functions.
 ***
 
