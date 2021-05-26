@@ -844,7 +844,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
         //============================== Touch controls =================================='
         var scene = this;                                           // Context
         var pointer = scene.input.activePointer;                    // A var for simplicity
-        if (pointer.isDown && touch == true && menuMovement == false){                                             // If the pointer is down and touch is active
+        if (pointer.isDown && touch == true && menuMovement == false){                                          // If the pointer is down and touch is active
             var angleToPointer = Phaser.Math.Angle.Between(player.x, player.y, pointer.worldX, pointer.worldY); // Find the angle between the player and the pointer
             var angleDelta = Phaser.Math.Angle.Wrap(angleToPointer - player.rotation);                          // Find the difference in that angle and the player object's rotation
             if (Phaser.Math.Within(angleDelta, 0, 1)){      // If the angle is within a certain range
