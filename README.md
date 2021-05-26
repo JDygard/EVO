@@ -1,19 +1,30 @@
 # EVO: Evolution
-![alt text](assets/images/readme/gameplan.png "Evo gameplan")
+![alt text](assets/images/readme/menu-screen.png "Evo gameplan")
+![alt text](assets/images/readme/gameplay-screen.png "Evo gameplan")
+***
+## Play it now!
+[Live version here](https://jdygard.github.io/EVO/)
 
+If you're evaluating the game and don't want to work to advance, simply type "debugMode = true" into the console at the menu screen to get 10 free evolution points at the beginning of each round. Or you can change it on line 102 in game-settings.js.
+***
 ## Table of contents
 ***
-1. [Description](#Description)
+1. [Introduction](#Introduction)
+
+    i. [Description](#Description)
 2. [Known Issues](#Known-issues)
 3. [Bugs](#Bugs)
 4. [Code credits](#Code-credits)
 
-
+***
 # Description
 Evo is a game about evolution. Each round represents a stage in the evolution of a lifeform, and through garnering evolution points by eating food or killing the competition and eating their food, the player can select new evolutions to advance to the next round. The goal is to get to round 4 and evolve the 'size' upgrade.
 
+All art, code and game concepts were the (more or less, it's similar to Spore's first stage) original work of the author, Joel Dygard, with the exception of the code credited at the end of this document. No tutorial was followed to make this game as whole, but bits were used as guiding light to how to use the Phaser 3 library.
+
 [Back to top](#Table-of-contents)
-# The Game Plan
+# Original development plan
+![alt text](assets/images/readme/gameplan.png "Evo gameplan")
 We're going to start with core features, creating a framework upon which the rest of the game can be built. 
 The phases are arranged such that each phase rounds out a gameplay loop, and is thus a "complete game." This will allow us to turn in a complete project no matter which phase is completed, even the first.
 
@@ -21,7 +32,7 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 
 ## Development Planes
 ## Phase 1, the framework
-1. Rotating player
+1. Moving player
 
     i. Controls for rotation
 
@@ -56,8 +67,8 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 
     iii. Environment
 
-***
 [Back to top](#Table-of-contents)
+***
 ## Phase 2, Evolution
 
 1. Proper UX
@@ -125,11 +136,6 @@ We've tracked this issue down to an issue with the food array.
 When the level is generated, 30 food is placed into an array and managed from there. When an enemy dies, two food pieces are generated after the death animation ends, and as part of their generation they are pushed into the same food array.
 
 The issue is that sometimes, one of the two food dropped by the enemy is not edible. Given the time frame of this project, this was considered too minor an issue to look into further.
-***
-### Game does not pause when menu is open
-This is another example of "if only," because if I'd built the game with this in mind, it would be relatively easy to do. Same with that if I had built the menu as a separate scene (as I had planned) then I could have paused the
-gameplay scene while the menu was open. Unfortunately, at this point, the time investment involved with adding this feature is... too much.
-
 [Back to top](#Table-of-contents)
 ## Bugs
 ***
@@ -191,8 +197,23 @@ After converting my myriad textures into a master spritesheet, my sprites stoppe
 For accessibility, I added an if statement that makes sure the max permitted texture size is enough to accommodate the size of the intro menu animation. If it doesn't, a static version of the menu graphic is shown.
 I also discovered that textures are treated like the next largest squared integer, i.e. a 5x2 px image is treated as 8x8, a 126x12 is 128x128 etc. By packing my master spritesheets into as square a version as possible, I was able to squeeze it down to the lowest possible WebGL maximum texture size (Chrome on mobile.)
 ***
+### Game does not pause when menu is open
+This is another example of "if only," because if I'd built the game with this in mind, it would be relatively easy to do. Same with that if I had built the menu as a separate scene (as I had planned) then I could have paused the
+gameplay scene while the menu was open.
+
+### Resolution:
+I simply put an if statement in front of all player and enemy controls, and a variable that switches on and off when the menu opens and closes. It is an imperfect solution, I would rather that all animations and motion paused when the menu opens. As it stands, when the menu is open, all objects continue drifting due to the physics engine, but at least the player and enemies drift to a stop very quickly.
+***
 
 [Back to top](#Table-of-contents)
+
+## Technologies used
+1. [Phaser 3](https://photonstorm.github.io/phaser3-docs/index.html): Phaser 3 and the API documentation were the principal technologies used to generate the canvas and manage game objects and their interactions.
+2. [Javascript](https://en.wikipedia.org/wiki/JavaScript): Javascript comprises 99% of this program.
+3. [Favicon converter](https://favicon.io/favicon-converter/): Used to make the favicon.ico and associated files.
+5. [CSS](https://en.wikipedia.org/wiki/CSS): There are 7 lines of CSS.
+6. [HTML5](https://en.wikipedia.org/wiki/HTML5): There are 25 lines of HTML, used to load the canvas and JS used there.
+7. [Google Fonts](https://fonts.google.com/): Used for the two fonts used in this program, Roboto and Luckiest Guy Bold.
 
 ## Code credits
 1. [Samme's Rotate to Cursor](https://codepen.io/samme/pen/JBwWLN?editors=0010) found in gameplay.js, lines 419-429 and lines 809-820

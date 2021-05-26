@@ -123,7 +123,7 @@ Enemy logic consists largely of two methods, findFood() and moveToTarget() in th
 
 findFood() compares the location of each enemy object with the locations of each food object, both stored in arrays. If the enemy has a weapon, the player is added to and prioritized in this comparison. It compares them against each other until it finds the nearest object, and then stores the information in each enemy's data set.
 
-moveToTarget() retrieves that information, as well as information about the enemy from the enemy data set. It then orients and moves the enemy toward the target object using the same mechanism tested in [Player controls](#Player-controls).
+moveToTarget() retrieves that information, as well as information about the enemy from the enemy data set. It then orients and moves the enemy toward the target object using the same mechanism tested in [Player controls](#Player-controls). It is run once every update cycle.
 
 The logic has no mechanism for avoiding obstacles.
 
