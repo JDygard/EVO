@@ -81,7 +81,7 @@ class Food extends Phaser.Physics.Matter.Sprite {       // Declare player sprite
     scene.sys.displayList.add(this);                    // Automatically add the sprite to the display list
     scene.sys.displayList.add(this);                    // Automatically add the sprite to the update list
     this.label = 'food';                                // Give it a label to help functions recognize it                             
-    this.setRandomPosition(-3520, -1920, 7680, 4320);   // When the food is added to the game, spread it around
+    this.setRandomPosition(-3440, -1860, 7680, 4320);   // When the food is added to the game, spread it around
   }
 }
 
@@ -106,7 +106,7 @@ class Debris extends Phaser.Physics.Matter.Sprite {     // Declare player sprite
       .setScale(tempNum * 2)                            // Randomize its size
       .setAlpha(0.5)                                    // Make it a little transparent
       .setAngle(tempNum * 360)                          // Randomly rotate it
-      .setRandomPosition(-3520, -1920, 7680, 4320);     // Randomize its location
+      .setRandomPosition(-3440, -1860, 7680, 4320);     // Randomize its location
   }
 }
 
@@ -119,7 +119,7 @@ class BGDebris extends Phaser.GameObjects.Image {       // Declare player sprite
     this
       .setScale(tempNum * 2)                            // Randomize its size
       .setAlpha(0.2)                                    // Make it a little transparent                                      
-      .setRandomPosition(-3520, -1920, 7680, 4320)      // Randomize its location
+      .setRandomPosition(-3440, -1860, 7680, 4320)      // Randomize its location
       .setDepth(-4)                                     // Put it in the background
       .setAngle(tempNum * 360);                         // Randomize its rotation
   }
