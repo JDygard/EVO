@@ -10,11 +10,42 @@ If you're evaluating the game and don't want to work to advance, simply type "de
 ## Table of contents
 ***
 1. [Introduction](#Introduction)
-
+    
     i. [Description](#Description)
-2. [Known Issues](#Known-issues)
-3. [Bugs](#Bugs)
-4. [Code credits](#Code-credits)
+
+2. [Original development plan](#Original-development-plan)
+
+    i. [Phase 1](#Phase-1,-the-framework)
+
+    ii. [Phase 2](#Phase-2,-Evolution)
+
+3. [Actual development](#Actual-development-/-Current-features)
+
+    i. [Features](#Features)
+
+    ii. [Unplanned features](#Features-not-originally-planned)
+
+    iii. [Unimplemented features](#Features-that-didn't-make-it)
+
+4. [Deployment and Testing](#Deployment-and-testing)
+
+    i. [Deployment](#Deployment)
+
+    ii. [Testing](#Testing)
+
+5. [Known Issues](#Known-issues)    
+6. [Bugs](#Bugs)
+7. [Credits and references](#Credits-and-references)
+
+    i. [Technologies used](#Technologies-used)
+
+    ii. [Code credits](#Code-credits)
+
+    iii. [Visuals credits](#Visuals-credits)
+
+    iv. [Audio credits](#Audio-Credits)
+
+    v. [Acknowledgements](#Acknowledgements)
 
 ***
 # Description
@@ -31,7 +62,7 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 
 [Back to top](#Table-of-contents)
 
-## Development Planes
+***
 ## Phase 1, the framework
 1. Moving player
 
@@ -148,7 +179,7 @@ Because of how graphics and animations wound up being built (The plan was a modu
 This system caused the game to suffer more for variety than originally intended, creating a more arcade-game feel than the RPG feel that was the goal.
 
 I would prefer to have built everything modularly, and infinitely expandable. If the plan were to make this a very long project with dozens of upgrades, it would have justified the work. For a limited project, I think this implementation was acceptable.
-
+***
 ## Features not originally planned
 ### Menu screen animation
 This animation was built from an image found on Pexels and the tween methods available in matterJS. The underwater animation effect was built in [GIMP](#Technologies-used).
@@ -160,6 +191,10 @@ While building the game, the lack of a sense of structure gave the game a "sandb
 The original plan for the evolution upgrade menu was to produce another scene to serve as the menu, and have it appear as a "scene within scene" when the evolve button was clicked. This proved to be difficult, and I spent a couple of days on it. It was decided that since this solution was very library specific that it had little real-world educational value, and a cheaper workaround was found.
 
 I had planned to keep this project completely plugin-free, but this seems like a fair compromise.
+
+***
+## Features that didn't make it
+The "Phase 3" section in the development tree image at the top of this section refers to "transition to sidescroller," which was a transition to a whole new perspective, and fish bodies. This was obviously a huge reach goal and the reality of a 2-4 week development process made that a non-starter.
 
 [Back to top](#Table-of-contents)
 ***
@@ -303,7 +338,9 @@ I simply put an if statement in front of all player and enemy controls, and a va
 ***
 
 [Back to top](#Table-of-contents)
+***
 
+# Credits and references
 ## Technologies used
 1. [Phaser 3](https://photonstorm.github.io/phaser3-docs/index.html): Phaser 3 and the API documentation were the principal technologies used to generate the canvas and manage game objects and their interactions.
 2. [Javascript](https://en.wikipedia.org/wiki/JavaScript): Javascript comprises 99% of this program.
@@ -348,7 +385,7 @@ This image was disassembled and used for the menu screen animation.
 [Back to top](#Table-of-contents)
 ***
 
-## Sound Credits
+## Audio Credits
 
 All game sounds used were found on [Open Game Art](https://opengameart.org/). They are used here under Creative Commons free licensing.
 
