@@ -308,7 +308,7 @@ Probably the most sensitive area of testing. All sensor interactions are handled
 ### Lines 659-674: Player jaws damage enemy body
 - The enemy body is correctly identified consistently.
 - The player's jaws are correctly identified consistently.
-- The player's mouth is never treated as jaws.
+- The player's mouth is never mistakenly treated as jaws.
 - Damage is consistently applied to the enemy body, and the enemy sprite always presents the tint and sound effects.
 ### Lines 676-691: Player spike damages enemy body
 - The enemy body is correctly identified consistently.
