@@ -3,9 +3,9 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         super('Preloader');           // And the super to call functions from the parent class. 
     }                 
 
-//======================== The preload method is used by the library once at the loading of the scene. ==================
-//===== We are loading our sprites and images here. Since images are handled by the textureManager, they            =====
-//===== can be loaded anywhere within Phaser.Scene and still be used elsewhere.                                     =====
+    //======================== The preload method is used by the library once at the loading of the scene. ==================
+    //===== We are loading our sprites and images here. Since images are handled by the textureManager, they            =====
+    //===== can be loaded anywhere within Phaser.Scene and still be used elsewhere.                                     =====
     preload(){                                                                                    
         this.load.image('mute-icon', 'assets/images/sprites/mute_icon.png');                            // Mute button image    
         this.load.image('mute-icon-off', 'assets/images/sprites/mute_icon_off.png');                            // Mute button image                   
@@ -28,7 +28,7 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         for (let i = 0; i < 16; i++){                                                                   // A loop to load all 16 debris images
             debris[i] = this.load.image('debris' + i, 'assets/images/bg_debris/debris' + i + '.png');   // because doing it one-by-one is so pedestrian.
         }
-//========================================== Audio preloads ===================================================
+        //========================================== Audio preloads ===================================================
         this.load.audio('menu-music', 'assets/sounds/menu-music.mp3'); // The intro music
         this.load.audio('game-music', 'assets/sounds/game-music.ogg'); // The game music
         this.load.audio('denied', 'assets/sounds/denied.wav');         // Denied sound effect
@@ -38,8 +38,8 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
         this.load.audio('hit', 'assets/sounds/hit.wav');               // Sound played on hit
         this.load.audio('crunch', 'assets/sounds/eat.ogg');            // Sound played when eating
 
-//========================================== Animations spritesheet generation ==========================================
-//============= Player animations =================
+        //========================================== Animations spritesheet generation ==========================================
+        //============= Player animations =================
         this.load.spritesheet(                                      // Load the spritesheet into the texture manager
             "player-master-spritesheet",                            // This is the master player spritesheet, with 42 animations at 4 frames per
             "assets/images/sprites/player_master_spritesheet.png",  // Load from assets directories
@@ -49,7 +49,7 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
             }
         );
 
-//============= Enemy animations ==================
+        //============= Enemy animations ==================
         this.load.spritesheet(                                          // Method to load spritesheets
             "enemy-master-spritesheet",                                 // "Key" to refer to this sheet later
             "assets/images/sprites/enemy_master_spritesheet.png",       // Path to the spritesheet
@@ -59,7 +59,7 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
             }
         );
 
-//============ Menu water animation =============
+        //============ Menu water animation =============
         this.load.spritesheet(                              // Method to load spritesheets
             "animatedWater",                                // "Key" to refer to this sheet later
             "assets/images/menuscreen/animated-water.png",  // Path to the spritesheet
@@ -69,9 +69,9 @@ class Preloader extends Phaser.Scene{ // Creating a Preloader class as an extens
             }
         );
     }                                                                   
-//========================================== End spritesheet generation ==============================================
+    //========================================== End spritesheet generation ==============================================
 
-//========================================== Game launch stuff ===================================================
+    //========================================== Game launch stuff ===================================================
     create(){   // Create method is run after the scene and preloader loads. We're just using it here to launch the game.
         if (debugMode == true){                                         // Test for debug mode
             this.scene.start('Gameplay');                                // Skip menu screen because debug mode.

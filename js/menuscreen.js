@@ -7,12 +7,12 @@ class MenuScreen extends Phaser.Scene { // Creating a Preloader class as an exte
         deathScreen = false; // Resetting the game if the menu was reached through death
         var textureSizeTest = this.game.renderer.getMaxTextureSize(); // Collect the maximum allowed texture size to adjust for low tolerance
 
-//======================================= Adding music  ======================================
+        //======================================= Adding music  ======================================
         music = this.sound.add('menu-music');                                   // Add the music we will play later
 
-//======================================= Adding images ======================================
-//===== There's a lot of moving pieces in this animation. We are adding them all in a    =====
-//=====                                   big chunk here.                                =====
+        //======================================= Adding images ======================================
+        //===== There's a lot of moving pieces in this animation. We are adding them all in a    =====
+        //=====                                   big chunk here.                                =====
         let sky = this.add.image(800, 160, "menu-sky");                         // Sky image
         let water = this.add.image(800, 435, "menu-water");                     // Water surface
         let underwater = this.add.sprite(800, 970, "menu-underwater");          // Underwater
@@ -154,7 +154,7 @@ class MenuScreen extends Phaser.Scene { // Creating a Preloader class as an exte
         });
     }
     update(){
-//================= Conditions for starting the game with/without touch controls ================
+        //================= Conditions for starting the game with/without touch controls ================
         pressKey.on('pointerdown', function() {            // Did someone tap or click on the screen?
             touch = true;                                  // Then activate touch controls
             startGame = true;                              // And start the show

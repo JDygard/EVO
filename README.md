@@ -15,17 +15,17 @@ If you're evaluating the game and don't want to work to advance, simply type "de
 
 2. [Original development plan](#Original-development-plan)
 
-    i. [Phase 1](#Phase-1,-the-framework)
+    i. [Phase 1](#Phase-1)
 
-    ii. [Phase 2](#Phase-2,-Evolution)
+    ii. [Phase 2](#Phase-2)
 
-3. [Actual development](#Actual-development-/-Current-features)
+3. [Current features](#Current-features)
 
     i. [Features](#Features)
 
     ii. [Unplanned features](#Features-not-originally-planned)
 
-    iii. [Unimplemented features](#Features-that-didn't-make-it)
+    iii. [Unimplemented features](#Unimplemented-features)
 
 4. [Deployment and Testing](#Deployment-and-testing)
 
@@ -63,7 +63,8 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 [Back to top](#Table-of-contents)
 
 ***
-## Phase 1, the framework
+## Phase 1
+### The framework
 1. Moving player
 
     i. Controls for rotation
@@ -101,8 +102,8 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 
 [Back to top](#Table-of-contents)
 ***
-## Phase 2, Evolution
-
+## Phase 2
+### Evolution
 1. Proper UX
 
     i. EVO point tally
@@ -140,7 +141,7 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 
 [Back to top](#Table-of-contents)
 ***
-# Actual development / Current features
+# Current features
 The actual development of the game went roughly according to the plans outlined above. I will go through the plan above and show how each part was implemented, and document the deviations. Note that these features are delved into in much more detail in the [testing documentation](#TESTING.md).
 ***
 ## Features
@@ -171,6 +172,9 @@ The play area was drawn by me to resemble "looking at a slide through a microsco
 The sprite animations were drawn and implemented by me using [GIMP](#Technologies-used) and the simplified animation builder present in Phaser 3. The animation keys are codes built by the upgrade selector for both the enemy objects and player object.
 
 See [game-settings.js](js/game-settings.js) lines 248-251 for more details. I was pretty proud of this idea.
+
+[Back to top](#Table-of-contents)
+***
 ### 2.1. Proper UX
 The health bar and spending EVO points wound up being moved to almost the end of the development process by necessity: Much of the other systems needed to be in place to actually interact; i.e. it's hard to build a health bar when the player has no hit points, and it's hard to build an evolution puchase system when there's nothing yet to purchase.
 ### 2.2 Upgrades
@@ -179,6 +183,8 @@ Because of how graphics and animations wound up being built (The plan was a modu
 This system caused the game to suffer more for variety than originally intended, creating a more arcade-game feel than the RPG feel that was the goal.
 
 I would prefer to have built everything modularly, and infinitely expandable. If the plan were to make this a very long project with dozens of upgrades, it would have justified the work. For a limited project, I think this implementation was acceptable.
+
+[Back to top](#Table-of-contents)
 ***
 ## Features not originally planned
 ### Menu screen animation
@@ -192,8 +198,9 @@ The original plan for the evolution upgrade menu was to produce another scene to
 
 I had planned to keep this project completely plugin-free, but this seems like a fair compromise.
 
+[Back to top](#Table-of-contents)
 ***
-## Features that didn't make it
+## Unimplemented features
 The "Phase 3" section in the development tree image at the top of this section refers to "transition to sidescroller," which was a transition to a whole new perspective, and fish bodies. This was obviously a huge reach goal and the reality of a 2-4 week development process made that a non-starter.
 
 [Back to top](#Table-of-contents)
@@ -350,6 +357,8 @@ I simply put an if statement in front of all player and enemy controls, and a va
 6. [HTML5](https://en.wikipedia.org/wiki/HTML5): There are 25 lines of HTML, used to load the canvas and JS used there.
 7. [Google Fonts](https://fonts.google.com/): Used for the two fonts used in this program, Roboto and Luckiest Guy Bold.
 
+[Back to top](#Table-of-contents)
+***
 ## Code credits
 1. [Samme's Rotate to Cursor](https://codepen.io/samme/pen/JBwWLN?editors=0010) found in gameplay.js, lines 419-429 and lines 809-820
 

@@ -11,8 +11,8 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
         });
     }
 
-//================================== Declaring general use methods ============================
-// ============== Generate a mute button =============
+    //================================== Declaring general use methods ============================
+    // ============== Generate a mute button =============
     makeMuteButton(){                                                       // Method for making the mute button
         let muteButton = this.add.image(1500, 100, "mute-icon");            // Mute button
         let muteButtonOff = this.add.image(1500, 100, "mute-icon-off");     // Mute button
@@ -42,10 +42,10 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             }
         });
     }
-//================================== The health bar ===========================================
-//===== The healthbar gameObject carries a great deal more water than its graphic implies =====
-//===== It keeps and displays the score, as well as housing the machinery for starting    =====
-//===== new rounds, and displaying, purchasing, and rearranging code for new parts.       =====
+    //================================== The health bar ===========================================
+    //===== The healthbar gameObject carries a great deal more water than its graphic implies =====
+    //===== It keeps and displays the score, as well as housing the machinery for starting    =====
+    //===== new rounds, and displaying, purchasing, and rearranging code for new parts.       =====
     makeBar(){                                                          // the method called to generate the healthbar
         healthBar = this.add.sprite(0, 0, 'healthbar')                  // Instantiate the sprite for the bar
             .setScrollFactor(0)                                         // Make the bar static in the camera view
@@ -178,7 +178,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             }
         }, this);                                       // context of the event listener started on line 44 above
     }
-//============================= Upgrades ================================
+    //============================= Upgrades ================================
     applyUpgrades(){                                        // A method for controlling upgrades and applying stat boosts
         currentIdleAnimation = '';                          // Clear the current idle animation code
         if (playerUpgrades.head == 'none'){                 // If there's no upgrade on the head
@@ -218,15 +218,15 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
         currentMoveAnimation = currentIdleAnimation + 'M';  // Now put an M on the of the movement variable to get the right animation code.
     }
 
-// =============================== Food related methods ================================
-// ===== Generate food and commit them to an array
+    // =============================== Food related methods ================================
+    // ===== Generate food and commit them to an array
     makeFood() {
         for (let i = 0; i < 30; i++){ //Iterate through 30 new food objects
             food[i] = new Food(this, 0, 0, 'food'); //Create each new food object and assign them to the array
         }
     }
 
-//===== Method for selecting targets for enemies =====
+    //===== Method for selecting targets for enemies =====
     findFood() {                                        // Let's make a method to detect the nearest food bit
         if (food.length > 0){                           // First we make sure there's some food to find
             for (let i = 0; i < enemyGroup.length; i++){// A loop to run through the enemies
@@ -268,14 +268,14 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             }
         }
     }
-//====================== Method for making the player object ==================
+    //====================== Method for making the player object ==================
     makePlayer() {                                                  // Declare the makePlayer() method
         player = new Player(this, 400, 300, currentIdleAnimation);  // Create a new Player object
         player.setDataEnabled();                                    // Set the player object to accept data
         player.data.set('inMotion', false);                         // Save the inMotion state to the player
     }
 
-//=============================== Method for generating enemy gameObjects =================
+    //=============================== Method for generating enemy gameObjects =================
     makeEnemies() {                                                     // Declare the makeEnemies() method
         for (let i = 0; i < enemies.length; i++){                       // For loop for working throught then enemy loops
             //=============================== Generating random upgrades for enemies ==================
@@ -421,11 +421,11 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             enemyGroup[i].data.set('rotation', enemyRotation);       // Set their rotation speed
         }
     }
-// ============================================== END enemy gameObject method =================================
+    // ============================================== END enemy gameObject method =================================
 
-// =========================== moveToTarget() method ===================================
-// ===== This takes the target from the findFood() method and uses it to orient    =====
-// =====                 and move the enemy toward targets                         =====
+    // =========================== moveToTarget() method ===================================
+    // ===== This takes the target from the findFood() method and uses it to orient    =====
+    // =====                 and move the enemy toward targets                         =====
     moveToTarget() {
         for (let i = 0; i < enemyGroup.length; i++){            // A for loop to go through all of the enemies
             let enemy = enemyGroup[i];                          // Save the enemy as a variable
@@ -447,7 +447,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             }
         }
     }
-// ============================== Game and round end methods ============================
+    // ============================== Game and round end methods ============================
     youWin() {                                                          // Declare youWin() method
         this.playSound('victory');                                      // Play a victory sound
         this.showText('Your evolutionary line was successful!', 4000);  // Show a message
@@ -532,7 +532,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             mute: soundMute                 // See if we need to mute it
         });
     }
-// ======================== END METHOD DECLARATIONS =======================
+    // ======================== END METHOD DECLARATIONS =======================
 
     create(){                                   // The create method for setting up the scene
         music = this.sound.add('game-music');   // Save the music to a global variable
@@ -555,9 +555,9 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
         this.showText('Round ' + round, 2000);  // Use showText() to display the round number
         this.playSound('new-round');            // Play the new round sound
 
-// ================= Setting up the energy bar in the healthBar object ================
-// == Thanks to Emanuele Feronato for the simple tutorial on using masks for this ==
-// == ref = https://www.emanueleferonato.com/2019/04/24/add-a-nice-time-bar-energy-bar-mana-bar-whatever-bar-to-your-html5-games-using-phaser-3-masks/
+        // ================= Setting up the energy bar in the healthBar object ================
+        // == Thanks to Emanuele Feronato for the simple tutorial on using masks for this ==
+        // == ref = https://www.emanueleferonato.com/2019/04/24/add-a-nice-time-bar-energy-bar-mana-bar-whatever-bar-to-your-html5-games-using-phaser-3-masks/
         let energyBar = this.add.sprite(207, 90, 'energybar')   // Make an energy bar
             .setDepth(6)                                        // Set the depth so it appears on top of everything
             .setScrollFactor(0)                                 // Fix it in viewport
@@ -569,7 +569,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
         energyMask.visible = false;                             // Make it invisble
         energyBar.mask = new Phaser.Display.Masks.BitmapMask(this, energyMask); // Make the mask act like a mask
 
-//================================== Player animation definitions ========================================
+        //================================== Player animation definitions ========================================
         var scene = this;                                   // Context
         for (let i = 0; i < animationSetter.length; i++){   // Go through the animation array
             this.anims.create({                             // Create an animation
@@ -579,7 +579,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             });
         }
 
-//=============================== Enemy animation definitions =======================================  
+        //=============================== Enemy animation definitions =======================================  
         for (let i = 1; i < animationSetter.length; i+=2){   // Go through the animation array
             this.anims.create({                              // Create an animation
                 key: 'E' + animationSetter[i],               // Give each set of 4 frames a code from the animationSetter array. Put an E in front of it to denote Enemy, which are a different color
@@ -588,7 +588,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             });
         }
 
-//================================== Building the play area ===============================================
+        //================================== Building the play area ===============================================
         this.add.background(400, 300);                    // Set scene background             
         this.applyUpgrades();                             // Run the applyUpgrades() function, which finds the right player upgrades and animations for player generation
         this.makePlayer();                                // Calling the Player method to create the player object
@@ -612,7 +612,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             new BGDebris(this, 0,0, 'debris' + i);
             new BGDebris(this, 0,0, 'debris' + i);
         }
-//================================== Building the UI ======================================
+        //================================== Building the UI ======================================
         this.makeMuteButton();                      // Generate the mute button
         this.makeBar();                             // Generate the healthbar
         healthBar.on('changedata-evoPoints', function (gameObject, value){  // When the evo points change
@@ -623,11 +623,11 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             pointText.setText(evoPoints);                                   // Otherwise, just display the number of points
         });
 
-//========================== Setting up pair interactions with sensors ====================================
-//======= Thanks to https://labs.phaser.io/edit.html?src=src/physics\matterjs\compound%20sensors.js =======
-//=======                     for the code adapted into this section                                =======
-//======= This is all of the compound body sensor interactions in the game. Dealing damage, eating  =======
-//=======                      food, flagging for destruction is all here.                          =======
+        //========================== Setting up pair interactions with sensors ====================================
+        //======= Thanks to https://labs.phaser.io/edit.html?src=src/physics\matterjs\compound%20sensors.js =======
+        //=======                     for the code adapted into this section                                =======
+        //======= This is all of the compound body sensor interactions in the game. Dealing damage, eating  =======
+        //=======                      food, flagging for destruction is all here.                          =======
         this.matter.world.on('collisionstart', function (event) { // Whenever two things collide,
             var pairs = event.pairs;                              // give them a useful nickname
                 for (var i = 0; i < pairs.length; i++)            // Then check them all out
@@ -637,12 +637,12 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
 
                     if (pairs[i].isSensor)                        // If there is a sensor
                     {
-                        var otherBody;                             // Label for the non-sensor
+                        var otherBody;                            // Label for the non-sensor
                         var sensorBody;                           // and for the sensor
 
                         if (bodyA.isSensor)                       // Then work out which one
                         {
-                            otherBody = bodyB;                     // ISN'T the sensor
+                            otherBody = bodyB;                    // ISN'T the sensor
                             sensorBody = bodyA;                   // and which one is
                         }
                         else if (bodyB.isSensor)
@@ -651,11 +651,11 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                             sensorBody = bodyB;
                         }
 
-                        var sensorSprite = sensorBody.gameObject; // Now grab the game object
+                        var sensorSprite = sensorBody.gameObject;   // Now grab the game object
                         var otherSprite = otherBody.gameObject;     // for each of the colliders
-                        if (otherSprite != null){                 // Test to make sure the collision isn't with the game border, which causes a crash
-//================================================== Player-primary sensor interactions ==================================================
-//================================================== Player Jaws damage stuff ================================================
+                        if (otherSprite != null){                   // Test to make sure the collision isn't with the game border, which causes a crash
+                            //================================================== Player-primary sensor interactions ==================================================
+                            //================================================== Player Jaws damage stuff ================================================
                             if (sensorBody.label === 'mouth' && otherBody.label == 'enemyBody' && playerUpgrades.head == 'jaws'){
                                 for (let i = 0; i < enemyGroup.length; i++){    // Iterate through the existing enemies
                                     let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y); // See how large the difference between the coordinates are
@@ -672,7 +672,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                                     }
                                 }
                             }
-//============================================== Player Spike damage stuff ==============================================================
+                            //============================================== Player Spike damage stuff ==============================================================
                             if (sensorBody.label === 'spike' && otherBody.label == 'enemyBody'){    // If the collision is between the player's spike and the enemy's body
                                     for (let i = 0; i < enemyGroup.length; i++){    // Iterate through the existing enemies
                                         let result = (otherSprite.x - enemyGroup[i].x) + (otherSprite.y - enemyGroup[i].y); // See how large the difference between the coordinates are
@@ -689,7 +689,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                                         }
                                     }
                                 }
-//============================================= Player eating food ==================================================================
+                            //============================================= Player eating food ==================================================================
                             if (sensorBody.label === 'mouth' && otherSprite.label == 'food'){ // If it's a mouth colliding with food
                                 otherSprite.label = 'eatenFood';              // Label the food in the mouth
                                 for (let i = 0; i < food.length; i++){      // So that it can be found in the food array
@@ -703,10 +703,10 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                                 healthBar.data.values.evoPoints += 1;                       // Add an evoPoint
                                 evoPoints += 1;
                             }
-//=========================================END PLAYER-PRIMARY SENSOR INTERACTIONS =================================================
+                            //=========================================END PLAYER-PRIMARY SENSOR INTERACTIONS =================================================
 
-//=========================================  Enemy-primary sensor interactions ====================================================
-//========================================= Enemy jaw damage ========================================================
+                            //=========================================  Enemy-primary sensor interactions ====================================================
+                            //========================================= Enemy jaw damage ========================================================
                             if (sensorBody.label === 'enemyJaws' && otherBody.label == 'playerBody'){
                                 scene.playSound('crunch');
                                 player.setTint("0xff4646");                                                       // Make the enemy turn red
@@ -715,7 +715,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                                 }, 75);                                                                      // 75ms    
                                 playerHP -= 5;
                             }
-//========================================= Enemy spike damage =======================================================
+                            //========================================= Enemy spike damage =======================================================
                             if (sensorBody.label === 'enemySpike' && otherBody.label == 'playerBody'){
                                 scene.playSound('hit');
                                 player.setTint("0xff4646");                                                       // Make the enemy turn red
@@ -724,7 +724,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                                 }, 75);                                                                          // 75ms
                                 playerHP -= 3;
                             }
-//============================================== Enemy eating food stuff ==========================================================
+                            //============================================== Enemy eating food stuff ==========================================================
                             if ((sensorBody.label === 'enemyMouth' || sensorBody.label === 'enemyJaws') && otherSprite.label == 'food'){ // If it's an enemy's mouth colliding with food
                                 otherSprite.label = 'eatenFood';              // Label the food in the mouth
                                 for (let i = 0; i < food.length; i++){      // So that it can be found in the food array
@@ -741,7 +741,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                 }
             });
             
-//================================== Setting up the controls =============================================
+    //================================== Setting up the controls =============================================
 
         this.matter.world.setBounds(-3440, -1860, 7680, 4320);      //===== Don't let the player go out of bounds
         this.cameras.main.setBounds(-3440, -1860, 7680, 4320);      //===== Don't let the camera show out of bounds
@@ -765,7 +765,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                 this.showText('You have consumed all other creatures in the pool'); // Show a message that lets them know they've killed the rest
             }
         }
-// ========== Healthbar and player death business conducted here =============
+        // ========== Healthbar and player death business conducted here =============
         if (playerHP >= 1){                                     // If the player has hp left
             stepWidth = energyMask.displayWidth / playerMaxHP;  // Figure out how much the bar should move for each point based on the max value
             if (playerHP !== referenceHP){                      // If the hp has changed since last update
@@ -778,7 +778,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             this.youLose();                                     // And run the youLose() method
         }
         
-// ======================== Controlling for dead enemies =====================
+        // ======================== Controlling for dead enemies =====================
         for (let i = 0; i < enemyGroup.length; i++){            // Run through the enemy ground
             if (enemyGroup[i].data !== undefined){              // If the information to be processed is there
                 let hp = enemyGroup[i].data.get('hp');          // Save enemy hp to a variable
@@ -805,7 +805,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             }
         }                  
 
-// =============== Statement for destroying flagged gameObjects ================
+        // =============== Statement for destroying flagged gameObjects ================
 
         if (garbage != undefined){                      // If there's food to be destroyed
             if (garbage.label == 'eatenFood'){          // If it's food disappearing
@@ -815,9 +815,9 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             garbage = undefined;                        // Clean out the garbage can
         }
 
-//======================================= Calculate speed and activate the right animations ======================================
-//=====                  Thanks to me for this kickass piece of code. No credit to anyone, I'm pretty                        =====
-//=====                                                  proud of this bit.                                                  =====
+        //======================================= Calculate speed and activate the right animations ======================================
+        //=====                  Thanks to me for this kickass piece of code. No credit to anyone, I'm pretty                        =====
+        //=====                                                  proud of this bit.                                                  =====
         posX.unshift(player.x);                                                             // Put the current position of the
         posY.unshift(player.y);                                                             // player in the front of the array
         let oldPosX = posX.pop();                                                           // Save and pop off the last frame's
@@ -843,9 +843,9 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                 });
             }
         });
-//============================== Listen for control inputs and execute movements ======================
-//=====  Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors   =====
-//=====                     for the modified example code used here.                              =====
+        //============================== Listen for control inputs and execute movements ======================
+        //=====  Thanks to https://phaser.io/examples/v3/view/physics/matterjs/rotate-body-with-cursors   =====
+        //=====                     for the modified example code used here.                              =====
         let thrustSpeed = currentPlayerSpeed + chitinPenalty;       // Calculate in the chitin movespeed penalty
         //============================== Touch controls =================================='
         var scene = this;                                           // Context
@@ -879,8 +879,8 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                 player.thrust(thrustSpeed);                         // Apply the calculated thrust speed
             }   
         }
-//============================== Enemy target acquisition, calculation and movement ===================
-//=====
+        //============================== Enemy target acquisition, calculation and movement ===================
+        //=====
         if (menuMovement == false){
             this.moveToTarget();                                        // run moveToTarget() once everything else is settled
         }

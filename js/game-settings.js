@@ -16,64 +16,6 @@ const config = {
     physics: {              // Selects a physics engine
         default: 'matter',  // A physics engine with collisions and complex material interaction
         matter: {           // Configure the physics engine
-            debug: {
-                showAxes: false,
-                showAngleIndicator: true,
-                angleColor: 0xe81153,
-                showBroadphase: false,
-                broadphaseColor: 0xffb400,
-                showBounds: false,
-                boundsColor: 0xffffff,
-                showVelocity: true,
-                velocityColor: 0x00aeef,
-                showCollisions: true,
-                collisionColor: 0xf5950c,
-    
-                showSeparations: false,
-                separationColor: 0xffa500,
-                showBody: true,
-                showStaticBody: true,
-                showInternalEdges: true,
-                renderFill: false,
-                renderLine: true,
-    
-                fillColor: 0x106909,
-                fillOpacity: 1,
-                lineColor: 0x28de19,
-                lineOpacity: 1,
-                lineThickness: 1,
-    
-                staticFillColor: 0x0d177b,
-                staticLineColor: 0x1327e4,
-                showSleeping: true,
-                staticBodySleepOpacity: 1,
-                sleepFillColor: 0x464646,
-                sleepLineColor: 0x999a99,
-    
-                showSensors: true,
-                sensorFillColor: 0x0d177b,
-                sensorLineColor: 0x1327e4,
-    
-                showPositions: true,
-                positionSize: 4,
-                positionColor: 0xe042da,
-    
-                showJoint: true,
-                jointColor: 0xe0e042,
-                jointLineOpacity: 1,
-                jointLineThickness: 2,
-    
-                pinSize: 4,
-                pinColor: 0x42e0e0,
-    
-                springColor: 0xe042e0,
-    
-                anchorColor: 0xefefef,
-                anchorSize: 4,
-    
-                showConvexHulls: true,
-                hullColor: 0xd703d0
-            },
             gravity: {      // Set the gravity
                 x: 0,       // To nothing
                 y: 0        // To nothing
@@ -246,7 +188,7 @@ var playerUpgrades = {  // An object for saving the player's chosen upgrade
 };
 
 // This is an array to house the keys for all of the animations. It is used by the animation-creating for-loop to efficiently name, create amd call animations.
-// KEY: 0 = null/no other upgrades, J = jaws, S = spike, F = flagellum, T = tail, K = stiff skin, C = chitin, M = moving
+// KEY: 0 = null/no other upgrades, J = jaws, S = spike, F = flagellum, T = tail, K = stiff skin, C = chitin, M = moving, E = enemy, though that is appended while generating the enemy animation codes and can't be seen here.
 var animationSetter = [
     '000','000M','J00','J00M','S00','S00M','00F','00FM','J0F','J0FM','S0F','S0FM','0KF','0KFM','0CF','0CFM','00T','00TM','J0T','J0TM','S0T','S0TM','0KT','0KTM','0CT','0CTM','JKF','JKFM','JCF','JCFM','SKF','SKFM','SCF','SCFM','JKT','JKTM','JCT','JCTM','SKT','SKTM','SCT','SCTM',
 ];
