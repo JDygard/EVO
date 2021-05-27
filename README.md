@@ -24,7 +24,8 @@ All art, code and game concepts were the (more or less, it's similar to Spore's 
 
 [Back to top](#Table-of-contents)
 # Original development plan
-![alt text](assets/images/readme/gameplan.png "Evo gameplan")
+![alt text](assets/images/readme/gameplan.png "The first documentation of the development plan")
+
 We're going to start with core features, creating a framework upon which the rest of the game can be built. 
 The phases are arranged such that each phase rounds out a gameplay loop, and is thus a "complete game." This will allow us to turn in a complete project no matter which phase is completed, even the first.
 
@@ -108,7 +109,101 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 
 [Back to top](#Table-of-contents)
 ***
+# Actual development / Current features
+The actual development of the game went roughly according to the plans outlined above. I will go through the plan above and show how each part was implemented, and document the deviations. Note that these features are delved into in much more detail in the [testing documentation](#TESTING.md).
+***
+## Features
+### 1.1. Moving the player
+Keyboard controls are very simple keybindings to the physics engine. Early designs of the touch controls used a joystick plugin, but that was later scrapped for a simpler "touch to move" more automatic system.
+### 1.2. Scrolling scene
+This was accomplished by binding the camera view to the player object and providing a scene with edge boundaries for both objects and the camera view.
+### 1.3. Obstacles with bumping physics
+Rocks were toyed around with but they never looked quite right in the scale of the game. I didn't want to go to the trouble of drawing them all by hand, so I chopped up a picture of bacteria and slightly modified them to be floating debris as the only decoration in the game.
+### 1.4. Collectible plant food
+The small bits of green food were implemented exactly as intended. They wound up being collected in an array to make them easier to manage. The array is accessed to:
+- Determine when to generate new food after all food is eaten
+- Determine a target for each enemy
+- Determine which food has been eaten
+### 1.5. EVO point tally
+EVO points are kept in the data set attached to the health bar. They are also displayed in a void in the health bar.
+### 1.6. Other organisms
+These are the enemies the user must compete with. They share animations with the player object but in a different color.
+### 1.7. Ability to attack other organisms
+This is reflected in the Hit Points(HP) of the other organisms, and in the weapon upgrades that can be evolved by the player.
+### 1.8. Other organism behavior
+There is a reference here to herbivore/carnivore. Originally there was an idea to implement different food types that could only be eaten by certain head upgrades. That was deemed too complex and scrapped for a simpler system.
+
+Everything else in this item was implemented: Enemies compete to gather resources, attack the player when they have the required upgrades, and drop edibles when defeated. The systems involved with this are discussed in greater detail in the [testing documentation](TESTING.md)
+### 1.9. Graphics
+The play area was drawn by me to resemble "looking at a slide through a microscope."
+
+The sprite animations were drawn and implemented by me using [GIMP](#Technologies-used) and the simplified animation builder present in Phaser 3. The animation keys are codes built by the upgrade selector for both the enemy objects and player object.
+
+See [game-settings.js](js/game-settings.js) lines 248-251 for more details. I was pretty proud of this idea.
+### 2.1. Proper UX
+The health bar and spending EVO points wound up being moved to almost the end of the development process by necessity: Much of the other systems needed to be in place to actually interact; i.e. it's hard to build a health bar when the player has no hit points, and it's hard to build an evolution puchase system when there's nothing yet to purchase.
+### 2.2 Upgrades
+Because of how graphics and animations wound up being built (The plan was a modular design with replaceable body parts rather than distinct animations for each set of upgrades) the time cost of implementing even a single additional upgrade was exponentially higher than the last.
+
+This system caused the game to suffer more for variety than originally intended, creating a more arcade-game feel than the RPG feel that was the goal.
+
+I would prefer to have built everything modularly, and infinitely expandable. If the plan were to make this a very long project with dozens of upgrades, it would have justified the work. For a limited project, I think this implementation was acceptable.
+
+## Features not originally planned
+### Menu screen animation
+This animation was built from an image found on Pexels and the tween methods available in matterJS. The underwater animation effect was built in [GIMP](#Technologies-used).
+
+### "Rounds" system
+While building the game, the lack of a sense of structure gave the game a "sandbox" feel, without enough features to justify that setting. It was decided then, to implement rounds to give the game an "arcade" feel. It also gave a simplified reason to give enemies upgrades, rather than having them opportunistically take upgrades based on how many points they'd gathered.
+
+### Rex's UI plugin
+The original plan for the evolution upgrade menu was to produce another scene to serve as the menu, and have it appear as a "scene within scene" when the evolve button was clicked. This proved to be difficult, and I spent a couple of days on it. It was decided that since this solution was very library specific that it had little real-world educational value, and a cheaper workaround was found.
+
+I had planned to keep this project completely plugin-free, but this seems like a fair compromise.
+
+[Back to top](#Table-of-contents)
+***
+# Deployment and testing
+## Deployment
+This project was developed using Visual Studio Code v1.55.0, and all commit/push commands were performed in the software's terminal.
+
+### Github Pages
+1. Log into GitHub
+2. Navigate to [the repository](https://github.com/JDygard/EVO).
+3. Click "Settings"
+4. Scroll to "GitHub Pages"
+5. Select a branch.
+6. The "GitHub Pages" section should now contain the link to the deployed page.
+
+### Creating a fork
+1. Navigate to [the repository](https://github.com/JDygard/EVO).
+2. Click "Fork"
+
+### Cloning with GitPod
+1. Install GitPod extension.
+2. Log into GitHub
+3. Navigate to [the repository](https://github.com/JDygard/EVO).
+4. Click "GitPod."
+ 
+### Cloning into VSCode
+- Note that you will need a virtual server to run the game on your machine locally
+1. Navigate to [the repository](https://github.com/JDygard/EVO).
+2. Click "Clone or download"
+3. Copy the provided URL.
+4. Open your terminal
+5. Navigate to the desired target directory
+6. type 'git clone' and then paste the url.
+
+[Back to top](#Table-of-contents)
+***
+## Testing
+
+[Testing documentation](TESTING.md) is available in a separate file.
+
+[Back to top](#Table-of-contents)
+***
 ## Known issues
+***
 ### Game is essentially unplayable on very small screens
 
 The game was designed with accessibility in mind. That being said, by the nature of the game, having a very small screen presents very real problems:
@@ -136,7 +231,9 @@ We've tracked this issue down to an issue with the food array.
 When the level is generated, 30 food is placed into an array and managed from there. When an enemy dies, two food pieces are generated after the death animation ends, and as part of their generation they are pushed into the same food array.
 
 The issue is that sometimes, one of the two food dropped by the enemy is not edible. Given the time frame of this project, this was considered too minor an issue to look into further.
+
 [Back to top](#Table-of-contents)
+***
 ## Bugs
 ***
 ### Mouth sensor contact with world boundary causes crash (Solved)
@@ -197,7 +294,7 @@ After converting my myriad textures into a master spritesheet, my sprites stoppe
 For accessibility, I added an if statement that makes sure the max permitted texture size is enough to accommodate the size of the intro menu animation. If it doesn't, a static version of the menu graphic is shown.
 I also discovered that textures are treated like the next largest squared integer, i.e. a 5x2 px image is treated as 8x8, a 126x12 is 128x128 etc. By packing my master spritesheets into as square a version as possible, I was able to squeeze it down to the lowest possible WebGL maximum texture size (Chrome on mobile.)
 ***
-### Game does not pause when menu is open
+### Game does not pause when menu is open (Partially solved)
 This is another example of "if only," because if I'd built the game with this in mind, it would be relatively easy to do. Same with that if I had built the menu as a separate scene (as I had planned) then I could have paused the
 gameplay scene while the menu was open.
 
@@ -211,6 +308,7 @@ I simply put an if statement in front of all player and enemy controls, and a va
 1. [Phaser 3](https://photonstorm.github.io/phaser3-docs/index.html): Phaser 3 and the API documentation were the principal technologies used to generate the canvas and manage game objects and their interactions.
 2. [Javascript](https://en.wikipedia.org/wiki/JavaScript): Javascript comprises 99% of this program.
 3. [Favicon converter](https://favicon.io/favicon-converter/): Used to make the favicon.ico and associated files.
+4. [GNU Image Manipulation Program (GIMP)](https://www.gimp.org/): Used extensively making animations and sprites
 5. [CSS](https://en.wikipedia.org/wiki/CSS): There are 7 lines of CSS.
 6. [HTML5](https://en.wikipedia.org/wiki/HTML5): There are 25 lines of HTML, used to load the canvas and JS used there.
 7. [Google Fonts](https://fonts.google.com/): Used for the two fonts used in this program, Roboto and Luckiest Guy Bold.
@@ -232,20 +330,24 @@ I simply put an if statement in front of all player and enemy controls, and a va
 
     Rex's UI plugin was used to build the "Evolve" menu. This made the code lighter, and eased the process of making a complex build menu.
 
+    I didn't want to use any plugins for this project, and spent almost two full days trying to get a "scene within scene" version of the menu working. In the end, I decided that since that method is very library specific that it wasn't very valuable to me as a skill. I found a workaround in this plugin, and built a passable menu instead.
+
 4. [Emanuele Feranto's simple mask tutorial](https://www.emanueleferonato.com/2019/04/24/add-a-nice-time-bar-energy-bar-mana-bar-whatever-bar-to-your-html5-games-using-phaser-3-masks/) found in gameplay.js lines 523-535.
 
     This was a simple tutorial on using masks. I almost wouldn't have credited it, but I did lift the concept of stepWidth directly from the tutorial.
-***
+
 [Back to top](#Table-of-contents)
+***
 
 ## Visuals credits
 
 1. Jess Vide's [Blue Ocean Blue Sky](https://www.pexels.com/photo/blue-ocean-under-blue-sky-and-white-clouds-4611748/). 
 
 This image was disassembled and used for the menu screen animation.
-***
 
 [Back to top](#Table-of-contents)
+***
+
 ## Sound Credits
 
 All game sounds used were found on [Open Game Art](https://opengameart.org/). They are used here under Creative Commons free licensing.
@@ -258,8 +360,9 @@ All game sounds used were found on [Open Game Art](https://opengameart.org/). Th
 6. Game over: [Game Over Music Box II](https://opengameart.org/content/music-box-game-over-ii) by Kim Light Year.
 7. Victory: [Win Jingle](https://opengameart.org/content/win-jingle) by Fupi.
 8. Eating: [7 Eating Crunches](https://opengameart.org/content/7-eating-crunches) by StarNinjas.
-***
+
 [Back to top](#Table-of-contents)
+***
 
 ## Acknowledgements
 

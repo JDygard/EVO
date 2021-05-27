@@ -532,7 +532,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
             mute: soundMute                 // See if we need to mute it
         });
     }
-
+// ======================== END METHOD DECLARATIONS =======================
 
     create(){                                   // The create method for setting up the scene
         music = this.sound.add('game-music');   // Save the music to a global variable
