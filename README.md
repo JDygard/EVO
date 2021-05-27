@@ -246,6 +246,11 @@ This project was developed using Visual Studio Code v1.55.0, and all commit/push
 ***
 ## Known issues
 ***
+### "WebGL warning: texImage: Alpha-premult and y-flip are deprecated for non-DOM-Element uploads." Appears in console
+
+Phaser 3 uses UNPACK_PREMULTIPLY_ALPHA_WEBGL in its current library. It is deprecated but functional according to the Mozilla team: [Relevant bugzilla report](https://bugzilla.mozilla.org/show_bug.cgi?id=1400077)
+
+***
 ### Game is essentially unplayable on very small screens
 
 The game was designed with accessibility in mind. That being said, by the nature of the game, having a very small screen presents very real problems:
