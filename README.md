@@ -189,9 +189,13 @@ The structure of the game is covered in the [Original development plan](#Origina
 
 ## Skeleton
 
-The game was designed with the intent that the form of the game would follow the function of the game. Initial placeholder graphics were not kept but followed the intended color scheme of the game more or less.
+The general theme of the game was decided to follow the "Top-down" style of game with no parallax angle. There would be some sort of obstacles and decoration, a UI bar in the top-left with an upgrade graphic, enemies and a player.
 
-However, the general theme of the game was to be "Looking through a microscope at micro-organisms competing for resources" with an arcade feel.
+![alt text](assets/images/readme/skeleton-1.png)
+
+Different upgrades were considered, and they should have an impact on how the player sees the game to increase the involvement in the evolution of their player object.
+
+![alt text](assets/images/readme/skeleton-2.png)
 
 ## Surface:
 
