@@ -41,7 +41,7 @@ const config = {
 // === This is where all of the constants for game elements can be adjusted in one place ===
 
 // ==Debug mode : Turns off touch controls and menu scene for rapid testing
-var debugMode = false;          // Set the debug mode to false
+var debugMode = true;          // Set the debug mode to false
 
 // ==Rotation speed
 const baseRotation = 0.055;     // Set the base rotation value
@@ -96,7 +96,7 @@ var items = [                   // An array to hold information for the menu plu
             {
                 name: 'Chitinous body',  // The name that will be displayed in the menu
                 children: [
-                    { name: 'Chitinous body that resists damage at the cost of speed (Requires tail upgrade) [5 points]' },  // The name that will be displayed in the menu
+                    { name: 'Body that resists damage but reduces speed (Requires tail upgrade) [5 points]' },  // The name that will be displayed in the menu
                 ]
             },
         ]
@@ -107,7 +107,7 @@ var items = [                   // An array to hold information for the menu plu
             {
                 name: 'Flagellum',  // The name that will be displayed in the menu
                 children: [{
-                    name: 'A long, thin tail capable of high speeds, but limited in terms of maneuverability [8 points]',  // The name that will be displayed in the menu
+                    name: 'A long tail capable of high speeds, but reduces maneuverability [8 points]',  // The name that will be displayed in the menu
                 }]
             },
             {

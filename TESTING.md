@@ -165,6 +165,7 @@ When the user clicks on a menu item deepest in the tree, logic checks that there
 
 ![alt text](assets/images/readme/menu-testing/already-flag.png "Requirement not met")
 - Attempting to take the flagellum upgrade when your tail is already upgraded.
+- Note that the overlapping menu item has been corrected since this image was taken
 
 ![alt text](assets/images/readme/menu-testing/already-tail.png "Requirement not met")
 - Attempting to take the pseudotail upgrade when your tail is already upgraded.
@@ -185,6 +186,7 @@ When the user clicks on a menu item deepest in the tree, logic checks that there
 
 ![alt text](assets/images/readme/menu-testing/food-chitin.png "Requirement not met")
 - Attempting to purchase chitin without enough points.
+- Note that the overlapping menu item has been corrected since this image was taken
 
 ![alt text](assets/images/readme/menu-testing/food-stiff.png "Requirement not met")
 - Attempting to purchase stiff body without enough points.
@@ -194,11 +196,13 @@ When the user clicks on a menu item deepest in the tree, logic checks that there
 
 ![alt text](assets/images/readme/menu-testing/food-flagellum.png "Requirement not met")
 - Attempting to purchase flagellum without enough points.
+- Note that the overlapping menu item has been corrected since this image was taken
 ***
 ### No tail upgrade for body upgrade
 
 ![alt text](assets/images/readme/menu-testing/notail-chitin.png "Requirement not met")
 - Attempting to purchase chitinous body without tail upgrade.
+- Note that the overlapping menu item has been corrected since this image was taken
 
 ![alt text](assets/images/readme/menu-testing/notail-stiff.png "Requirement not met")
 - Attempting to purchase stiff body without tail upgrade.
@@ -239,11 +243,13 @@ The health bar consists of a rounded green bar and an invisible mask sprite. The
 
 ![alt text](assets/images/readme/background.png "Background")
 
+(Above: a scaled down version of the image that comprises the play area)
+
 - The play area displays as expected in every gameplay iteration.
 
 - The boundaries affect both the camera view and every object.
 
-- The camera follows the player without fail.
+- The camera follows the player until the camera bounds are reached, and resumes following when returning to the play area.
 
 [Back to top](#Table-of-contents)
 ***
