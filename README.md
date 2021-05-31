@@ -11,15 +11,27 @@ If you're evaluating the game and don't want to work to advance, simply type "de
 ***
 1. [Introduction](#Introduction)
     
-    i. [Description](#Description)
+    i. [Project Goal](#Project-goal)
 
-2. [Original development plan](#Original-development-plan)
+2. [Development Planes](#Development-planes)
+
+    i. [Strategy](#Strategy)
+
+    ii. [Scope](#Scope)
+
+    iii. [Structure](#Structure)
+
+    iv. [Skeleton](#Skeleton)
+
+    v. [Surface](#Surface)
+
+3. [Original development plan](#Original-development-plan)
 
     i. [Phase 1](#Phase-1)
 
     ii. [Phase 2](#Phase-2)
 
-3. [Current features](#Current-features)
+4. [Current features](#Current-features)
 
     i. [Features](#Features)
 
@@ -27,15 +39,15 @@ If you're evaluating the game and don't want to work to advance, simply type "de
 
     iii. [Unimplemented features](#Unimplemented-features)
 
-4. [Deployment and Testing](#Deployment-and-testing)
+5. [Deployment and Testing](#Deployment-and-testing)
 
     i. [Deployment](#Deployment)
 
     ii. [Testing](#Testing)
 
-5. [Known Issues](#Known-issues)    
-6. [Bugs](#Bugs)
-7. [Credits and references](#Credits-and-references)
+6. [Known Issues](#Known-issues)    
+7. [Bugs](#Bugs)
+8. [Credits and references](#Credits-and-references)
 
     i. [Technologies used](#Technologies-used)
 
@@ -48,12 +60,157 @@ If you're evaluating the game and don't want to work to advance, simply type "de
     v. [Acknowledgements](#Acknowledgements)
 
 ***
-# Description
+# Introduction
 Evo is a game about evolution. Each round represents a stage in the evolution of a lifeform, and through garnering evolution points by eating food or killing the competition and eating their food, the player can select new evolutions to advance to the next round. The goal is to get to round 4 and evolve the 'size' upgrade.
 
 All art, code and game concepts were the (more or less, it's similar to Spore's first stage) original work of the author, Joel Dygard, with the exception of the code credited at the end of this document. No tutorial was followed to make this game as whole, but bits were used as guiding light to how to use the Phaser 3 library.
 
 [Back to top](#Table-of-contents)
+## Project Goal
+Evo is designed to provide a challenging but surmountable interactive experience for the user. This is the second of four Milestone projects for Code Institute, required for graduation.
+
+Most of the coding required will be JavaScript, in the forms of traditional JavaScript, MatterJS and Phaser 3.
+
+### Player goals
+
+The player wants to:
+
+- Have fun
+- Be challenged
+- Explore the different avenues of evolution
+- Overcome the game's challenge
+
+### Developer goals
+
+The dev wants to
+
+- Learn to code in MatterJS
+- Demonstrate their ability to write in JavaScript
+- Deploy a project that can be displayed in their portfolio
+
+[Back to top](#Table-of-contents)
+***
+## User stories
+
+### As a player, I like:
+
+1. Being challenged
+2. Learning a system
+3. Exploring an environment
+4. Being able to control the way sounds are presented
+5. Getting positive feedback for accomplishments
+6. Overcoming challenges
+
+[Back to top](#Table-of-contents)
+***
+
+# Development planes
+
+Development followed generally the concept of development planes. As shown below, development began in what is traditionally the third part: the structure. From there, we worked backward, and then forward.
+
+## Strategy
+
+The following categories of people might be interested in Evo:
+
+- New and returning players
+
+- People interested in exploring a fun challenge
+
+- People who aren't capable of completing the entire game
+
+### Requirements
+
+The game needs to:
+
+- Begin with an easy stage of gaining familiarity, and then escalate in difficulty and complexity.
+
+- Reward positive progress
+
+- Show the user negative feedback
+
+- Show the user their score and health
+
+- Entertain!
+
+### Strategy table
+
+![alt text](assets/images/readme/readmestrategy.jpg "Feasability scale")
+
+### Zoom out while moving
+
+This was a variable zoom that scales the game down to reveal more of the play area as the player object moves faster. It would center on the area where the player was headed.
+
+This was tested quite a bit, but making the UI keep its scale while changing the scale of the play area proved very difficult as it wasn't designed with this concept in mind from the beginning. It was, unfortunate, infeasible for the time frame of this project.
+
+### Add all planned upgrades
+
+All of the planned upgrades are outlined below in the original development plan. There we 13 planned upgrades, which, given how the animation system wound up working, would have constituted hundreds of individually developed animations. This would entail over 30 hours of additional animation work, and was deemed unnecessary given the goals of the development.
+
+### Food-tracking compass
+
+This would be an arrow or other indicator showing the nearest food bit.
+
+Given the player's advantage in planning and navigation, this was deemed unnecessary due to the timeframe of the project.
+
+### Menu Screen animation
+
+An animation introducing the theme and feel of the game.
+
+This wound up taking about 4 hours of work, and the benefit to the "Wow" factor of the game is high.
+
+### Mute button
+
+This was very important to the development of a game with sounds. To decrease the intrusiveness of the sound, a mute button was deemed very important and very feasible.
+
+### Rounds system
+
+A system of rounds instead of piecemeal evolution contributes to the "arcade" style of the game. Though difficult, it was deemed important enough to tackle.
+
+### Scene-based menu with styling and pause
+
+A system wherein a small external scene would be instantiated in the gameplay scene to allow the user to peruse evolutions and view information about them.
+
+While important, the time investment involved with making this type of menu seemed to be very high. A strong attempt was made to implement it. However, it was deemed that since this solution was centered highly in the Phaser 3 library and not terribly applicable elsewhere, it would not be a useful skill to develop from an educational standpoint. This was unfortunately scrapped for a less attractive, easier solution from a plugin.
+
+## Scope
+
+The game should have:
+- A complete game loop with win and loss conditions
+- Choices made by the player that impact how they achieve the win condition
+- Different strategies to achieve the win condition
+- Feedback
+- Clear objectives and progress indication
+- Ability to control the game's sound
+- A clear visual style
+
+## Structure
+
+The structure of the game is covered in the [Original development plan](#Original-development-plan)
+
+## Skeleton
+
+The game was designed with the intent that the form of the game would follow the function of the game. Initial placeholder graphics were not kept but followed the intended color scheme of the game more or less.
+
+However, the general theme of the game was to be "Looking through a microscope at micro-organisms competing for resources" with an arcade feel.
+
+## Surface:
+
+- The color scheme was chosen to cover several themes
+    - Blue-green as the color of the ocean
+    - Gold as a contrast to the blue-green
+    - Bright green for the arcadey health bar
+    - Dark green for the color of the deep ocean
+    - A light purple for the arcade-style indication of "bad guy"
+
+    ![alt text](assets/images/readme/colortheme.jpg "The color theme")
+
+- Animations were deemed to be very important for the sense of swimming, and are 4 frames each. There are a total of 64 animations in use in the game.
+
+- A menu screen that impresses the intended feel of the game is important
+
+- Text indicators that fit the theme of the game and give a sense of the fun, arcade style are important. "Lucky Guy" font found on Google Fonts was chosen for this.
+
+
 # Original development plan
 ![alt text](assets/images/readme/gameplan.png "The first documentation of the development plan")
 
