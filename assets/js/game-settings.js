@@ -41,7 +41,7 @@ const config = {
 // === This is where all of the constants for game elements can be adjusted in one place ===
 
 // ==Debug mode : Turns off touch controls and menu scene for rapid testing
-var debugMode = true;          // Set the debug mode to false
+var debugMode = false;          // Set the debug mode to false
 
 // ==Rotation speed
 const baseRotation = 0.055;     // Set the base rotation value
