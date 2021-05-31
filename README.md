@@ -299,7 +299,7 @@ The phases are arranged such that each phase rounds out a gameplay loop, and is 
 [Back to top](#Table-of-contents)
 ***
 # Current features
-The actual development of the game went roughly according to the plans outlined above. I will go through the plan above and show how each part was implemented, and document the deviations. Note that these features are delved into in much more detail in the [testing documentation](#TESTING.md).
+The actual development of the game went roughly according to the plans outlined above. I will go through the plan above and show how each part was implemented, and document the deviations. Note that these features are delved into in much more detail in the [testing documentation](TESTING.md).
 ***
 ## Features
 ### 1.1. Moving the player
