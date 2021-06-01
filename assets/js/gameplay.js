@@ -116,7 +116,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                         }
                     }
 
-                    if (button.text == 'Chitinous body that resists damage at the cost of speed (Requires tail upgrade) [5 points]'){                // If the player clicks this button
+                    if (button.text == 'Body that resists damage but reduces speed (Requires tail upgrade) [5 points]'){                // If the player clicks this button
                         if (evoPoints >= 5 && playerUpgrades.tail !== 'none' && playerUpgrades.body == 'none'){     // And they have enough points AND a tail upgrade
                             playerUpgrades.body = 'chitin';                                                         // put the selected upgrade into the array
                             scene.newRound();                                                                       // and start a new round
@@ -132,7 +132,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
                         }
                     }
 
-                    if (button.text == 'A long, thin tail capable of high speeds, but limited in terms of maneuverability [8 points]'){                // If the player clicks this button
+                    if (button.text == 'A long tail capable of high speeds, but reduces maneuverability [8 points]'){                // If the player clicks this button
                         if (evoPoints >= 8 && playerUpgrades.tail == 'none'){                                       // And they have enough points
                             playerUpgrades.tail = 'flagellum';                                                      // put the selected upgrade into the array
                             scene.newRound();                                                                       // and start a new round
