@@ -6,7 +6,7 @@ class Gameplay extends Phaser.Scene {       // Creating a Preloader class as an 
     preload() {
         this.load.scenePlugin({             // Set up the UI plugin
             key: 'rexuiplugin',             // For referencing it later
-            url: 'js/rexuiplugin.min.js',   // And where it's being pulled from
+            url: 'assets/js/rexuiplugin.min.js',   // And where it's being pulled from
             sceneKey: 'rexUI'               // And the sceneKey. I think this is unique to the rex plugin environment
         });
     }
